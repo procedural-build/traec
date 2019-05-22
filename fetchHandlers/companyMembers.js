@@ -1,34 +1,56 @@
+"use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deleteCompanyMember = exports.getCompanyMembers = void 0;
 
-export const getCompanyMembers= ({companyId}) => {
-    const fetchParams = {
-        method: 'GET',
-        url: `/api/company/${companyId}/member/`,
-        apiId: 'api_company_member_list',
-        requiredParams: ['companyId']
+var getCompanyMembers = function getCompanyMembers(_ref) {
+  var companyId = _ref.companyId;
+  var fetchParams = {
+    method: 'GET',
+    url: "/api/company/".concat(companyId, "/member/"),
+    apiId: 'api_company_member_list',
+    requiredParams: ['companyId']
+  };
+
+  var stateSetFunc = function stateSetFunc(state, action) {
+    var data = action.payload;
+    var newState = state.addListToDict("companyObjects.byId.".concat(companyId, ".members"), data);
+    return newState;
+  };
+
+  return {
+    fetchParams: fetchParams,
+    stateParams: {
+      stateSetFunc: stateSetFunc
     }
-    const stateSetFunc= (state, action) => {
-        const data = action.payload
-        let newState = state.addListToDict(
-                `companyObjects.byId.${companyId}.members`, data
-        )
-        return newState            
-    }
-    return {fetchParams, stateParams: {stateSetFunc}}
-}
+  };
+};
 
+exports.getCompanyMembers = getCompanyMembers;
 
-export const deleteCompanyMember= ({companyId, memberId}) => {
-    const fetchParams = {
-        method: 'DELETE',
-        url: `/api/company/${companyId}/member/${memberId}/`,
-        apiId: 'api_company_member_delete',
-        requiredParams: ['companyId', 'memberId']
-    }
-    const stateSetFunc= (state, action) => {
-        const data = action.payload
-        return state.removeInPath(`companyObjects.byId.${companyId}.members.${memberId}`)
-    }
-    return {fetchParams, stateParams: {stateSetFunc}}
-}
+var deleteCompanyMember = function deleteCompanyMember(_ref2) {
+  var companyId = _ref2.companyId,
+      memberId = _ref2.memberId;
+  var fetchParams = {
+    method: 'DELETE',
+    url: "/api/company/".concat(companyId, "/member/").concat(memberId, "/"),
+    apiId: 'api_company_member_delete',
+    requiredParams: ['companyId', 'memberId']
+  };
 
+  var stateSetFunc = function stateSetFunc(state, action) {
+    var data = action.payload;
+    return state.removeInPath("companyObjects.byId.".concat(companyId, ".members.").concat(memberId));
+  };
+
+  return {
+    fetchParams: fetchParams,
+    stateParams: {
+      stateSetFunc: stateSetFunc
+    }
+  };
+};
+
+exports.deleteCompanyMember = deleteCompanyMember;

@@ -1,8 +1,15 @@
-import Im from 'traec/immutable';
-import { 
-    setItemInListAndVis, 
-    setItemInDictAndVis, 
-    setListInIndexedObj } from 'AppSrc/utils'
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = _default;
+
+var _immutable = _interopRequireDefault(require("traec/immutable"));
+
+var _utils = require("../../utils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /*
 "entities" database as per documentation here 
@@ -27,28 +34,38 @@ entities: {
     }
 }
 */
+var initialState = _immutable["default"].fromJS({});
 
+function _default() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  var projectList = state.projectsById ? state.projectsById : null;
 
-const initialState = Im.fromJS({});
+  switch (action.type) {
+    case 'UI_SET_ITEM_LIST_TOGGLE':
+      return (0, _utils.setItemInListAndVis)(state, action.payload, action.stateParams);
 
-export default function(state = initialState, action) {
-    const projectList = (state.projectsById) ? state.projectsById : null
-    switch (action.type){
-        case 'UI_SET_ITEM_LIST_TOGGLE':
-            return setItemInListAndVis(state, action.payload, action.stateParams)
-        case 'UI_SET_ITEM_DICT_TOGGLE':
-            return setItemInDictAndVis(state, action.payload, action.stateParams)
-        case 'UI_LIST_TO_OBJ':
-            const itemList = Array.isArray(action.payload) ? action.payload : [action.payload]
-            return setListInIndexedObj(state, itemList, action.stateParams)
-        case 'UI_TOGGLE_BOOL':
-            let { formVisPath } = action.stateParams
-            return state.setInPath(formVisPath, !state.getInPath(formVisPath))
-        case 'UI_SET_IN':
-            const item = action.payload
-            const { itemPath } = action.stateParams
-            return state.setInPath(itemPath, Im.fromJS(item))
-        default:
-            return state
-    };
-};
+    case 'UI_SET_ITEM_DICT_TOGGLE':
+      return (0, _utils.setItemInDictAndVis)(state, action.payload, action.stateParams);
+
+    case 'UI_LIST_TO_OBJ':
+      var itemList = Array.isArray(action.payload) ? action.payload : [action.payload];
+      return (0, _utils.setListInIndexedObj)(state, itemList, action.stateParams);
+
+    case 'UI_TOGGLE_BOOL':
+      var formVisPath = action.stateParams.formVisPath;
+      return state.setInPath(formVisPath, !state.getInPath(formVisPath));
+
+    case 'UI_SET_IN':
+      var item = action.payload;
+      var itemPath = action.stateParams.itemPath;
+      return state.setInPath(itemPath, _immutable["default"].fromJS(item));
+
+    default:
+      return state;
+  }
+
+  ;
+}
+
+;

@@ -1,24 +1,27 @@
-import Im from 'immutable';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from './reducers';
-import { callAPIMiddleware } from './apiMiddleware';
-import { composeWithDevTools } from 'redux-devtools-extension'
+"use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
-const initialState = Im.fromJS({});
+var _immutable = _interopRequireDefault(require("immutable"));
 
-const middleware = [
-    thunk,
-    callAPIMiddleware
-];
+var _redux = require("redux");
 
-const store = createStore(
-    rootReducer, 
-    initialState,
-    composeWithDevTools(
-        applyMiddleware(...middleware),
-    )
-);
+var _reduxThunk = _interopRequireDefault(require("redux-thunk"));
 
-export default store;
+var _reducers = _interopRequireDefault(require("./reducers"));
+
+var _apiMiddleware = require("./apiMiddleware");
+
+var _reduxDevtoolsExtension = require("redux-devtools-extension");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var initialState = _immutable["default"].fromJS({});
+
+var middleware = [_reduxThunk["default"], _apiMiddleware.callAPIMiddleware];
+var store = (0, _redux.createStore)(_reducers["default"], initialState, (0, _reduxDevtoolsExtension.composeWithDevTools)(_redux.applyMiddleware.apply(void 0, middleware)));
+var _default = store;
+exports["default"] = _default;

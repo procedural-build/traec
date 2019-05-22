@@ -1,5 +1,15 @@
-import * as fh from './fetchHandlers'
+"use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handlerMap = void 0;
+
+var fh = _interopRequireWildcard(require("./fetchHandlers"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /*
 Object for getting the fetch handler functions to use based on API endpoint.
@@ -28,40 +38,52 @@ second KEY is the http method which are:
     }
 }
 */
+var makeHandlerMap = function makeHandlerMap() {
+  console.log("MAKING fetchHandler MAP");
+  var handlerMap = {};
 
-const makeHandlerMap = function() {
-    console.log("MAKING fetchHandler MAP")
-    let handlerMap = {}
-    for (let funcName of Object.keys(fh)) {
-        try {
-            let fetchHandler = fh[funcName]
-            let {fetchParams, stateParams} = fetchHandler({})
-            let {apiId, method} = fetchParams
-            if (apiId) {
-                //console.log(`FOUND API ID ${apiId}`)
-                let parts = apiId.split('_')
-                let endIndex = apiId.endsWith('partial_update') ? parts.length-2 : parts.length-1
-                let prefix = parts.slice(1, endIndex).join('_')
-                // Get the action of the fetch
-                let action = parts.slice(endIndex, parts.length).join('_')
-                if (['POST', 'PUT', 'PATCH'].indexOf(method) > -1) {
-                    action = method.toLowerCase()
-                }
-                let actionMap = handlerMap[prefix] || {}
-                actionMap[action] = {
-                    fetchHandler: fetchHandler,
-                    requiredParams: fetchParams.requiredParams || [],
-                    queryParams: fetchParams.queryParams || []
-                }
-                // Assign the updated action map to the handlerMap
-                Object.assign(handlerMap, {[prefix]: actionMap})
-            }
-        } catch(err) {
-            //console.warn("Error constructing handlerMap", err)
-            continue
+  for (var _i = 0, _Object$keys = Object.keys(fh); _i < _Object$keys.length; _i++) {
+    var funcName = _Object$keys[_i];
+
+    try {
+      var fetchHandler = fh[funcName];
+
+      var _fetchHandler = fetchHandler({}),
+          fetchParams = _fetchHandler.fetchParams,
+          stateParams = _fetchHandler.stateParams;
+
+      var apiId = fetchParams.apiId,
+          method = fetchParams.method;
+
+      if (apiId) {
+        //console.log(`FOUND API ID ${apiId}`)
+        var parts = apiId.split('_');
+        var endIndex = apiId.endsWith('partial_update') ? parts.length - 2 : parts.length - 1;
+        var prefix = parts.slice(1, endIndex).join('_'); // Get the action of the fetch
+
+        var action = parts.slice(endIndex, parts.length).join('_');
+
+        if (['POST', 'PUT', 'PATCH'].indexOf(method) > -1) {
+          action = method.toLowerCase();
         }
-    }
-    return handlerMap
-}
 
-export const handlerMap = makeHandlerMap()
+        var actionMap = handlerMap[prefix] || {};
+        actionMap[action] = {
+          fetchHandler: fetchHandler,
+          requiredParams: fetchParams.requiredParams || [],
+          queryParams: fetchParams.queryParams || [] // Assign the updated action map to the handlerMap
+
+        };
+        Object.assign(handlerMap, _defineProperty({}, prefix, actionMap));
+      }
+    } catch (err) {
+      //console.warn("Error constructing handlerMap", err)
+      continue;
+    }
+  }
+
+  return handlerMap;
+};
+
+var handlerMap = makeHandlerMap();
+exports.handlerMap = handlerMap;

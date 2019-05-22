@@ -1,34 +1,57 @@
+"use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deleteProjectMember = exports.getProjectMembers = void 0;
 
-export const getProjectMembers= ({projectId}) => {
-    const fetchParams = {
-        method: 'GET',
-        url: `/api/project/${projectId}/member/`,
-        apiId: 'api_project_member_list',
-        requiredParams: ['projectId']
-    }
-    const stateSetFunc= (state, action) => {
-        const data = action.payload
-        let newState = state.addListToDict(
-                `projectObjects.byId.${projectId}.members`, data
-        )
-        return newState            
-    }
-    return {fetchParams, stateParams: {stateSetFunc}}
-}
+var getProjectMembers = function getProjectMembers(_ref) {
+  var projectId = _ref.projectId;
+  var fetchParams = {
+    method: 'GET',
+    url: "/api/project/".concat(projectId, "/member/"),
+    apiId: 'api_project_member_list',
+    requiredParams: ['projectId']
+  };
 
+  var stateSetFunc = function stateSetFunc(state, action) {
+    var data = action.payload;
+    var newState = state.addListToDict("projectObjects.byId.".concat(projectId, ".members"), data);
+    return newState;
+  };
 
-export const deleteProjectMember= ({projectId, memberId}) => {
-    const fetchParams = {
-        method: 'DELETE',
-        url: `/api/project/${projectId}/member/${memberId}/`,
-        apiId: 'api_project_member_delete',
-        requiredParams: ['projectId', 'memberId']
+  return {
+    fetchParams: fetchParams,
+    stateParams: {
+      stateSetFunc: stateSetFunc
     }
-    const stateSetFunc= (state, action) => {
-        const data = action.payload
-        let newState = state.removeInPath(`projectObjects.byId.${projectId}.members.${memberId}`)
-        return newState            
+  };
+};
+
+exports.getProjectMembers = getProjectMembers;
+
+var deleteProjectMember = function deleteProjectMember(_ref2) {
+  var projectId = _ref2.projectId,
+      memberId = _ref2.memberId;
+  var fetchParams = {
+    method: 'DELETE',
+    url: "/api/project/".concat(projectId, "/member/").concat(memberId, "/"),
+    apiId: 'api_project_member_delete',
+    requiredParams: ['projectId', 'memberId']
+  };
+
+  var stateSetFunc = function stateSetFunc(state, action) {
+    var data = action.payload;
+    var newState = state.removeInPath("projectObjects.byId.".concat(projectId, ".members.").concat(memberId));
+    return newState;
+  };
+
+  return {
+    fetchParams: fetchParams,
+    stateParams: {
+      stateSetFunc: stateSetFunc
     }
-    return {fetchParams, stateParams: {stateSetFunc}}
-}
+  };
+};
+
+exports.deleteProjectMember = deleteProjectMember;

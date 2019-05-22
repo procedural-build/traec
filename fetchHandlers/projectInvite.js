@@ -1,102 +1,151 @@
+"use strict";
 
-export const getProjectInvites= ({projectId}) => {
-    const fetchParams = {
-        method: 'GET',
-        url: `/api/project/${projectId}/invite/`,
-        apiId: 'api_project_invite_list',
-        requiredParams: ['projectId']
-    }
-    const stateSetFunc= (state, action) => {
-        const data = action.payload
-        let newState = state.addListToDict(
-            `projectObjects.byId.${projectId}.invites`, data
-        )
-        return newState            
-    }
-    return {fetchParams, stateParams: {stateSetFunc}}
-}
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getAllProjectInvites = exports.deleteProjectInvite = exports.putProjectInvite = exports.postProjectInvite = exports.getProjectInvites = void 0;
 
+var getProjectInvites = function getProjectInvites(_ref) {
+  var projectId = _ref.projectId;
+  var fetchParams = {
+    method: 'GET',
+    url: "/api/project/".concat(projectId, "/invite/"),
+    apiId: 'api_project_invite_list',
+    requiredParams: ['projectId']
+  };
 
-export const postProjectInvite= ({projectId}) => {
-    const fetchParams = {
-        method: 'POST',
-        url: `/api/project/${projectId}/invite/`,
-        apiId: 'api_project_invite_create',
-        requiredParams: ['projectId']
-    }
-    const stateSetFunc= (state, action) => {
-        const data = action.payload
-        let { formVisPath, formObjPath } = action.stateParams
-        let newState = state.setInPath( formObjPath, data)
-        if (!data.errors) { 
-            newState = newState.addToDict( 
-                `projectObjects.byId.${projectId}.invites`, data)
-             newState = newState.setInPath( formVisPath, false)
-        }
-        return newState            
-    }
-    return {fetchParams, stateParams: {
-        stateSetFunc,
-        formVisPath: `ui.projectObjects.byId.${projectId}.invite.SHOW_FORM`,
-        formObjPath: `ui.projectObjects.byId.${projectId}.invite.newItem`,
-    }}
-}
+  var stateSetFunc = function stateSetFunc(state, action) {
+    var data = action.payload;
+    var newState = state.addListToDict("projectObjects.byId.".concat(projectId, ".invites"), data);
+    return newState;
+  };
 
-
-export const putProjectInvite= ({projectId, inviteId}) => {
-    const fetchParams = {
-        method: 'PUT',
-        url: `/api/project/${projectId}/invite/${inviteId}/`,
-        apiId: 'api_project_invite_update',
-        requiredParams: ['projectId', 'inviteId']
+  return {
+    fetchParams: fetchParams,
+    stateParams: {
+      stateSetFunc: stateSetFunc
     }
-    const stateSetFunc= (state, action) => {
-        const data = action.payload
-        let newState = state.addListToDict(`projectInvites.byId`, data)
-        newState = newState.setInPath(`projectObjects.requiresReload`, true)
-        return newState            
-    }
-    return {fetchParams, stateParams: {
-        stateSetFunc,
-        formVisPath: `ui.projectObjects.byId.${projectId}.invites.byId.${inviteId}.SHOW_FORM`,
-        formObjPath: `ui.projectObjects.byId.${projectId}.invites.byId.${inviteId}.newItem`,
-    }}
-}
+  };
+};
 
+exports.getProjectInvites = getProjectInvites;
 
-export const deleteProjectInvite= ({projectId, inviteId}) => {
-    const fetchParams = {
-        method: 'DELETE',
-        url: `/api/project/${projectId}/invite/${inviteId}/`,
-        apiId: 'api_project_invite_delete',
-        requiredParams: ['projectId', 'inviteId']
-    }
-    const stateSetFunc= (state, action) => {
-        const data = action.payload
-        let newState = state
-        if (!data.errors) {
-            newState = newState.deleteIn(`projectObjects.byId.${projectId}.invites.${inviteId}`.split('.'))
-        } 
-        return newState            
-    }
-    return {fetchParams, stateParams: {stateSetFunc}}
-}
+var postProjectInvite = function postProjectInvite(_ref2) {
+  var projectId = _ref2.projectId;
+  var fetchParams = {
+    method: 'POST',
+    url: "/api/project/".concat(projectId, "/invite/"),
+    apiId: 'api_project_invite_create',
+    requiredParams: ['projectId']
+  };
 
+  var stateSetFunc = function stateSetFunc(state, action) {
+    var data = action.payload;
+    var _action$stateParams = action.stateParams,
+        formVisPath = _action$stateParams.formVisPath,
+        formObjPath = _action$stateParams.formObjPath;
+    var newState = state.setInPath(formObjPath, data);
 
-export const getAllProjectInvites= () => {
-    const fetchParams = {
-        method: 'GET',
-        url: `/api/project/invite/`,
-        apiId: 'api_project_invite_all_list',
-        requiredParams: []
+    if (!data.errors) {
+      newState = newState.addToDict("projectObjects.byId.".concat(projectId, ".invites"), data);
+      newState = newState.setInPath(formVisPath, false);
     }
-    const stateSetFunc= (state, action) => {
-        const data = action.payload
-        let newState = state.addListToDict(
-            `projectInvites.byId`, data
-        )
-        return newState            
-    }
-    return {fetchParams, stateParams: {stateSetFunc}}
-}
 
+    return newState;
+  };
+
+  return {
+    fetchParams: fetchParams,
+    stateParams: {
+      stateSetFunc: stateSetFunc,
+      formVisPath: "ui.projectObjects.byId.".concat(projectId, ".invite.SHOW_FORM"),
+      formObjPath: "ui.projectObjects.byId.".concat(projectId, ".invite.newItem")
+    }
+  };
+};
+
+exports.postProjectInvite = postProjectInvite;
+
+var putProjectInvite = function putProjectInvite(_ref3) {
+  var projectId = _ref3.projectId,
+      inviteId = _ref3.inviteId;
+  var fetchParams = {
+    method: 'PUT',
+    url: "/api/project/".concat(projectId, "/invite/").concat(inviteId, "/"),
+    apiId: 'api_project_invite_update',
+    requiredParams: ['projectId', 'inviteId']
+  };
+
+  var stateSetFunc = function stateSetFunc(state, action) {
+    var data = action.payload;
+    var newState = state.addListToDict("projectInvites.byId", data);
+    newState = newState.setInPath("projectObjects.requiresReload", true);
+    return newState;
+  };
+
+  return {
+    fetchParams: fetchParams,
+    stateParams: {
+      stateSetFunc: stateSetFunc,
+      formVisPath: "ui.projectObjects.byId.".concat(projectId, ".invites.byId.").concat(inviteId, ".SHOW_FORM"),
+      formObjPath: "ui.projectObjects.byId.".concat(projectId, ".invites.byId.").concat(inviteId, ".newItem")
+    }
+  };
+};
+
+exports.putProjectInvite = putProjectInvite;
+
+var deleteProjectInvite = function deleteProjectInvite(_ref4) {
+  var projectId = _ref4.projectId,
+      inviteId = _ref4.inviteId;
+  var fetchParams = {
+    method: 'DELETE',
+    url: "/api/project/".concat(projectId, "/invite/").concat(inviteId, "/"),
+    apiId: 'api_project_invite_delete',
+    requiredParams: ['projectId', 'inviteId']
+  };
+
+  var stateSetFunc = function stateSetFunc(state, action) {
+    var data = action.payload;
+    var newState = state;
+
+    if (!data.errors) {
+      newState = newState.deleteIn("projectObjects.byId.".concat(projectId, ".invites.").concat(inviteId).split('.'));
+    }
+
+    return newState;
+  };
+
+  return {
+    fetchParams: fetchParams,
+    stateParams: {
+      stateSetFunc: stateSetFunc
+    }
+  };
+};
+
+exports.deleteProjectInvite = deleteProjectInvite;
+
+var getAllProjectInvites = function getAllProjectInvites() {
+  var fetchParams = {
+    method: 'GET',
+    url: "/api/project/invite/",
+    apiId: 'api_project_invite_all_list',
+    requiredParams: []
+  };
+
+  var stateSetFunc = function stateSetFunc(state, action) {
+    var data = action.payload;
+    var newState = state.addListToDict("projectInvites.byId", data);
+    return newState;
+  };
+
+  return {
+    fetchParams: fetchParams,
+    stateParams: {
+      stateSetFunc: stateSetFunc
+    }
+  };
+};
+
+exports.getAllProjectInvites = getAllProjectInvites;
