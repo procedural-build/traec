@@ -1,0 +1,97 @@
+import Im from 'immutable';
+import React from "react";
+import ReactDOM from "react-dom";
+import store from "traec/redux/store";
+import * as fetchHandlers from 'traec/fetchHandlers'
+import {fetchToState} from 'traec/redux/actionCreators'
+
+
+export const fetchCompanyUserPermissions = function(companyId) {
+    let params = fetchHandlers.getCompanyUserPermissions({companyId})
+    store.dispatch(fetchToState(params))
+}
+
+export const getCompanyPermissions = function(state, companyId) {
+    return state.getInPath(`entities.companyObjects.byId.${companyId}.userPermission`)
+}
+
+export const companyPermissionCheck = function(companyId, requiresAdmin, requiredActions, allow_fetch=true) {
+    let state = store.getState()
+    
+    // Check if we have the permission object or fetch it
+    let permissions = getCompanyPermissions(state, companyId)
+    // Return null if the permissions are not found
+    if (!permissions) { 
+        //let path = `entities.companyObjects.byId.${companyId}.userPermission`
+        //console.log(permissions, path, state.getInPath(path), state.toJS())
+        if (companyId && allow_fetch) { fetchCompanyUserPermissions(companyId) }
+        return null 
+    }
+
+    // First check the user permissions for superuser status
+    if (state.getInPath('auth.user.is_tenant_superuser')) { return true }
+
+    // Handle an admin-type user first
+    let isAdmin = permissions.get('is_admin')
+    if (requiresAdmin) {
+        if (isAdmin) {
+            return true
+        } else {
+            return false
+        }
+    } else {
+        // If admin is not required but the user
+        // is an admin then they can do anything
+        if (isAdmin) { return true; }
+    }
+    // Check against the list (actually Immutable.Set) of actions that the user has for this company
+    let allowedActions = permissions.get('actions')
+    let requiredActionSet = Im.Set(requiredActions)
+    let intersectActions = requiredActionSet.intersect(allowedActions)
+    if (intersectActions.size == requiredActionSet.size) {
+        return true
+    } else {
+        return false
+    }
+}
+
+export const companyPermissionRender = function(companyId, requiresAdmin, requiredActions, renderContent, showWarning=false) {
+    let hasPermission = companyPermissionCheck(companyId, requiresAdmin, requiredActions, false)
+    if (hasPermission === null) {
+        if (showWarning) {
+            return (<p>No user permissions found for this Company.  Please contact the project admin to ensure you have permissions to view this Company</p>)
+        } else {
+            return null
+        }
+    }
+    if (hasPermission) {
+        return (renderContent)
+    } else {
+        if (showWarning) {
+            return (
+                <div className="alert alert-warning">
+                    <strong>PermissionDenied</strong> You do not have permission to view this content.  Please contact the project admin to ensure that you are assigned an appropriate role.
+                </div>
+            )
+        } else {
+            return null;
+        }
+    }
+}
+
+
+export const companyPermissionFilter = function(companyId, items) {
+    let state = store.getState()
+    let permissions = getCompanyPermissions(state, companyId)
+    if (!permissions) { return null }
+    // Filter the items
+    items = items.filter(i => {
+        if ((i.requiresAdmin != null) || (i.requiredActions != null)) {
+            let requiresAdmin = i.requiresAdmin || false
+            let requiredActions = i.requiredActions || []
+            return companyPermissionCheck(companyId, requiresAdmin, requiredActions)
+        } 
+        return true
+    })
+    return items
+}
