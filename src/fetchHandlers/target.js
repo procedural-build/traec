@@ -75,8 +75,17 @@ export const putCommitMetricTarget= ({trackerId, commitId, metricTargetId}) => {
     return {fetchParams, stateParams: {stateSetFunc}}
 }
 
+export const patchCommitMetricTarget = ({trackerId, commitId, metricTargetId}) => {
+    let params = putCommitMetricTarget({trackerId, commitId, metricTargetId})
+    Object.assign(params.fetchParams, {
+        method: 'PATCH',
+        apiId:  'api_tracker_commit_target_partial_update'
+    })
+    return params
+}
 
-export const deleteCommitMetricTarget= ({trackerId, commitId, metricTargetId}) => {
+
+export const deleteCommitMetricTarget = ({trackerId, commitId, metricTargetId}) => {
     const fetchParams = {
         method: 'DELETE',
         url: `/api/tracker/${trackerId}/commit/${commitId}/target/${metricTargetId}/`,

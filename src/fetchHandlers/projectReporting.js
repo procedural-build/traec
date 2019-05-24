@@ -4,6 +4,7 @@ const get_query_string = ({
     toDate = null, 
     ignore_cache = false, 
     exclude_summary = false,
+    include_commit_results = false,
     format = null
 }) => {
     const refId_ = refId ? `&refId=${refId}` : ''
@@ -11,8 +12,9 @@ const get_query_string = ({
     const toDate_ =  toDate ? `&toDate=${toDate}`: '';
     const ignoreCache = ignore_cache ? `&ignore_cache=true`: '';
     const excludeSummary = exclude_summary ? `&exclude_summary=true`: '';
+    const include_commit_results_ = include_commit_results ? `&include_commit_results=true`: '';
     const format_ = format ? `&output_format=${format}`: '';
-    let query_params = `?${refId_}${fromDate_}${toDate_}${ignoreCache}${excludeSummary}${format_}`;
+    let query_params = `?${refId_}${fromDate_}${toDate_}${ignoreCache}${include_commit_results_}${excludeSummary}${format_}`;
     return query_params
 }
 
@@ -24,9 +26,10 @@ export const getProjectReportingPeriods = ({
     toDate = null, 
     ignore_cache = null,
     exclude_summary = null,
+    include_commit_results = null,
     format = null
 }) => {
-    let query_params = get_query_string({refId, fromDate, toDate, ignore_cache, exclude_summary, format})
+    let query_params = get_query_string({refId, fromDate, toDate, ignore_cache, exclude_summary, include_commit_results, format})
     const fetchParams = {
         method: 'GET',
         url: `/api/project/${projectId}/reporting_periods/${query_params}`,
@@ -83,6 +86,45 @@ export const getProjectExcelReport = ({
     }
     const stateSetFunc= (state, action) => {
         return state
+    }
+    return {fetchParams, stateParams: {stateSetFunc}}
+};
+
+
+export const getProjectReportCommits = ({
+    projectId,
+    reportPeriodId, 
+    category = null,
+    indicator = null, 
+}) => {
+    let query_params = ""
+    const fetchParams = {
+        method: 'GET',
+        url: `/api/project/${projectId}/reporting_periods/${reportPeriodId}/commits/${query_params}`,
+        apiId: 'api_project_reporting_periods_commits_list',
+        requiredParams: ['projectId', 'reportPeriodId'],
+        queryParms: {category: null, indicator: null}
+    }
+    let stateSetFunc = (state, action) => {
+        let data = action.payload 
+        let newState = state
+        let path = `projectReportingPeriods.byId.${projectId}.${reportPeriodId}.commit_results`
+        for (let item of data) {
+            let categories = {}
+            let indicators = {}
+            if (item.results) {
+                for (let result of item.results) {
+                    if (result.category) {
+                        categories[result.category] = result
+                    } else {
+                        indicators[result.metric_calc] = result
+                    }
+                }
+            }
+            item.results = {categories, indicators}
+            newState = newState.addListToDict(path, item)
+        }
+        return newState
     }
     return {fetchParams, stateParams: {stateSetFunc}}
 };
