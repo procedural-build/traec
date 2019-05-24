@@ -28,7 +28,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx babel src --out-dir ./dist",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build && cp -v ./package.json ./dist/package.json",
+    "publish": "npm publish ./dist"
   },
   "repository": {
     "type": "git",
