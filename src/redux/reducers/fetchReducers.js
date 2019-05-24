@@ -1,4 +1,4 @@
-import Im from 'traec/immutable';
+import Im from '../../immutable';
 
 
 // Milliseconds to warn if the response is longer than this

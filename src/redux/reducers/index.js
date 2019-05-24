@@ -1,6 +1,6 @@
 //import { combineReducers } from 'redux';
 import { combineReducers } from 'redux-immutable';
-import Im from 'traec/immutable';
+import Im from '../../immutable';
 
 import ui from './uiReducer';
 import entities from './entitiesReducer';

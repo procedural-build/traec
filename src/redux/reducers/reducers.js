@@ -1,4 +1,4 @@
-import Im from 'traec/immutable';
+import Im from '../../immutable';
 import * as types from './types';
 import jwt_decode from 'jwt-decode';
 
