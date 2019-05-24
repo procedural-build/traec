@@ -1,4 +1,4 @@
-import Im from 'traec/immutable';
+import Im from '../immutable';
 
 // Convert camelCase to Sentence Case
 export const camelCaseToSentence = (text) => {

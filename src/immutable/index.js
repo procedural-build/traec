@@ -7,9 +7,9 @@ in the API calls and fetchHandlers.
 
 IMPORT FROM HERE INSTEAD OF IMMUTABLE DIRECTLY THROUGHOUT 
 THE PROJECT, SO CHANGE FROM THIS:
-import Im from 'traec/immutable';
+import Im from '../immutable';
 TO THIS:
-import Im from 'traec/immutable'
+import Im from '../immutable'
 */
 
 // Patch all of the functions from utils onto the Map prototype

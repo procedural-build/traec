@@ -1,9 +1,8 @@
 import Im from 'immutable';
 import React from "react";
-import ReactDOM from "react-dom";
-import store from "traec/redux/store";
-import * as fetchHandlers from 'traec/fetchHandlers'
-import {fetchToState} from 'traec/redux/actionCreators'
+import store from "../../redux/store";
+import * as fetchHandlers from '../../fetchHandlers'
+import {fetchToState} from '../../redux/actionCreators'
 
 
 export const fetchProjectUserPermissions = function(projectId) {
