@@ -1,10 +1,15 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'npm'
+    }
+
+  }
   stages {
     stage('Test') {
       steps {
         sh '''
-npm install && npm test'''
+export PATH=/usr/local/bin && npm install && npm test'''
       }
     }
     stage('Publish') {
