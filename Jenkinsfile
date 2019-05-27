@@ -1,9 +1,14 @@
 pipeline {
   agent any
   stages {
-    stage('') {
+    stage('Test') {
       steps {
-        sh 'echo "hi"'
+        sh 'npm test'
+      }
+    }
+    stage('Publish') {
+      steps {
+        sh 'npm pub'
       }
     }
   }
