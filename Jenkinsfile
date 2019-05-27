@@ -3,7 +3,11 @@ pipeline {
   stages {
     stage('Test') {
       steps {
-        sh 'npm test'
+        sh '''
+ls
+
+
+ '''
       }
     }
     stage('Publish') {
