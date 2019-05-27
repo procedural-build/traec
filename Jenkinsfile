@@ -4,15 +4,12 @@ pipeline {
     stage('Test') {
       steps {
         sh '''
-ls
-
-
- '''
+npm install && npm test'''
       }
     }
     stage('Publish') {
       steps {
-        sh 'npm pub'
+        sh 'npm version patch && npm pub'
       }
     }
   }
