@@ -16,6 +16,7 @@ environment {
       }
     }
     stage('Publish') {
+      when {  branch 'master' }
       steps {
               sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm version patch && npm pub'
       }
