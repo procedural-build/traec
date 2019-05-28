@@ -1,4 +1,4 @@
-import * as actions from "../../src/redux/actionCreators";
+import * as actions from "../src/redux/actionCreators";
 
 describe("Action Fetch to State", () => {
   it("Call fetchToState and expect an API call", () => {
