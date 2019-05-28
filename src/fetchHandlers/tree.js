@@ -12,11 +12,25 @@ export const postTree= ({trackerId, refId, commitId, treeId}) => {
         let { formVisPath, formObjPath } = action.stateParams
         let newState = state.setInPath( formObjPath, data)
         if (!data.errors) { 
+            // Extract a description if it is provided
+            let descr = null
+            if (data.description) {
+                descr = data.description
+                delete data.description
+            }
+            // Add the tree to state
             const commitPath = `commitEdges.byId.${commitId}.trees.${treeId}`
             newState = newState.addToDict( 'trees.byId', data)
             newState = newState.setInPath( formVisPath, false)
             newState = newState.addListToSets( [`${commitPath}.trees`], [data.uid])
-            newState = newState.setInPath(`commitEdges.byId.${commitId}.trees.${data.uid}.parent`, treeId)
+            const treeCommitPath = `commitEdges.byId.${commitId}.trees.${data.uid}`
+            newState = newState.setInPath(`${treeCommitPath}.parent`, treeId)
+
+            if (descr) {
+                // Add the description to state 
+                newState = newState.addToDict( 'descriptions.byId', descr)
+                newState = newState.addListToSets( [`${treeCommitPath}.descriptions`], [descr.uid])
+            }
         }
         return newState            
     }

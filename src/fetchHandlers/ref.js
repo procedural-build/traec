@@ -17,6 +17,35 @@ export const getAllRefs= ({isResponsible = true}) => {
     return {fetchParams, stateParams: {stateSetFunc}}
 }
 
+export const getTrackerRefs = ({ trackerId, refId }) => {
+  const fetchParams = {
+    method: "GET",
+    url: `/api/tracker/${trackerId}/ref/`,
+    apiId: "api_tracker_ref_list",
+    requiredParams: []
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.addListToDict(`refs.byId`, data);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
+export const getRef = ({ trackerId, refId }) => {
+  const fetchParams = {
+    method: "GET",
+    url: `/api/tracker/${trackerId}/ref/${refId}/`,
+    apiId: "api_tracker_ref_read",
+    requiredParams: ["trackerId", "refId"]
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.addToDict(`refs.byId`, data);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
 
 export const postCategoryRef= ({trackerId, refId, commitId, treeId, skip_categories = false}) => {
     let query_params = skip_categories ? `?skip_categories=true` : ''

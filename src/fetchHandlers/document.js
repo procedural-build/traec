@@ -53,6 +53,34 @@ export const postDocument= ({trackerId, refId, commitId, treeId}) => {
 };
 
 
+export const getDocumentObjects = ({trackerId, refId, commitId, documentId}) => {
+    const fetchParams = {
+        method: 'PUT',
+        url: `/api/tracker/${trackerId}/commit/${commitId}/document/${documentId}/object/`,
+        apiId: 'api_tracker_commit_document_object_list',
+        requiredParams: ['trackerId', 'refId', 'commitId', 'documentId']
+    };
+    const stateSetFunc= (state, action) => {
+        // Successful put returns a DocumentStatusSerializer object
+        let data = action.payload;
+        let newState = state
+        let objectIds = []
+        for (let item of data) {
+            // Store the nested current_object separately and refer to only uuid in status
+            newState = newState.addToDict( 'docObjects.byId', item)
+            objectIds.push(item.uid)
+        }
+        // Set the list of objects
+        newState = newState.addListToSet(
+            `commitEdges.byId.${commitId}.documents.${documentId}.objects`,
+            objectIds
+        )
+        return newState
+    };
+    return {fetchParams, stateParams: {stateSetFunc}}
+};
+
+
 export const putDocumentObject= ({trackerId, refId, commitId, documentId}) => {
     const fetchParams = {
         method: 'PUT',
