@@ -1,20 +1,5 @@
 import { fetchJSON, updateHeaders, updateBody, checkResponse } from "../src/redux/fetch";
 
-describe("Call fetchJSON", () => {
-  beforeEach(() => {
-    fetch.resetMocks();
-  });
-
-  const config = { path: "/api/test", method: "GET", body: "TEST" };
-  it("Call fetchJSON and expect an API call", () => {
-    fetch.mockResponseOnce(JSON.stringify({ data: "12345" }));
-
-    fetchJSON(config).then(res => {
-      expect(res.data).toEqual(expectedAction);
-    });
-  });
-});
-
 describe("Update fetch body", () => {
   it("Stringify the body", () => {
     const expectedBody = '{"key":"value"}';
@@ -60,5 +45,47 @@ describe("Update headers", () => {
     const expectedHeaders = { Authorization: `JWT ${token}` };
 
     expect(updateHeaders({ "content-type": null }, true)).toEqual(expectedHeaders, true);
+  });
+});
+
+describe("check Responses", () => {
+  it("ok response", () => {
+    const resp = {
+      ok: true,
+      status: 200,
+      json: jest.fn().mockReturnValue(true)
+    };
+
+    expect(checkResponse(resp, {})).toEqual(true);
+  });
+
+  it("204 response", () => {
+    const resp = {
+      ok: true,
+      status: 204,
+      json: jest.fn().mockReturnValue(true)
+    };
+
+    expect(checkResponse(resp, {})).toEqual({});
+  });
+
+  it("404 response", () => {
+    const resp = {
+      ok: false,
+      status: 404,
+      json: jest.fn().mockReturnValue(true)
+    };
+
+    expect(() => {
+      checkResponse(resp, {});
+    }).toThrow();
+  });
+
+  it("xlsx header", () => {
+    const myBlob = new Blob();
+    const init = { status: 200, statusText: "SuperSmashingGreat!" };
+    const resp = new Response(myBlob, init);
+
+    expect(checkResponse(resp, { "content-type": "application/xlsx" })).toEqual(resp.blob());
   });
 });

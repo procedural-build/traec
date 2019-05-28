@@ -1,4 +1,10 @@
 export const fetchJSON = ({ path = "/", method = "GET", body, headers = {}, rawBody = null }, success, failure) => {
+  /**
+   * Stringifies the body if rawBody is not defined
+   * @param {object} body
+   * @param {boolean} rawBody
+   */
+
   const successHandler = success;
   const failureHandler = failure;
 
