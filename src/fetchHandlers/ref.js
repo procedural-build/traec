@@ -61,6 +61,10 @@ export const postCategoryRef= ({trackerId, refId, commitId, treeId, skip_categor
         let newState = state.setInPath( formObjPath, data)
         if (!data.errors) { 
             newState = storeCommitBranch(newState, data)
+            newState = newState.addToDict(
+                `commitEdges.byId.${commitId}.trees.${treeId}.categories`,
+                data
+            )
             newState = newState.setInPath( formVisPath, false)
         }
         return newState            

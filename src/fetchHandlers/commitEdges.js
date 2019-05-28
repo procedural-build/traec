@@ -1,7 +1,8 @@
 import Im from '../immutable'
+import {storeCommitBranch} from './commitBranch'
 
 
-export const getCommitEdges= ({trackerId, commitId}) => {
+export const getCommitEdges = ({trackerId, commitId}) => {
     const fetchParams = {
         method: 'GET',
         url: `/api/tracker/${trackerId}/commit/edge/${commitId}/`,
@@ -27,7 +28,7 @@ export const getCommitEdges= ({trackerId, commitId}) => {
 }
 
 
-export const putCommitEdge= ({trackerId, commitId}) => {
+export const putCommitEdge = ({trackerId, commitId}) => {
     const fetchParams = {
         method: 'PUT',
         url: `/api/tracker/${trackerId}/commit/edge/${commitId}/`,
@@ -45,7 +46,7 @@ export const putCommitEdge= ({trackerId, commitId}) => {
 }
 
 
-const edgeDictToState= (newState, commitId, data) => {
+export const edgeDictToState = (newState, commitId, data) => {
     // Unpack the data into the state tree
     for (let key in data) {
         // Get the function for storing edges
@@ -87,10 +88,11 @@ const edgeSetFunctions = {
         return newState
     },
     treecategory: (commitId, edge, newState) => {
-        let {tree, branchId} = edge
-        newState = newState.addListToSets(
-            [`commitEdges.byId.${commitId}.trees.${tree.uid}.categories`],
-            [branchId]
+        let {tree, commitBranch} = edge
+        newState = storeCommitBranch(newState, commitBranch)
+        newState = newState.addToDict(
+            `commitEdges.byId.${commitId}.trees.${tree.uid}.categories`,
+            commitBranch
         )
         return newState
     },

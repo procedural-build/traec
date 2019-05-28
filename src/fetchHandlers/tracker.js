@@ -14,10 +14,10 @@ const addTrackerToState= (state, data) => {
         data.alt_root_masters = branchRefMap
     }
     // Add the tracker and ref to dict
-    let newState = state.addToDict( 'trackers.byId', data)
-    newState = newState.addToDict( 'refs.byId', refData)
+    let newState = state.addToDict('trackers.byId', data)
+    newState = newState.addToDict('refs.byId', refData)
     if (altRootMasters) {
-        newState = newState.addListToDict( 'refs.byId', altRootMasters)
+        newState = newState.addListToDict('refs.byId', altRootMasters)
     }
     return newState
 }
