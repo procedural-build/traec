@@ -23,7 +23,7 @@ export const fetchJSON = ({ path = "/", method = "GET", body, headers = {}, rawB
     });
 };
 
-const updateHeaders = function(headers) {
+export const updateHeaders = function(headers) {
   const token = localStorage.getItem("token");
 
   if (!headers.hasOwnProperty("content-type")) {
@@ -38,7 +38,13 @@ const updateHeaders = function(headers) {
   return headers;
 };
 
-const updateBody = function(body, rawBody) {
+export const updateBody = function(body, rawBody) {
+  /**
+   * Stringifies the body if rawBody is not defined
+   * @param {object} body
+   * @param {boolean} rawBody
+   */
+
   // Shall we stringify the body
   if (!rawBody) {
     body = JSON.stringify(body);
@@ -47,7 +53,7 @@ const updateBody = function(body, rawBody) {
   return body;
 };
 
-const checkResponse = function(response, headers) {
+export const checkResponse = function(response, headers) {
   if (!response.ok) {
     throw response;
   }
