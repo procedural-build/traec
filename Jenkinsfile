@@ -1,16 +1,25 @@
 pipeline {
-  agent none
+  agent {
+    docker {
+      image 'node:10.14-slim'
+    }
+
+  }
+environment {
+        SECRET = credentials('TOKEN')
+    }
+
   stages {
     stage('Test') {
       steps {
-        sh '''
-export PATH=/usr/local/bin && npm install && npm test'''
+        sh ' echo "beginning NPM" && npm install && npm test'
       }
     }
     stage('Publish') {
       steps {
-        sh 'npm version patch && npm pub'
+              sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm version patch && npm pub'
       }
     }
   }
+
 }
