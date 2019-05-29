@@ -1,4 +1,6 @@
 import * as middleware from "../src/redux/apiMiddleware";
+import { fetchToState } from "../src/redux/actionCreators";
+jest.mock("../src/redux/actionCreators");
 
 describe("Response Types", () => {
   it("should handle default type", () => {
@@ -53,22 +55,72 @@ describe("Failure Handler", () => {
 });
 
 describe("SuccessHandler", () => {
-  it("should handle default type", () => {
+  it("should call dispatch twice", () => {
     // mock out dispatch and check how many times it is called
-    expect(middleware.responseTypes(APICall)).toEqual(expectedBody);
+    const data = {};
+    const successType = "";
+    const originalBody = {};
+    const fetchParams = {};
+    const stateParams = {};
+    const dispatch = jest.fn();
+
+    middleware.successHandler(data, successType, originalBody, fetchParams, stateParams, dispatch);
+
+    expect(dispatch).toHaveBeenCalledTimes(2);
   });
 
-  it("should handle success & failure", () => {
-    const APICall = { failureType: "LOGIN_FAILURE", successType: "LOGIN_SUCCESS" };
-    const expectedBody = { failureType: "LOGIN_FAILURE", successType: "LOGIN_SUCCESS" };
+  it("should call postSuccessHook", () => {
+    // mock out postSuccessHook and see if it is called
+    const data = {};
+    const successType = "";
+    const originalBody = {};
+    const fetchParams = { postSuccessHook: jest.fn() };
+    const stateParams = {};
+    const dispatch = jest.fn();
 
-    expect(middleware.responseTypes(APICall)).toEqual(expectedBody);
+    middleware.successHandler(data, successType, originalBody, fetchParams, stateParams, dispatch);
+
+    expect(fetchParams.postSuccessHook).toHaveBeenCalled();
   });
 
-  it("should throw error if no type", () => {
-    const APICall = { defaultType: null };
+  it("should dispatch next fetchHandlers", () => {
+    // mock out nextHandlers and see if it is called
+    fetchToState.mockImplementation(newParams => ({}));
 
-    expect(() => middleware.responseTypes(APICall)).toThrowError();
+    const data = {};
+    const successType = "";
+    const originalBody = {};
+    const handler = jest.fn();
+    const fetchParams = { nextHandlers: [handler] };
+    const stateParams = {};
+    const dispatch = jest.fn();
+
+    middleware.successHandler(data, successType, originalBody, fetchParams, stateParams, dispatch);
+
+    expect(fetchParams.nextHandlers[0]).toHaveBeenCalled();
+    expect(fetchToState).toHaveBeenCalled();
+    expect(dispatch).toHaveBeenCalledTimes(3);
+  });
+
+  it("should dispatch next fetchHandlers and call the postSuccessHook", () => {
+    // mock out nextHandlers and see if it is called
+    fetchToState.mockImplementation(newParams => ({}));
+
+    const data = {};
+    const successType = "";
+    const originalBody = {};
+    const handler = jest.fn();
+    const fetchParams = { nextHandlers: [handler, handler], postSuccessHook: jest.fn() };
+    const stateParams = {};
+    const dispatch = jest.fn();
+
+    middleware.successHandler(data, successType, originalBody, fetchParams, stateParams, dispatch);
+
+    expect(fetchParams.nextHandlers[0]).toHaveBeenCalled();
+    expect(fetchParams.nextHandlers[1]).toHaveBeenCalled();
+    expect(fetchToState).toHaveBeenCalled();
+    expect(dispatch).toHaveBeenCalledTimes(4);
+    expect(fetchParams.postSuccessHook).toHaveBeenCalled();
   });
 });
 
