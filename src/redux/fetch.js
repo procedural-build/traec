@@ -9,7 +9,7 @@
  * @param {function} success - SuccessHandler function
  * @param {function} failure - FailureHandler function
  */
-export const fetchJSON = ({ path = "/", method = "GET", body, headers = {}, rawBody = null }, success, failure) => {
+export const fetchJSON = ({ path = "/", method = "GET", body, headers = {}, rawBody = false }, success, failure) => {
   const successHandler = success;
   const failureHandler = failure;
 

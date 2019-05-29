@@ -4,13 +4,13 @@ describe("Update fetch body", () => {
   it("Stringify the body", () => {
     const expectedBody = '{"key":"value"}';
 
-    expect(updateBody({ key: "value" })).toEqual(expectedBody);
+    expect(updateBody({ key: "value" }, false)).toEqual(expectedBody);
   });
 
   it("With rawBody", () => {
     const expectedBody = { key: "value" };
 
-    expect(updateBody({ key: "value" }, true)).toEqual(expectedBody, true);
+    expect(updateBody({ key: "value" }, true)).toEqual(expectedBody);
   });
 });
 
@@ -30,21 +30,21 @@ describe("Update headers", () => {
     localStorage.setItem("token", token);
     const expectedHeaders = { "content-type": "application/json", Authorization: `JWT ${token}` };
 
-    expect(updateHeaders({}, true)).toEqual(expectedHeaders, true);
+    expect(updateHeaders({})).toEqual(expectedHeaders);
   });
 
   it("Token, json headers", () => {
     localStorage.setItem("token", token);
     const expectedHeaders = { "content-type": "application/json", Authorization: `JWT ${token}` };
 
-    expect(updateHeaders({ "content-type": "application/json" }, true)).toEqual(expectedHeaders, true);
+    expect(updateHeaders({ "content-type": "application/json" })).toEqual(expectedHeaders);
   });
 
   it("Token, null headers", () => {
     localStorage.setItem("token", token);
     const expectedHeaders = { Authorization: `JWT ${token}` };
 
-    expect(updateHeaders({ "content-type": null }, true)).toEqual(expectedHeaders, true);
+    expect(updateHeaders({ "content-type": null })).toEqual(expectedHeaders);
   });
 });
 
