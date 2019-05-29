@@ -128,3 +128,37 @@ export const getProjectReportCommits = ({
     }
     return {fetchParams, stateParams: {stateSetFunc}}
 };
+
+
+
+export const getProjectReportInputValues = ({
+    projectId,
+    reportPeriodId, 
+    baseMetricId = null,
+    commitId = null
+}) => {
+    let query_params = ""
+    query_params = baseMetricId ? `baseMetricId=${baseMetricId}` : ""
+    query_params += commitId ? `commitId=${commitId}` : ""
+    query_params = query_params ? "?" + query_params : ""
+    const fetchParams = {
+        method: 'GET',
+        url: `/api/project/${projectId}/reporting_periods/${reportPeriodId}/inputs/${query_params}`,
+        apiId: 'api_project_reporting_periods_inputs_list',
+        requiredParams: ['projectId', 'reportPeriodId'],
+        queryParms: {baseMetricId: null}
+    }
+    let stateSetFunc = (state, action) => {
+        let data = action.payload 
+        let newState = state
+        for (let item of data) {
+            newState = newState.addToDict(`baseMetrics.byId`, item.basemetric)
+        }
+        newState = newState.addListToDict(
+            `projectReportingPeriods.byId.${projectId}.${reportPeriodId}.input_values`, 
+            data
+        )
+        return newState
+    }
+    return {fetchParams, stateParams: {stateSetFunc}}
+};

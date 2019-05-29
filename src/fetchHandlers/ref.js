@@ -215,3 +215,38 @@ export const deleteTrackerRef= ({trackerId, refId, commitId}) => {
     }
     return {fetchParams, stateParams: {stateSetFunc}}
 }
+
+
+export const postBranchFork = ({trackerId, refId}) => {
+    const fetchParams = {
+        method: 'POST',
+        url: `/api/tracker/${trackerId}/ref/${refId}/`,
+        apiId: 'api_tracker_ref_tree_create',
+        requiredParams: ['trackerId', 'refId', 'commitId', 'treeId']
+    }
+    const stateSetFunc= (state, action) => {
+        const data = action.payload
+        let { formVisPath, formObjPath } = action.stateParams
+        let newState = state.setInPath( formObjPath, data)
+        if (!data.errors) { 
+            const commitPath = `commitEdges.byId.${commitId}.trees.${treeId}`
+            newState = newState.addToDict( 'refs.byId', data)
+            newState = newState.setInPath( formVisPath, false)
+            // Add the root commit to the category list for this tree
+            const branchId = data.latest_commit.root_commit
+            newState = newState.addListToSets(
+                [`${commitPath}.categories`], [branchId])
+            // Add this as a commitBranch (masterHead) for the parentCommit 
+            let target = {commit: null, ref: data.uid}
+            let head = {commit: commitId, target, branchId, is_master: true}
+            let branchObj = {
+                targets: [target],
+                masterHead: head, userHead: head
+            }
+            newState = newState.setInPath( 
+                `commitBranches.commit.${commitId}.branch.${branchId}`, branchObj)
+        }
+        return newState            
+    }
+    return {fetchParams, stateParams: {stateSetFunc}}
+}
