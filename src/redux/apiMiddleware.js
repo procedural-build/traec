@@ -64,7 +64,7 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
  * @param action
  * @return {*}
  */
-const checkThrottling = function(getState, fetchParams, action) {
+export const checkThrottling = function(getState, fetchParams, action) {
   if (hasFetched(getState(), fetchParams, 1000)) {
     console.log("SKIPPING FETCH DUE TO THROTTLING", action);
     return next({
