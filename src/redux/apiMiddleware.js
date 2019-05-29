@@ -1,4 +1,4 @@
-import { fetchBlob, fetchJSON } from "./fetch";
+import { fetchJSON } from "./fetch";
 import { fetchToState } from "./actionCreators";
 import { hasFetched } from "./fetchCache";
 
@@ -6,6 +6,21 @@ import { hasFetched } from "./fetchCache";
  * https://redux.js.org/recipes/reducing-boilerplate
  */
 
+/**
+ *
+ * We can specify a pre-fetch hook in the fetchParameters.  This gives a chance to modify
+ * the post body before performing the fetch.  This is useful if you have used a form
+ * with multiple inputs, and only want to include a subset of these in the fetch request
+ * with possibly others included in later async fetch calls.
+ *
+ * NOTE:  the original body (before the preFetchHook) is backed up to originalBody and these are
+ * passed to later "nextHandlers" as the 3rd parameter (the actual body that is dispatched
+ * is sent as the second parameter).
+ *
+ * @param dispatch
+ * @param getState
+ * @return {function(*): Function}
+ */
 export const callAPIMiddleware = ({ dispatch, getState }) => {
   return next => action => {
     const { APICallTypes } = action;
@@ -25,16 +40,6 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
             dispatch( Object.assign({}, fetchParams, stateParams))
         }*/
 
-    /* We can specify a pre-fetch hook in the fetchParameters.  This gives a chance to modify
-        the post body before performing the fetch.  This is useful if you have used a form
-        with multiple inputs, and only want to include a subset of these in the fetch request
-        with possibly others included in later async fetch calls.
-
-        NOTE:  the original body (before the preFetchHook) is backed up to originalBody and these are
-        passed to later "nextHandlers" as the 3rd parameter (the actual body that is dispatched
-        is sent as the second parameter).
-        */
-
     let originalBody = fetchParams.body;
     if (fetchParams.preFetchHook) {
       fetchParams.body = fetchParams.preFetchHook(fetchParams.body);
@@ -42,12 +47,7 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
 
     checkThrottling(getState, fetchParams, action);
 
-    // Make a record in the redux store of this fetch (so other components wont fetch twice
-    // and also for throttling)
-    dispatch({
-      type: "FETCH_SET_SENT",
-      fetchParams
-    });
+    recordFetch(fetchParams, dispatch);
 
     return fetchJSON(
       { ...fetchParams, path: fetchParams.url },
@@ -57,9 +57,14 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
   };
 };
 
+/**
+ * Check for Throttling that this URL has not been requested recently milliseconds between calls
+ * @param getState
+ * @param fetchParams
+ * @param action
+ * @return {*}
+ */
 const checkThrottling = function(getState, fetchParams, action) {
-  // Check for Throttling that this URL has not been requested recently
-  // milliseconds between calls
   if (hasFetched(getState(), fetchParams, 1000)) {
     console.log("SKIPPING FETCH DUE TO THROTTLING", action);
     return next({
@@ -69,15 +74,31 @@ const checkThrottling = function(getState, fetchParams, action) {
   }
 };
 
-const responseTypes = function(APICallTypes) {
+/**
+ * Make a record in the redux store of this fetch (so other components wont fetch twice and also for throttling)
+ * @param fetchParams
+ * @param dispatch
+ */
+export const recordFetch = function(fetchParams, dispatch) {
+  dispatch({
+    type: "FETCH_SET_SENT",
+    fetchParams
+  });
+};
+
+/**
+ * Set the success and failure types to default if they dont exist.
+ * Otherwise if we don't have a success and failure type defined and error wil be thrown
+ * @param APICallTypes
+ * @return {{failureType: *, successType: *}}
+ */
+export const responseTypes = function(APICallTypes) {
   //console.log("CALLING API IN MIDDLEWARE: ", action, APICallTypes, fetchParams, stateParams)
   let { successType, failureType, defaultType } = APICallTypes;
 
-  // Set the success and failure types to default if they dont exist
   successType = defaultType && !successType ? defaultType : successType;
   failureType = defaultType && !failureType ? defaultType : failureType;
 
-  // If we don't have a success and failure type defined
   if (!(successType || failureType)) {
     throw new Error("Must have (successType && failureType) OR defaultType set.");
   }
@@ -85,7 +106,15 @@ const responseTypes = function(APICallTypes) {
   return { successType, failureType };
 };
 
-const failureHandler = function(error, failureType, fetchParams, stateParams, dispatch) {
+/**
+ * Catches any errors returned from the fetch
+ * @param error
+ * @param failureType
+ * @param fetchParams
+ * @param stateParams
+ * @param dispatch
+ */
+export const failureHandler = function(error, failureType, fetchParams, stateParams, dispatch) {
   console.warn("Error with API request:", error);
 
   dispatch({
@@ -101,7 +130,18 @@ const failureHandler = function(error, failureType, fetchParams, stateParams, di
   });
 };
 
-const successHandler = function(data, successType, originalBody, fetchParams, stateParams, dispatch) {
+/**
+ * Processes the fetch if successful.
+ * If more fetchHandlers are defined then they will be processed here.
+ * If a post success hook is defined it will be processed here as well.
+ * @param data
+ * @param successType
+ * @param originalBody
+ * @param fetchParams
+ * @param stateParams
+ * @param dispatch
+ */
+export const successHandler = function(data, successType, originalBody, fetchParams, stateParams, dispatch) {
   Object.assign(data, { errors: null }); // nullify errors if success
 
   //console.log("Success with API request", data)
