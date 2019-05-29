@@ -32,6 +32,8 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha ./test/es6.js --require @babel/register",
+    "matchversion": "npm --no-git-tag-version --allow-same-version version $(npm view traec version)",
+    "patchversion": "npm --no-git-tag-version version patch",
     "build": "npx babel src --out-dir ./dist && cp -v ./package.json ./dist/package.json",
     "pub": "npm run build && npm publish ./dist"
   },
