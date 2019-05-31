@@ -3,6 +3,7 @@ import {edgeDictToState} from './commitEdges'
 
 
 export const storeCommitBranch= (state, item) => {
+    if (!item) {return state}
     let newState = state
     // If there are edges included then store them away
     if (item.target_edges) {

@@ -53,12 +53,14 @@ export const edgeDictToState = (newState, commitId, data) => {
         let edgeSetFunc = edgeSetFunctions[key]
         // Continue if we don't have a function to handle this edge
         if (!edgeSetFunc) { 
-            console.log(`Skipping handling of edge type: ${key}`)
+            //console.log(`Skipping handling of edge type: ${key}`)
             continue 
         }      
         // Add them to the store
         for (let edge of data[key]) {
+            //console.log("Setting edge ", edge)
             newState = edgeSetFunc(commitId, edge, newState)
+            //console.log("DONE setting edge")
         }
     }
     return newState
@@ -89,6 +91,7 @@ const edgeSetFunctions = {
     },
     treecategory: (commitId, edge, newState) => {
         let {tree, commitBranch} = edge
+        if (!commitBranch) {return newState}
         newState = storeCommitBranch(newState, commitBranch)
         newState = newState.addToDict(
             `commitEdges.byId.${commitId}.trees.${tree.uid}.categories`,
