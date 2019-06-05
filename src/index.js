@@ -10,11 +10,11 @@ export * from "./handlerMap";
 export * from "./fetchBindings/utils";
 
 export default {
-    fetchHandlers,
-    fetchBindings,
-    handlerMap,
-    fetchRequired,
-    Fetch,
-    Im,
-    Redux
-}
+  fetchHandlers,
+  fetchBindings,
+  handlerMap,
+  fetchRequired,
+  Fetch,
+  Im,
+  Redux
+};
