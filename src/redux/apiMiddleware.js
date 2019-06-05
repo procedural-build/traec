@@ -50,7 +50,7 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
     recordFetch(fetchParams, dispatch);
 
     return fetchJSON(
-      fetchParams,
+      { ...fetchParams, path: fetchParams.url },
       data => successHandler(data, successType, originalBody, fetchParams, stateParams, dispatch),
       error => failureHandler(error, failureType, fetchParams, stateParams, dispatch)
     );
