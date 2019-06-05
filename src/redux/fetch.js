@@ -15,7 +15,6 @@ export const fetchJSON = ({ path = "/", method = "GET", body, headers = {}, rawB
 
   headers = updateHeaders(headers);
   body = updateBody(body, rawBody);
-
   fetch(path, {
     method: method,
     headers: headers,

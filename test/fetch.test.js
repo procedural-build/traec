@@ -95,12 +95,53 @@ describe("fetchJSON", () => {
 
   const success = jest.fn();
   const failure = jest.fn();
+  jest.spyOn(updateHeaders);
+  jest.spyOn(updateBody);
+  jest.spyOn(checkResponse);
 
-  it("should fetch succesfully", () => {
+  it("should fetch successfully", () => {
+    const resp = {
+      type: "basic",
+      url: "http://0.0.0.0:8080/auth-jwt/get/",
+      redirected: false,
+      status: 200,
+      ok: true,
+      statusText: "OK",
+      headers: {},
+      body: {},
+      bodyUsed: false
+    };
+    fetch.mockResponse(JSON.stringify(resp));
     fetchJSON({}, success, failure);
+
+    expect(fetch).toHaveBeenCalled();
+    expect(updateHeaders).toHaveBeenCalled();
+    expect(updateBody).toHaveBeenCalled();
+    expect(checkResponse).toHaveBeenCalled();
+    expect(success).toHaveBeenCalled();
+    expect(failure).not.toHaveBeenCalled();
   });
 
   it("should fetch unsuccesfully", () => {
+    const resp = {
+      type: "basic",
+      url: "http://0.0.0.0:8080/auth-jwt/get/",
+      redirected: false,
+      status: 404,
+      ok: false,
+      statusText: "NOPE!",
+      headers: {},
+      body: {},
+      bodyUsed: false
+    };
+    fetch.mockResponse(JSON.stringify(resp));
     fetchJSON({}, success, failure);
+
+    expect(fetch).toHaveBeenCalled();
+    expect(updateHeaders).toHaveBeenCalled();
+    expect(updateBody).toHaveBeenCalled();
+    expect(checkResponse).toHaveBeenCalled();
+    expect(failure).toHaveBeenCalled();
+    expect(success).not.toHaveBeenCalled();
   });
 });
