@@ -92,4 +92,15 @@ describe("check Responses", () => {
 
 describe("fetchJSON", () => {
   //TODO - Needs a test
+
+  const success = jest.fn();
+  const failure = jest.fn();
+
+  it("should fetch succesfully", () => {
+    fetchJSON({}, success, failure);
+  });
+
+  it("should fetch unsuccesfully", () => {
+    fetchJSON({}, success, failure);
+  });
 });
