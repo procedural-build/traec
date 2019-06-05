@@ -45,3 +45,12 @@ export const putCompanyTarget = ({ companyId, metricTargetId }) => {
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
+
+export const patchCompanyTarget = ({ companyId, metricTargetId }) => {
+  let params = putCompanyTarget({ companyId, metricTargetId });
+  Object.assign(params.fetchParams, {
+    method: "PATCH",
+    apiId: "api_company_target_partial_update"
+  });
+  return params;
+};

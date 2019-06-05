@@ -1,4 +1,5 @@
 import Im from "../immutable";
+import { storeCommitBranch } from "./commitBranch";
 
 export const getCommitEdges = ({ trackerId, commitId }) => {
   const fetchParams = {
@@ -45,19 +46,21 @@ export const putCommitEdge = ({ trackerId, commitId }) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-const edgeDictToState = (newState, commitId, data) => {
+export const edgeDictToState = (newState, commitId, data) => {
   // Unpack the data into the state tree
   for (let key in data) {
     // Get the function for storing edges
     let edgeSetFunc = edgeSetFunctions[key];
     // Continue if we don't have a function to handle this edge
     if (!edgeSetFunc) {
-      console.log(`Skipping handling of edge type: ${key}`);
+      //console.log(`Skipping handling of edge type: ${key}`)
       continue;
     }
     // Add them to the store
     for (let edge of data[key]) {
+      //console.log("Setting edge ", edge)
       newState = edgeSetFunc(commitId, edge, newState);
+      //console.log("DONE setting edge")
     }
   }
   return newState;
@@ -80,8 +83,12 @@ const edgeSetFunctions = {
     return newState;
   },
   treecategory: (commitId, edge, newState) => {
-    let { tree, branchId } = edge;
-    newState = newState.addListToSets([`commitEdges.byId.${commitId}.trees.${tree.uid}.categories`], [branchId]);
+    let { tree, commitBranch } = edge;
+    if (!commitBranch) {
+      return newState;
+    }
+    newState = storeCommitBranch(newState, commitBranch);
+    newState = newState.addToDict(`commitEdges.byId.${commitId}.trees.${tree.uid}.categories`, commitBranch);
     return newState;
   },
   treescore: (commitId, edge, newState) => {

@@ -92,3 +92,4 @@ export * from "./convFactors";
 export * from "./companyTargets";
 export * from "./companyIndicator";
 export * from "./indicators";
+export * from "./comment";

@@ -1,5 +1,15 @@
+import { edgeDictToState } from "./commitEdges";
+
 export const storeCommitBranch = (state, item) => {
+  if (!item) {
+    return state;
+  }
   let newState = state;
+  // If there are edges included then store them away
+  if (item.target_edges) {
+    let commitId = item.target_commit.uid;
+    newState = edgeDictToState(newState, commitId, item.target_edges);
+  }
   // Add the ref into the store
   let targetRef = item.target.ref;
   item.target.ref = targetRef ? targetRef.uid : null;
@@ -25,12 +35,14 @@ export const storeCommitBranches = (state, data) => {
   return newState;
 };
 
-export const getAllBranches = ({ trackerId }) => {
+export const getAllBranches = ({ trackerId, include_edges = false }) => {
+  let queryParams = include_edges ? `?include_edges=True` : "";
   const fetchParams = {
     method: "GET",
-    url: `/api/tracker/${trackerId}/branch/`,
+    url: `/api/tracker/${trackerId}/branch/${queryParams}`,
     apiId: "api_tracker_branch_list",
-    requiredParams: ["trackerId"]
+    requiredParams: ["trackerId"],
+    queryParams: { include_edges: false }
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;

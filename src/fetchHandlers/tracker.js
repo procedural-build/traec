@@ -101,7 +101,14 @@ export const postTracker = ({ projectId }) => {
     }
     return newState;
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `trackers.${projectId}.SHOW_FORM`,
+      formObjPath: `trackers.${projectId}.newItem`
+    }
+  };
 };
 
 export const putTracker = ({ trackerId }) => {
