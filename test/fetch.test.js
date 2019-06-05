@@ -46,6 +46,10 @@ describe("Update headers", () => {
 
     expect(updateHeaders({ "content-type": null })).toEqual(expectedHeaders);
   });
+
+  afterAll(() => {
+    localStorage.clear();
+  });
 });
 
 describe("check Responses", () => {
@@ -92,12 +96,12 @@ describe("check Responses", () => {
 
 describe("fetchJSON", () => {
   //TODO - Needs a test
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
 
-  const success = jest.fn();
-  const failure = jest.fn();
-  jest.spyOn(updateHeaders);
-  jest.spyOn(updateBody);
-  jest.spyOn(checkResponse);
+  let success = jest.fn();
+  let failure = jest.fn();
 
   it("should fetch successfully", () => {
     const resp = {
@@ -112,14 +116,19 @@ describe("fetchJSON", () => {
       bodyUsed: false
     };
     fetch.mockResponse(JSON.stringify(resp));
-    fetchJSON({}, success, failure);
+    fetchJSON({ url: "/api/test" }, success, failure);
 
-    expect(fetch).toHaveBeenCalled();
-    expect(updateHeaders).toHaveBeenCalled();
-    expect(updateBody).toHaveBeenCalled();
-    expect(checkResponse).toHaveBeenCalled();
-    expect(success).toHaveBeenCalled();
-    expect(failure).not.toHaveBeenCalled();
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(fetch.mock.calls[0]).toEqual([
+      "/api/test",
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: undefined
+      }
+    ]);
   });
 
   it("should fetch unsuccesfully", () => {
@@ -134,14 +143,19 @@ describe("fetchJSON", () => {
       body: {},
       bodyUsed: false
     };
-    fetch.mockResponse(JSON.stringify(resp));
-    fetchJSON({}, success, failure);
+    fetch.mockResponseOnce(JSON.stringify(resp));
+    fetchJSON({ url: "/api/bad-test" }, success, failure);
 
     expect(fetch).toHaveBeenCalled();
-    expect(updateHeaders).toHaveBeenCalled();
-    expect(updateBody).toHaveBeenCalled();
-    expect(checkResponse).toHaveBeenCalled();
-    expect(failure).toHaveBeenCalled();
-    expect(success).not.toHaveBeenCalled();
+    expect(fetch.mock.calls[0]).toEqual([
+      "/api/bad-test",
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: undefined
+      }
+    ]);
   });
 });

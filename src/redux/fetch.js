@@ -9,13 +9,13 @@
  * @param {function} success - SuccessHandler function
  * @param {function} failure - FailureHandler function
  */
-export const fetchJSON = ({ path = "/", method = "GET", body, headers = {}, rawBody = false }, success, failure) => {
+export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBody = false }, success, failure) => {
   const successHandler = success;
   const failureHandler = failure;
 
   headers = updateHeaders(headers);
   body = updateBody(body, rawBody);
-  fetch(path, {
+  fetch(url, {
     method: method,
     headers: headers,
     body: body
@@ -83,7 +83,6 @@ export const checkResponse = function(response, headers) {
     return {};
   }
   if (headers["content-type"] === "application/xlsx") {
-    //debugger
     return response.blob();
   }
   return response.json();
