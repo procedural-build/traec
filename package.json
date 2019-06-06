@@ -1,13 +1,14 @@
 {
   "name": "traec",
-  "version": "1.1.14",
+  "version": "1.1.12",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
     "jwt-decode": "^2.2.0",
     "node": "^10.15.3",
     "nodejs": "^0.0.0",
+    "prettier": "^1.17.1",
     "react": "^16.8.6",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.8",
@@ -24,16 +25,22 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.4",
     "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^24.8.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-preset-es2015": "^6.24.1",
-    "chai": "^4.2.0",
-    "chai-fs": "^2.0.0",
-    "mocha": "^6.1.4"
+    "jest": "^24.8.0",
+    "jest-fetch-mock": "^2.1.2",
+    "mockdate": "^2.0.2"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "./test/setupJest.js"
+    ]
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha ./test/es6.js --require @babel/register",
-    "matchversion": "npm --no-git-tag-version --allow-same-version version $(npm view traec version)",
-    "patchversion": "npm --no-git-tag-version version patch",
+    "test": "jest",
+    "test:watch": "npm test -- --watch",
     "build": "npx babel src --out-dir ./dist && cp -v ./package.json ./dist/package.json",
     "pub": "npm run build && npm publish ./dist"
   },
