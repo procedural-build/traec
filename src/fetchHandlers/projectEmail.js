@@ -18,7 +18,7 @@ export const getProjectEmailRecipient= ({projectId, recipientId}) => {
     const fetchParams = {
         method: 'GET',
         url: `/api/project/${projectId}/email/recipient/${recipientId}`,
-        apiId: 'api_project_email_recipient_list',
+        apiId: 'api_project_email_recipient_read',
         requiredParams: ['projectId']
     }
     const stateSetFunc= (state, action) => {
