@@ -18,12 +18,15 @@ export const companyPermissionCheck = function(companyId, requiresAdmin, require
 
   // Check if we have the permission object or fetch it
   let permissions = getCompanyPermissions(state, companyId);
+
+  //debugger;
   // Return null if the permissions are not found
   if (!permissions) {
     //let path = `entities.companyObjects.byId.${companyId}.userPermission`
     //console.log(permissions, path, state.getInPath(path), state.toJS())
     if (companyId && allow_fetch) {
       fetchCompanyUserPermissions(companyId);
+      permissions = getCompanyPermissions(state, companyId);
     }
     return null;
   }

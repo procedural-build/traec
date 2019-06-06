@@ -93,3 +93,4 @@ export * from "./companyTargets";
 export * from "./companyIndicator";
 export * from "./indicators";
 export * from "./comment";
+export * from "./project/projectEmails";

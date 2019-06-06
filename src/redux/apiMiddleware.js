@@ -45,7 +45,7 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
       fetchParams.body = fetchParams.preFetchHook(fetchParams.body);
     }
 
-    checkThrottling(getState, fetchParams, action);
+    checkThrottling(getState, fetchParams, action, next);
 
     recordFetch(fetchParams, dispatch);
 
@@ -62,9 +62,10 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
  * @param getState
  * @param fetchParams
  * @param action
+ * @param next
  * @return {*}
  */
-export const checkThrottling = function(getState, fetchParams, action) {
+export const checkThrottling = function(getState, fetchParams, action, next) {
   if (hasFetched(getState(), fetchParams, 1000)) {
     console.log("SKIPPING FETCH DUE TO THROTTLING", action);
     return next({
