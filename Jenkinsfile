@@ -11,7 +11,7 @@ environment {
 
   stages {
     stage('Test') {
-        when {
+      when {
         anyOf {
           branch 'dev*'
           branch 'test*'
