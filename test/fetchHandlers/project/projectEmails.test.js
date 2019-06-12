@@ -26,7 +26,7 @@ describe("getProjectEmailRecipient", () => {
     const fetchParams = {
       method: "GET",
       url: `/api/project/${projectId}/email/recipient/test_recipient_id/`,
-      apiId: "api_project_email_recipient_list",
+      apiId: "api_project_email_recipient_read",
       requiredParams: ["projectId"]
     };
     expect(projectEmails).toHaveProperty("fetchParams");

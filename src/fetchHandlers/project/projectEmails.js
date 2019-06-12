@@ -13,7 +13,6 @@ export const getProjectEmailRecipients = ({ projectId }) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-
 export const getProjectEmailRecipient = ({ projectId, recipientId }) => {
   const fetchParams = {
     method: "GET",
@@ -29,28 +28,26 @@ export const getProjectEmailRecipient = ({ projectId, recipientId }) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-
-export const putProjectEmailRecipient= ({projectId, recipientId}) => {
+export const putProjectEmailRecipient = ({ projectId, recipientId }) => {
   const fetchParams = {
-      method: 'PUT',
-      url: `/api/project/${projectId}/email/recipient/${recipientId}/`,
-      apiId: 'api_project_email_recipient_update',
-      requiredParams: ['projectId', 'recipientId']
-  }
-  const stateSetFunc= (state, action) => {
-      const data = action.payload
-      let newState = state.addToDict(`projectObjects.byId.${projectId}.recipients`, data)
-      return newState            
-  }
-  return {fetchParams, stateParams: {stateSetFunc}}
-}
+    method: "PUT",
+    url: `/api/project/${projectId}/email/recipient/${recipientId}/`,
+    apiId: "api_project_email_recipient_update",
+    requiredParams: ["projectId", "recipientId"]
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.addToDict(`projectObjects.byId.${projectId}.recipients`, data);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
 
-
-export const patchProjectEmailRecipient= ({projectId, recipientId}) => {
-  let params = putProjectEmailRecipient({projectId, recipientId})
+export const patchProjectEmailRecipient = ({ projectId, recipientId }) => {
+  let params = putProjectEmailRecipient({ projectId, recipientId });
   Object.assign(params.fetchParams, {
-      method: 'PATCH',
-      apiId: 'api_project_email_recipient_partial_update',
-  })
-  return params
-}
+    method: "PATCH",
+    apiId: "api_project_email_recipient_partial_update"
+  });
+  return params;
+};
