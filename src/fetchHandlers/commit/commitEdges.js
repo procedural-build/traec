@@ -1,4 +1,4 @@
-import Im from "../immutable";
+import Im from "../../immutable";
 import { storeCommitBranch } from "./commitBranch";
 
 export const getCommitEdges = ({ trackerId, commitId }) => {
