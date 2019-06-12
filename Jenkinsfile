@@ -10,9 +10,19 @@ environment {
     }
 
   stages {
-    stage('Test') {
+    stage('NPM Install') {
       steps {
-        sh ' echo "beginning NPM" && npm install && npm test'
+        sh 'npm install'
+      }
+    }
+    stage('Test') {
+
+      steps {
+        sh ' echo "beginning NPM" && npm test'
+        withEnv(["JEST_JUNIT_OUTPUT=./jest-test-results.xml"]) {
+          sh 'npm test -- --ci --testResultsProcessor="jest-junit"'
+        }
+        junit 'jest-test-results.xml'
       }
     }
     stage('Publish') {
