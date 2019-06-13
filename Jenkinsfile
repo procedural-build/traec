@@ -20,12 +20,13 @@ environment {
       steps {
         sh ' echo "beginning NPM" && npm test'
         sh 'npm run test-ci'
+        }
         post {
           always {
             junit 'jest-test-results.xml'
           }
         }
-      }
+
     }
     stage('Publish') {
       when {
