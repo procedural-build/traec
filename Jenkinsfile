@@ -2,6 +2,7 @@ pipeline {
   agent {
     docker {
       image 'node:10.14-slim'
+          args '-u 0:0'
     }
 
   }
@@ -41,7 +42,6 @@ pipeline {
   }
   environment {
     SECRET = credentials('TOKEN')
-    npm_config_cache = 'npm-cache'
     HOME = '.'
   }
 }
