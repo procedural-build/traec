@@ -46,10 +46,6 @@
       "jest-junit"
     ]
   },
-  "jest-junit": {
-    "output": "jest-test-results.xml",
-    "usePathForSuiteName": "true"
-  },
   "scripts": {
     "test": "jest",
     "test-ci": "npm test -- --ci --coverage ",
