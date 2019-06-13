@@ -25,8 +25,9 @@ environment {
         }
         post {
           always {
-          junit 'jest-test-results.xml'
-        }
+            sh 'ls'
+            junit 'jest-test-results.xml'
+          }
         }
       }
 
