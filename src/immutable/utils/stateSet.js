@@ -72,8 +72,6 @@ export const addListToDict = (state, path, dataList, keyField = "uid") => {
   // Ensure that the path exists
   let newState = state.getIn(path) ? state : state.setIn(path, Im.Map());
   // Add the new list of item to the dictionary with key from keyField
-  newState = newState.updateIn(path, items =>
-    items.merge(Im.fromJS(listToObj(dataList, keyField)))
-  );
+  newState = newState.updateIn(path, items => items.merge(Im.fromJS(listToObj(dataList, keyField))));
   return newState;
 };

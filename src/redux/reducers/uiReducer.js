@@ -1,9 +1,5 @@
 import Im from "../../immutable";
-import {
-  setItemInListAndVis,
-  setItemInDictAndVis,
-  setListInIndexedObj
-} from "../../utils";
+import { setItemInListAndVis, setItemInDictAndVis, setListInIndexedObj } from "../../utils";
 
 /*
 "entities" database as per documentation here 
@@ -39,9 +35,7 @@ export default function(state = initialState, action) {
     case "UI_SET_ITEM_DICT_TOGGLE":
       return setItemInDictAndVis(state, action.payload, action.stateParams);
     case "UI_LIST_TO_OBJ":
-      const itemList = Array.isArray(action.payload)
-        ? action.payload
-        : [action.payload];
+      const itemList = Array.isArray(action.payload) ? action.payload : [action.payload];
       return setListInIndexedObj(state, itemList, action.stateParams);
     case "UI_TOGGLE_BOOL":
       let { formVisPath } = action.stateParams;

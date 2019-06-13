@@ -97,15 +97,11 @@ export const setItemInListAndVis = (state, itemData, stateParams) => {
   if (!itemData.errors && itemListPath) {
     // Create a list at the path if it is not already there
     itemListPath = itemListPath.split(".");
-    newState = state.getIn(itemListPath)
-      ? newState
-      : newState.setIn(itemListPath, Im.List());
+    newState = state.getIn(itemListPath) ? newState : newState.setIn(itemListPath, Im.List());
     // Get the list of items and append to them (if object isn't already at the end)
     const items = newState.getIn(itemListPath);
     if (!items.last() || !items.last().equals(Im.fromJS(itemData))) {
-      newState = newState.updateIn(itemListPath, list =>
-        list.push(Im.fromJS(itemData))
-      );
+      newState = newState.updateIn(itemListPath, list => list.push(Im.fromJS(itemData)));
       newState = newState.setIn(formVisPath.split("."), false);
     }
   }
@@ -137,22 +133,15 @@ export const setListInIndexedObj = (state, itemList, stateParams) => {
   // Ensure the items coming in are a list
   itemList = !Array.isArray(itemList) ? [itemList] : itemList;
   // Ensure the path exists then Merge with immutable state
-  let newState = state.getIn(itemPath)
-    ? state
-    : state.setIn(itemPath, Im.Map());
-  newState = newState.updateIn(itemPath, items =>
-    items.merge(Im.fromJS(listToObj(itemList, keyField)))
-  );
+  let newState = state.getIn(itemPath) ? state : state.setIn(itemPath, Im.Map());
+  newState = newState.updateIn(itemPath, items => items.merge(Im.fromJS(listToObj(itemList, keyField))));
   // If there are related sets then set them here
   if (stateParams.relatedSets) {
     newState = setRelatedItems(newState, itemList, stateParams);
   }
   // Set a related key if we have one item
   if (stateParams.relatedItem && itemList.length == 1) {
-    newState = newState.setIn(
-      stateParams.relatedItem.split("."),
-      itemList[0][keyField]
-    );
+    newState = newState.setIn(stateParams.relatedItem.split("."), itemList[0][keyField]);
   }
   // Set a related key if we have one item
   if (stateParams.copyTo && itemList.length == 1) {
