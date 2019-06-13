@@ -26,7 +26,6 @@ environment {
         }
         post {
           always {
-            sh 'ls'
             junit 'jest-test-results.xml'
           }
       }
@@ -42,7 +41,7 @@ environment {
                                         ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
                 ]
 
-        //sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
+        sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
       }
     }
   }
