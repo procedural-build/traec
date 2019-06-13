@@ -37,13 +37,6 @@
     "automock": false,
     "setupFiles": [
       "./test/setupJest.js"
-    ],
-    "coverageReporters": [
-      "text"
-    ],
-    "reporters": [
-      "default",
-      "jest-junit"
     ]
   },
   "scripts": {
