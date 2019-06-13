@@ -42,8 +42,8 @@ PATH="$HOME/.npm/bin:$PATH"
     }
   }
   environment {
-    SECRET = credentials('TOKEN'),
-    npm_config_cache='npm-cache',
+    SECRET = credentials('TOKEN')
+    npm_config_cache='npm-cache'
     HOME = '.'
   }
 }
