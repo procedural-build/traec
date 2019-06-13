@@ -19,7 +19,7 @@ environment {
 
       steps {
         sh ' echo "beginning NPM" && npm test'
-        sh 'npm test -- --ci'
+        sh 'npm run test-ci'
         post {
           always {
             junit 'jest-test-results.xml'
