@@ -29,23 +29,20 @@ environment {
             sh 'ls'
             junit 'jest-test-results.xml'
           }
-          when {
-            branch 'testing'
-          }
-          ftpPublisher paramPublish: null, masterNodeName: '', alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, publishers: [
-                                          [configName: 'Homepage', transfers: [
-                                                  [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/docs/traec/coverage", remoteDirectorySDF: false, removePrefix: 'coverage/lcov-report', sourceFiles: 'coverage/lcov-report/**']
-                                          ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
-                  ]
-        }
       }
 
     stage('Publish') {
       when {
-        branch 'master'
+        branch 'testing'
       }
       steps {
-        sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
+        ftpPublisher paramPublish: null, masterNodeName: '', alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, publishers: [
+                                        [configName: 'Homepage', transfers: [
+                                                [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/docs/traec/coverage", remoteDirectorySDF: false, removePrefix: 'coverage/lcov-report', sourceFiles: 'coverage/lcov-report/**']
+                                        ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
+                ]
+
+        //sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
       }
     }
   }
