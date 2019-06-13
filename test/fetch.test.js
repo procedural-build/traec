@@ -46,6 +46,10 @@ describe("Update headers", () => {
 
     expect(updateHeaders({ "content-type": null })).toEqual(expectedHeaders);
   });
+
+  afterAll(() => {
+    localStorage.clear();
+  });
 });
 
 describe("check Responses", () => {
@@ -87,5 +91,71 @@ describe("check Responses", () => {
     const resp = new Response(myBlob, init);
 
     expect(checkResponse(resp, { "content-type": "application/xlsx" })).toEqual(resp.blob());
+  });
+});
+
+describe("fetchJSON", () => {
+  //TODO - Needs a test
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
+
+  let success = jest.fn();
+  let failure = jest.fn();
+
+  it("should fetch successfully", () => {
+    const resp = {
+      type: "basic",
+      url: "http://0.0.0.0:8080/auth-jwt/get/",
+      redirected: false,
+      status: 200,
+      ok: true,
+      statusText: "OK",
+      headers: {},
+      body: {},
+      bodyUsed: false
+    };
+    fetch.mockResponse(JSON.stringify(resp));
+    fetchJSON({ url: "/api/test" }, success, failure);
+
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(fetch.mock.calls[0]).toEqual([
+      "/api/test",
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: undefined
+      }
+    ]);
+  });
+
+  it("should fetch unsuccesfully", () => {
+    const resp = {
+      type: "basic",
+      url: "http://0.0.0.0:8080/auth-jwt/get/",
+      redirected: false,
+      status: 404,
+      ok: false,
+      statusText: "NOPE!",
+      headers: {},
+      body: {},
+      bodyUsed: false
+    };
+    fetch.mockResponseOnce(JSON.stringify(resp));
+    fetchJSON({ url: "/api/bad-test" }, success, failure);
+
+    expect(fetch).toHaveBeenCalled();
+    expect(fetch.mock.calls[0]).toEqual([
+      "/api/bad-test",
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: undefined
+      }
+    ]);
   });
 });
