@@ -5,7 +5,6 @@ pipeline {
     }
 
   }
-
   stages {
     stage('NPM Install') {
       steps {
@@ -43,6 +42,5 @@ pipeline {
   environment {
     SECRET = credentials('TOKEN')
     HOME = '.'
-
   }
 }
