@@ -29,6 +29,14 @@ environment {
             sh 'ls'
             junit 'jest-test-results.xml'
           }
+          when {
+            branch 'testing'
+          }
+          ftpPublisher paramPublish: null, masterNodeName: '', alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, publishers: [
+                                          [configName: 'Homepage', transfers: [
+                                                  [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/docs/traec/coverage", remoteDirectorySDF: false, removePrefix: 'coverage/lcov-report', sourceFiles: 'coverage/lcov-report/**']
+                                          ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
+                  ]
         }
       }
 
