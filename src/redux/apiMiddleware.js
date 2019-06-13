@@ -7,7 +7,6 @@ import { hasFetched } from "./fetchCache";
  */
 
 /**
- *
  * We can specify a pre-fetch hook in the fetchParameters.  This gives a chance to modify
  * the post body before performing the fetch.  This is useful if you have used a form
  * with multiple inputs, and only want to include a subset of these in the fetch request
@@ -16,12 +15,12 @@ import { hasFetched } from "./fetchCache";
  * NOTE:  the original body (before the preFetchHook) is backed up to originalBody and these are
  * passed to later "nextHandlers" as the 3rd parameter (the actual body that is dispatched
  * is sent as the second parameter).
- *
- * @param dispatch
- * @param getState
+ * 
+ * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
+ * @param getState Returns the current state tree of your application. It is equal to the last value returned by the store's reducer.
  * @return {function(*): Function}
  */
-export const callAPIMiddleware = ({ dispatch, getState }) => {
+export const callAPIMiddleware = ({ dispatch, getState}) => {
   return next => action => {
     const { APICallTypes } = action;
 
@@ -59,9 +58,9 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
 
 /**
  * Check for Throttling that this URL has not been requested recently milliseconds between calls
- * @param getState
+ * @param getState Returns the current state tree of your application. It is equal to the last value returned by the store's reducer. 
  * @param fetchParams
- * @param action
+ * @param action Payloads of information that send data from your application to your store. 
  * @param next
  * @return {*}
  */
@@ -78,7 +77,7 @@ export const checkThrottling = function(getState, fetchParams, action, next) {
 /**
  * Make a record in the redux store of this fetch (so other components wont fetch twice and also for throttling)
  * @param fetchParams
- * @param dispatch
+ * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
  */
 export const recordFetch = function(fetchParams, dispatch) {
   dispatch({
@@ -113,7 +112,7 @@ export const responseTypes = function(APICallTypes) {
  * @param failureType
  * @param fetchParams
  * @param stateParams
- * @param dispatch
+ * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
  */
 export const failureHandler = function(error, failureType, fetchParams, stateParams, dispatch) {
   console.warn("Error with API request:", error);
@@ -140,7 +139,7 @@ export const failureHandler = function(error, failureType, fetchParams, statePar
  * @param originalBody
  * @param fetchParams
  * @param stateParams
- * @param dispatch
+ * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
  */
 export const successHandler = function(data, successType, originalBody, fetchParams, stateParams, dispatch) {
   Object.assign(data, { errors: null }); // nullify errors if success
