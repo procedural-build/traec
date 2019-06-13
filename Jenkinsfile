@@ -41,7 +41,8 @@ pipeline {
     }
   }
   environment {
-    SECRET = credentials('TOKEN')
+    SECRET = credentials('TOKEN'),
+    npm_config_cache='npm-cache',
     HOME = '.'
 
   }
