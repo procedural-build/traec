@@ -37,7 +37,18 @@
     "automock": false,
     "setupFiles": [
       "./test/setupJest.js"
+    ],
+    "coverageReporters": [
+      "text"
+    ],
+    "reporters": [
+      "default",
+      "jest-junit"
     ]
+  },
+  "jest-junit": {
+    "output": "jest-test-results.xml",
+    "usePathForSuiteName": "true"
   },
   "scripts": {
     "test": "jest",

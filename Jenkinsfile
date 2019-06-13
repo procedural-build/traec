@@ -19,10 +19,12 @@ environment {
 
       steps {
         sh ' echo "beginning NPM" && npm test'
-        withEnv(["JEST_JUNIT_OUTPUT=./jest-test-results.xml"]) {
-          sh 'npm test -- --ci --testResultsProcessor="jest-junit"'
+        sh 'npm test -- --ci'
+        post {
+          always {
+            junit 'jest-test-results.xml'
+          }
         }
-        junit 'jest-test-results.xml'
       }
     }
     stage('Publish') {
