@@ -41,7 +41,6 @@
   },
   "scripts": {
     "test": "jest",
-    "test-ci": "npm test -- --ci --coverage ",
     "test:watch": "npm test -- --watch",
     "matchversion": "npm --no-git-tag-version --allow-same-version version $(npm view traec version)",
     "patchversion": "npm --no-git-tag-version version patch",
