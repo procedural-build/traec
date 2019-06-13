@@ -8,9 +8,7 @@ pipeline {
   stages {
     stage('NPM Install') {
       steps {
-        sh '''npm install && npm set prefix ~/.npm &&
-PATH="$HOME/.npm/bin:$PATH"
-&& PATH="./node_modules/.bin:$PATH" && npm install -g documentation'''
+        sh 'npm install && npm install -g documentation'
       }
     }
     stage('Test') {
@@ -43,7 +41,7 @@ PATH="$HOME/.npm/bin:$PATH"
   }
   environment {
     SECRET = credentials('TOKEN')
-    npm_config_cache='npm-cache'
+    npm_config_cache = 'npm-cache'
     HOME = '.'
   }
 }
