@@ -30,7 +30,7 @@ environment {
             junit 'jest-test-results.xml'
           }
       }
-
+    }
     stage('Publish') {
       when {
         branch 'testing'
