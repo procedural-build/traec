@@ -5,6 +5,9 @@ pipeline {
     }
 
   }
+      environment {
+        HOME = '.'
+    }
   stages {
     stage('NPM Install') {
       steps {
