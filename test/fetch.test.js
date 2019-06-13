@@ -116,7 +116,7 @@ describe("fetchJSON", () => {
       bodyUsed: false
     };
     fetch.mockResponse(JSON.stringify(resp));
-    fetchJSON({ path: "/api/test" }, success, failure);
+    fetchJSON({ url: "/api/test" }, success, failure);
 
     expect(fetch.mock.calls.length).toEqual(1);
     expect(fetch.mock.calls[0]).toEqual([
@@ -144,7 +144,7 @@ describe("fetchJSON", () => {
       bodyUsed: false
     };
     fetch.mockResponseOnce(JSON.stringify(resp));
-    fetchJSON({ path: "/api/bad-test" }, success, failure);
+    fetchJSON({ url: "/api/bad-test" }, success, failure);
 
     expect(fetch).toHaveBeenCalled();
     expect(fetch.mock.calls[0]).toEqual([
