@@ -7,6 +7,7 @@ pipeline {
   }
 environment {
         SECRET = credentials('TOKEN')
+        SLACK = credentials('slack')
     }
 
   stages {
@@ -38,6 +39,33 @@ environment {
       steps {
         sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
       }
+    }
+  }
+
+  post {
+
+    always {
+      cleanWs()
+      }
+
+    success {
+      slackSend(
+         message: "SUCCESS\nJob: ${env.JOB_NAME} \nBuild ${env.BUILD_DISPLAY_NAME} \n URL: ${env.RUN_DISPLAY_URL}",
+         color: "good",
+         token: ${SLACK},
+         baseUrl: 'https://traecker.slack.com/services/hooks/jenkins-ci/',
+         channel: '#jenkins-ci'
+      )
+    }
+
+    failure {
+       slackSend(
+         message: "FAILED\nJob: ${env.JOB_NAME} \nBuild ${env.BUILD_DISPLAY_NAME} \n URL: ${env.RUN_DISPLAY_URL}",
+         color: "#fc070b",
+         token: ${SLACK},
+         baseUrl: 'https://traecker.slack.com/services/hooks/jenkins-ci/',
+         channel: '#jenkins-ci'
+       )
     }
   }
 
