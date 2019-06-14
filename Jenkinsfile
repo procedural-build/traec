@@ -24,7 +24,7 @@ pipeline {
     }
     stage('Build Doc & Publish') {
       when {
-        branch 'testing-Docs'
+        branch 'master'
       }
       steps {
         sh 'documentation build src/** -f html -o docs'
