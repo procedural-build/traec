@@ -1,22 +1,35 @@
 import Im from "../immutable";
 
-// Convert camelCase to Sentence Case
-export const camelCaseToSentence = text => {
-  let result = text.replace(/([A-Z])/g, " $1");
-  return result.charAt(0).toUpperCase() + result.slice(1);
-};
+/**  
+ * Convert camelCase to Sentence Case
+ * @param {String} text
+*/
+export const camelCaseToSentence = (text) => {
+    let result = text.replace( /([A-Z])/g, " $1" );
+    return result.charAt(0).toUpperCase() + result.slice(1);
+ }
 
-// Get the value at a path in a deeply nested object
-// Can also be handled by Immutable
-export const getPath = (obj, path) => {
-  return path.split(".").reduce((prev, curr) => {
-    return prev ? prev[curr] : undefined;
-  }, obj);
-};
+/**  
+ * Get the value at a path in a deeply nested object.
+ * 
+ * Can also be handled by Immutable 
+ * @param obj
+ * @param path 
+*/
+ export const getPath = (obj, path) => { 
+    return path.split('.').reduce( 
+        (prev, curr) => { return prev ? prev[curr] : undefined }, 
+        obj 
+    )
+}
 
-// Set a value at a path in a deeply nested object
-// This is essentially what Immutable does - but without abstracting the
-// data - so it may be more efficient than using Immutables fromJS and toJS methods
+/** 
+ * Set a value at a path in a deeply nested object.
+ * 
+ * This is essentially what Immutable does - but without abstracting the data.
+ * 
+ * It may be more efficient than using Immutables fromJS and toJS methods
+*/
 export const setPath = (obj, path, value, deepCopy = true) => {
   if (!path) {
     throw new Error("Must provide a path");
@@ -39,12 +52,24 @@ export const setPath = (obj, path, value, deepCopy = true) => {
   return newObj;
 };
 
-// Returns a copy of the obj but with references along "path" deep-copied
-// so that edits may be made on that path without affecting the original object
-// Use this before "setPath" to ensure objects are deeply copied along path
-// ie let newState = Object.assign({}, state)            // CAREFUL!!! Shallow copy only
-//    let newState = JSON.parse(JSON.stringify(state));  // This is a deep copy - unnecessary and calc heavy for large objecst
-//    let newState = copyAlongPath(state, path)          // Copes state with a deep-copy along path only
+/**
+ * Returns a copy of the obj but with references along "path" deep-copied so that edits may be made on that path without 
+ * affecting the original object.
+ * 
+ * Use this before "setPath" to ensure objects are deeply copied along path
+ * 
+ * ie 
+ * 
+ * ~~~~
+ * > let newState = Object.assign({}, state)            // CAREFUL!!! Shallow copy only
+ * 
+ * > let newState = JSON.parse(JSON.stringify(state));  // This is a deep copy - unnecessary and calc heavy for large objects
+ * 
+ * > let newState = copyAlongPath(state, path)          // Copies state with a deep-copy along path only
+ * ~~~~
+ * @param obj
+ * @param path
+ */
 export const copyAlongPath = (obj, path) => {
   let newObj = Object.assign({}, obj);
   if (!path) {
@@ -66,49 +91,73 @@ export const copyAlongPath = (obj, path) => {
   return newObj;
 };
 
-// When storing data as an indexed object (dictionary) then use this method to get the
-// Dictionary back as a list for rendering
-// https://techblog.appnexus.com/five-tips-for-working-with-redux-in-large-applications-89452af4fdcb
-// MODIFIED FOR IMMUTABLE OBJECTS
-export const objToList = obj => {
-  if (obj == null) {
-    obj = Im.Map();
-  }
-  return Im.List(obj.keys()).map(key => obj.get(key));
-};
+/**  
+ * When storing data as an indexed object (dictionary) then use this method to get the
+ * Dictionary back as a list for rendering
+ * 
+ * https://techblog.appnexus.com/five-tips-for-working-with-redux-in-large-applications-89452af4fdcb
+ *  
+ * MODIFIED FOR IMMUTABLE OBJECTS
+ * @param obj
+ */
+export const objToList = (obj) => {
+    if (obj == null) { obj = Im.Map() }
+    return Im.List(obj.keys()).map( key => obj.get(key) );
+}
 
-// Convert a list into an indexed object (dictionary) using key-values from each object
-export const listToObj = (objList, keyField) => {
-  return objList.reduce((acc, cur) => {
-    acc[cur[keyField]] = cur;
-    return acc;
-  }, {});
-};
+/** 
+ *  Convert a list into an indexed object (dictionary) using key-values from each object
+ * @param objList
+ * @param keyField
+*/
+ export const listToObj = (objList, keyField) => {
+    return objList.reduce( (acc,cur) => { acc[cur[keyField]] = cur; return acc;}, {})
+}
 
-// Immutable sort on list of objects by key
-export const sortObjListByKey = (itemList, key) => {
-  return itemList.sortBy((obj, index) => obj.get(key));
-};
+/** 
+ *  Immutable sort on list of objects by key
+ * @param itemList
+ * @param key
+*/
+ export const sortObjListByKey = (itemList, key) => {
+    return itemList.sortBy( (obj, index) => obj.get(key) )
+}
 
-// Set the item in state AND append to a list AND toggle a boolean when successful
-export const setItemInListAndVis = (state, itemData, stateParams) => {
-  let { itemPath, itemListPath, formVisPath } = stateParams;
-  let newState = state.setIn(itemPath.split("."), Im.fromJS(itemData));
-  if (!itemData.errors && itemListPath) {
-    // Create a list at the path if it is not already there
-    itemListPath = itemListPath.split(".");
-    newState = state.getIn(itemListPath) ? newState : newState.setIn(itemListPath, Im.List());
-    // Get the list of items and append to them (if object isn't already at the end)
-    const items = newState.getIn(itemListPath);
-    if (!items.last() || !items.last().equals(Im.fromJS(itemData))) {
-      newState = newState.updateIn(itemListPath, list => list.push(Im.fromJS(itemData)));
-      newState = newState.setIn(formVisPath.split("."), false);
+/** 
+ *  Set the item in state AND append to a list AND toggle a boolean when successful
+ * @param state
+ * @param itemData
+ * @param stateParams
+*/
+ export const setItemInListAndVis = (state, itemData, stateParams) => {
+    let { itemPath, itemListPath, formVisPath } = stateParams
+    let newState = state.setIn(itemPath.split('.'), Im.fromJS(itemData))
+    if (!itemData.errors && itemListPath) {
+        // Create a list at the path if it is not already there
+        itemListPath = itemListPath.split('.')
+        newState = (state.getIn(itemListPath)) ? newState : newState.setIn(itemListPath, Im.List())
+        // Get the list of items and append to them (if object isn't already at the end)
+        const items = newState.getIn(itemListPath)
+        if (!items.last() || !(items.last().equals(Im.fromJS(itemData)))) {
+            newState = newState.updateIn(
+                itemListPath, 
+                list => list.push(Im.fromJS(itemData))
+            );
+            newState = newState.setIn(formVisPath.split('.'), false)
+        }
     }
-  }
   return newState;
 };
 
-// Set the item in state AND append to a DICTIONARY AND toggle a boolean when successful
+/**
+ * Set the item in state AND append to a DICTIONARY AND toggle a boolean when successful
+ * 
+ * @param state
+ * @param itemData
+ * @param stateParams
+ * 
+ *  
+ */ 
 export const setItemInDictAndVis = (state, itemData, stateParams) => {
   let { itemPath, itemListPath, formVisPath, keyField } = stateParams;
   let newState = state.setIn(itemPath.split("."), Im.fromJS(itemData));
@@ -122,11 +171,21 @@ export const setItemInDictAndVis = (state, itemData, stateParams) => {
   return newState;
 };
 
-// Set the items from list in a DICTIONARY
-// You have to be very careful of shallow and deep copying - but we don't want to
-// deep-copy the whole state - that is very inefficient.  So we check if the object
-// reference is the same and clone before editing structuring data as a DAG
-// That is why we use IMMUTABLE.js
+/**  
+ * Set the items from list in a DICTIONARY
+ * 
+ * You have to be very careful of shallow and deep copying - but we don't want to 
+ * deep-copy the whole state - that is very inefficient.  
+ * 
+ * Therefore we check if the object
+ * reference is the same and clone before editing structuring data as a DAG.
+ * 
+ * That is why we use IMMUTABLE.js
+ * 
+ * @param state
+ * @param itemData
+ * @param stateParams
+*/
 export const setListInIndexedObj = (state, itemList, stateParams) => {
   let { itemPath, keyField } = stateParams;
   itemPath = itemPath.split(".");
@@ -160,7 +219,12 @@ export const setListInIndexedObj = (state, itemList, stateParams) => {
   return newState;
 };
 
-// Set a key into a Immutable Set O(log32 N) adds and has
+/**  
+ * Set a key into a Immutable Set O(log32 N) adds and has
+ * @param state
+ * @param keyList
+ * @param pathToSet
+*/
 export const keyListToSet = (state, keyList, pathToSet) => {
   let path = pathToSet.split(".");
   let curSet = state.getIn(path);
@@ -183,7 +247,12 @@ export const keyListToSet = (state, keyList, pathToSet) => {
   return newState;
 };
 
-// Add a list of items to a normalized object list with related reference(s)
+/**
+ * Add a list of items to a normalized object list with related reference(s)
+ * @param state
+ * @param itemList
+ * @param stateParams
+ */ 
 export const setRelatedItems = (state, itemList, stateParams) => {
   let { itemPath, keyField, relatedSets } = stateParams;
   // Convert to a list (if we have a single item only)
