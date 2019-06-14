@@ -5,12 +5,24 @@ const WARNTIME = 1500;
 
 const initialState = Im.fromJS({});
 
-const get_key = action => {
+/**
+ *  fetchReducers.js line 9
+ * @param action
+ */
+
+ const get_key = action => {
   let { method, url } = action.fetchParams;
   return `${method} ${url}`;
 };
 
-const checkResponseTime = (timeSent, now, action) => {
+/**
+ * fetchReducers.js line 19
+ * @param timeSent
+ * @param now
+ * @param action
+ */
+
+ const checkResponseTime = (timeSent, now, action) => {
   if (timeSent) {
     let dt = now - timeSent;
     if (dt > WARNTIME) {

@@ -1,6 +1,6 @@
 import { postProject } from "./project";
-import { postTracker } from "./tracker";
-import { postRootRef } from "./ref";
+import { postTracker } from "../tracker";
+import { postRootRef } from "../ref";
 
 /*
 HANDLER FOR POSTING A PROJECT AND SETTING IT UP WITH A TRACKER AND 

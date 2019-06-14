@@ -1,5 +1,5 @@
 
-/*
+/**
 * Use Middleware API to fetch data and then set it into the Redux
 * state by a successStateSetFunction and failureStateSetFunction included
 * in the stateParams object
@@ -16,7 +16,8 @@ export const fetchToState = (params, body) => {
 }
 
 
-/* Common action is to toggle a Boolean value (for showing forms)
+/**
+ *  Common action is to toggle a Boolean value (for showing forms)
 */
 export const toggleForm = (stateParams) => {
     return ({
@@ -26,8 +27,11 @@ export const toggleForm = (stateParams) => {
 }
 
 
-// Has a metric score been set
-export const setMetricScore = (itemDict, scoreId, commitId) => {
+/**
+ *  
+ * Has a metric score been set
+*/
+ export const setMetricScore = (itemDict, scoreId, commitId) => {
     return ({
         type: 'UI_SET_IN',
         payload: itemDict,
