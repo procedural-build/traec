@@ -24,7 +24,7 @@ pipeline {
     }
     stage('Build Doc & Publish') {
       when {
-        branch 'master'
+        branch 'testing-Docs'
       }
       steps {
         sh 'documentation build src/** -f html -o docs'
@@ -40,5 +40,10 @@ pipeline {
   environment {
     SECRET = credentials('TOKEN')
     HOME = '.'
+  }
+  post{
+    always{
+      cleanWs()
+    }
   }
 }
