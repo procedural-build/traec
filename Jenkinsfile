@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       image 'node:10.14-slim'
-          args '-u 0:0'
+      args '-u 0:0'
     }
 
   }
@@ -22,21 +22,13 @@ pipeline {
         junit 'jest-test-results.xml'
       }
     }
-    stage('Publish') {
-      parallel {
-        stage('Publish') {
-          when {
-            branch 'master'
-          }
-          steps {
-            sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
-          }
-        }
-        stage('Build Docs') {
-          steps {
-            sh 'documentation build src/** -f html -o docs'
-          }
-        }
+    stage('Build Doc & Publish') {
+      when {
+        branch 'master'
+      }
+      steps {
+        sh 'documentation build src/** -f html -o docs'
+        sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
       }
     }
   }
