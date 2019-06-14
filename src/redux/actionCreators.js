@@ -5,16 +5,15 @@
 * in the stateParams object
 */
 export const fetchToState = (params, body) => {
-    // Destructure the parameters into its constituent fetch and state parmeter objects
-    let {fetchParams, stateParams} = params
-    fetchParams = Object.assign({}, {body}, fetchParams)
-    return ({
-        APICallTypes: { defaultType: 'ENTITY_SET_FUNC' }, 
-        fetchParams,
-        stateParams
-    })
-}
-
+  // Destructure the parameters into its constituent fetch and state parmeter objects
+  let { fetchParams, stateParams } = params;
+  fetchParams = Object.assign({}, { body }, fetchParams);
+  return {
+    APICallTypes: { defaultType: "ENTITY_SET_FUNC" },
+    fetchParams,
+    stateParams
+  };
+};
 
 /**
  *  Common action is to toggle a Boolean value (for showing forms)
