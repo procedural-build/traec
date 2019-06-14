@@ -36,11 +36,11 @@ environment {
         branch 'master'
       }
       steps {
-                ftpPublisher paramPublish: null, masterNodeName: '', alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, publishers: [
-                                        [configName: 'Docs', transfers: [
-                                                [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/traec/coverage", remoteDirectorySDF: false, removePrefix: 'coverage/lcov-report', sourceFiles: 'coverage/lcov-report/**']
-                                        ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
-                ]
+        ftpPublisher paramPublish: null, masterNodeName: '', alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, publishers: [
+                                [configName: 'Docs', transfers: [
+                                        [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/traec/coverage", remoteDirectorySDF: false, removePrefix: 'coverage/lcov-report', sourceFiles: 'coverage/lcov-report/**']
+                                ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
+        ]
 
 
         sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
