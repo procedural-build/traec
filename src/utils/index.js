@@ -1,4 +1,4 @@
-import Im from '../immutable';
+import Im from "../immutable";
 
 /**  
  * Convert camelCase to Sentence Case
@@ -30,21 +30,27 @@ export const camelCaseToSentence = (text) => {
  * 
  * It may be more efficient than using Immutables fromJS and toJS methods
 */
-export const setPath = (obj, path, value, deepCopy=true) => {
-    if (!path) { throw new Error('Must provide a path') }
-    let newObj = (deepCopy) ? copyAlongPath(obj, path) : obj
-    let o = newObj;
-    let k = null;
-    let parts = path.split('.')
-    for (let i = 0; i < parts.length; i++) {
-        k = parts[i]  
-        if (i == parts.length - 1) { break; } 
-        if (!(k in o)) { o[k] = {} }
-        o = o[k]
+export const setPath = (obj, path, value, deepCopy = true) => {
+  if (!path) {
+    throw new Error("Must provide a path");
+  }
+  let newObj = deepCopy ? copyAlongPath(obj, path) : obj;
+  let o = newObj;
+  let k = null;
+  let parts = path.split(".");
+  for (let i = 0; i < parts.length; i++) {
+    k = parts[i];
+    if (i == parts.length - 1) {
+      break;
     }
-    o[k] = value
-    return newObj
-}
+    if (!(k in o)) {
+      o[k] = {};
+    }
+    o = o[k];
+  }
+  o[k] = value;
+  return newObj;
+};
 
 /**
  * Returns a copy of the obj but with references along "path" deep-copied so that edits may be made on that path without 
@@ -65,22 +71,25 @@ export const setPath = (obj, path, value, deepCopy=true) => {
  * @param path
  */
 export const copyAlongPath = (obj, path) => {
-    let newObj = Object.assign({}, obj)
-    if (!path) {return newObj}
-    let n = newObj
-    let o = obj
-    let k = null
-    let parts = path.split('.')
-    for (let i = 0; i < parts.length; i++) {
-        k = parts[i]
-        if ((!(k in o)) || (!(typeof(o[k]) == 'object'))) { return newObj; } 
-        n[k] = Object.assign({}, o[k])
-        o = o[k]
-        n = n[k]
+  let newObj = Object.assign({}, obj);
+  if (!path) {
+    return newObj;
+  }
+  let n = newObj;
+  let o = obj;
+  let k = null;
+  let parts = path.split(".");
+  for (let i = 0; i < parts.length; i++) {
+    k = parts[i];
+    if (!(k in o) || !(typeof o[k] == "object")) {
+      return newObj;
     }
-    return newObj
-}
-
+    n[k] = Object.assign({}, o[k]);
+    o = o[k];
+    n = n[k];
+  }
+  return newObj;
+};
 
 /**  
  * When storing data as an indexed object (dictionary) then use this method to get the
@@ -137,9 +146,8 @@ export const objToList = (obj) => {
             newState = newState.setIn(formVisPath.split('.'), false)
         }
     }
-    return newState
-}
-
+  return newState;
+};
 
 /**
  * Set the item in state AND append to a DICTIONARY AND toggle a boolean when successful
@@ -151,17 +159,17 @@ export const objToList = (obj) => {
  *  
  */ 
 export const setItemInDictAndVis = (state, itemData, stateParams) => {
-    let { itemPath, itemListPath, formVisPath, keyField } = stateParams
-    let newState = state.setIn(itemPath.split('.'), Im.fromJS(itemData))
-    if (!itemData.errors && itemListPath) {
-        // Add the item into its referenced areas (including relatedSets if applicable)
-        let params = Object.assign({}, stateParams, {itemPath: itemListPath})
-        newState = setListInIndexedObj(newState, itemData, params)
-        // Toggle the form
-        newState = newState.setIn(formVisPath.split('.'), false)
-    }
-    return newState
-}
+  let { itemPath, itemListPath, formVisPath, keyField } = stateParams;
+  let newState = state.setIn(itemPath.split("."), Im.fromJS(itemData));
+  if (!itemData.errors && itemListPath) {
+    // Add the item into its referenced areas (including relatedSets if applicable)
+    let params = Object.assign({}, stateParams, { itemPath: itemListPath });
+    newState = setListInIndexedObj(newState, itemData, params);
+    // Toggle the form
+    newState = newState.setIn(formVisPath.split("."), false);
+  }
+  return newState;
+};
 
 /**  
  * Set the items from list in a DICTIONARY
@@ -179,43 +187,37 @@ export const setItemInDictAndVis = (state, itemData, stateParams) => {
  * @param stateParams
 */
 export const setListInIndexedObj = (state, itemList, stateParams) => {
-    let { itemPath, keyField } = stateParams
-    itemPath = itemPath.split('.')
-    // Ensure the items coming in are a list
-    itemList = (!Array.isArray(itemList)) ? [itemList] : itemList
-    // Ensure the path exists then Merge with immutable state
-    let newState = (state.getIn(itemPath)) ? state : state.setIn(itemPath, Im.Map())
-    newState = newState.updateIn(itemPath,
-        items => items.merge( Im.fromJS(listToObj( itemList, keyField )) )
-    ) 
-    // If there are related sets then set them here
-    if (stateParams.relatedSets) {
-        newState = setRelatedItems(newState, itemList, stateParams)
-    }
-    // Set a related key if we have one item
-    if (stateParams.relatedItem && itemList.length == 1) {
-        newState = newState.setIn(
-            stateParams.relatedItem.split('.'), itemList[0][keyField]
-        )
-    }
-    // Set a related key if we have one item
-    if (stateParams.copyTo && itemList.length == 1) {
-        newState = newState.setIn(
-            stateParams.copyTo.split('.'), itemList[0]
-        )
-    }
-    // Copy fields to related areas (if defined)
-    if (stateParams.copyFields) {
-        itemList.map( item => {
-            stateParams.copyFields.forEach( (copyField) => { 
-                let { field, path } = copyField
-                let itemPath = path + "." + item[keyField] + "." + field
-                newState = newState.setIn( itemPath.split('.'), Im.fromJS(item[field]) )
-            })
-        })
-    }
-    return newState
-}
+  let { itemPath, keyField } = stateParams;
+  itemPath = itemPath.split(".");
+  // Ensure the items coming in are a list
+  itemList = !Array.isArray(itemList) ? [itemList] : itemList;
+  // Ensure the path exists then Merge with immutable state
+  let newState = state.getIn(itemPath) ? state : state.setIn(itemPath, Im.Map());
+  newState = newState.updateIn(itemPath, items => items.merge(Im.fromJS(listToObj(itemList, keyField))));
+  // If there are related sets then set them here
+  if (stateParams.relatedSets) {
+    newState = setRelatedItems(newState, itemList, stateParams);
+  }
+  // Set a related key if we have one item
+  if (stateParams.relatedItem && itemList.length == 1) {
+    newState = newState.setIn(stateParams.relatedItem.split("."), itemList[0][keyField]);
+  }
+  // Set a related key if we have one item
+  if (stateParams.copyTo && itemList.length == 1) {
+    newState = newState.setIn(stateParams.copyTo.split("."), itemList[0]);
+  }
+  // Copy fields to related areas (if defined)
+  if (stateParams.copyFields) {
+    itemList.map(item => {
+      stateParams.copyFields.forEach(copyField => {
+        let { field, path } = copyField;
+        let itemPath = path + "." + item[keyField] + "." + field;
+        newState = newState.setIn(itemPath.split("."), Im.fromJS(item[field]));
+      });
+    });
+  }
+  return newState;
+};
 
 /**  
  * Set a key into a Immutable Set O(log32 N) adds and has
@@ -224,26 +226,26 @@ export const setListInIndexedObj = (state, itemList, stateParams) => {
  * @param pathToSet
 */
 export const keyListToSet = (state, keyList, pathToSet) => {
-    let path = pathToSet.split('.')
-    let curSet = state.getIn(path)
-    let newState = state
-    // Change a List to a Set
-    if (curSet && Im.List.isList(curSet)) {
-        newState = newState.updateIn(path, item => Im.Set(item))
-        curSet = newState.getIn(path)
-    }
-    // Ensure that a Set is at the path provided
-    if (curSet && !Im.Set.isSet(curSet)) {
-        throw new Error(`Object at path ${pathToSet} is not a Set`)
-    }
-    // Create a new set if nothing is there
-    if (!curSet) {
-        newState = state.setIn(path, Im.Set())
-    }
-    // Now union the set with our keys
-    newState = newState.updateIn(path, item => item.union(Im.Set(keyList)))
-    return newState
-}
+  let path = pathToSet.split(".");
+  let curSet = state.getIn(path);
+  let newState = state;
+  // Change a List to a Set
+  if (curSet && Im.List.isList(curSet)) {
+    newState = newState.updateIn(path, item => Im.Set(item));
+    curSet = newState.getIn(path);
+  }
+  // Ensure that a Set is at the path provided
+  if (curSet && !Im.Set.isSet(curSet)) {
+    throw new Error(`Object at path ${pathToSet} is not a Set`);
+  }
+  // Create a new set if nothing is there
+  if (!curSet) {
+    newState = state.setIn(path, Im.Set());
+  }
+  // Now union the set with our keys
+  newState = newState.updateIn(path, item => item.union(Im.Set(keyList)));
+  return newState;
+};
 
 /**
  * Add a list of items to a normalized object list with related reference(s)
@@ -252,12 +254,14 @@ export const keyListToSet = (state, keyList, pathToSet) => {
  * @param stateParams
  */ 
 export const setRelatedItems = (state, itemList, stateParams) => {
-    let { itemPath, keyField, relatedSets } = stateParams
-    // Convert to a list (if we have a single item only)
-    itemList = (!Array.isArray(itemList)) ? [itemList] : itemList
-    relatedSets = (!Array.isArray(relatedSets)) ? [relatedSets] : relatedSets
-    let keyList = itemList.map( item => item[keyField] )
-    let newState = state
-    relatedSets.forEach( path => { newState = keyListToSet(state, keyList, path)})
-    return newState
-}
+  let { itemPath, keyField, relatedSets } = stateParams;
+  // Convert to a list (if we have a single item only)
+  itemList = !Array.isArray(itemList) ? [itemList] : itemList;
+  relatedSets = !Array.isArray(relatedSets) ? [relatedSets] : relatedSets;
+  let keyList = itemList.map(item => item[keyField]);
+  let newState = state;
+  relatedSets.forEach(path => {
+    newState = keyListToSet(state, keyList, path);
+  });
+  return newState;
+};
