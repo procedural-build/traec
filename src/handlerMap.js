@@ -1,5 +1,4 @@
-import * as fh from './fetchHandlers'
-
+import * as fh from "./fetchHandlers";
 
 /*
 Object for getting the fetch handler functions to use based on API endpoint.
@@ -30,38 +29,38 @@ second KEY is the http method which are:
 */
 
 const makeHandlerMap = function() {
-    console.log("MAKING fetchHandler MAP")
-    let handlerMap = {}
-    for (let funcName of Object.keys(fh)) {
-        try {
-            let fetchHandler = fh[funcName]
-            let {fetchParams, stateParams} = fetchHandler({})
-            let {apiId, method} = fetchParams
-            if (apiId) {
-                //console.log(`FOUND API ID ${apiId}`)
-                let parts = apiId.split('_')
-                let endIndex = apiId.endsWith('partial_update') ? parts.length-2 : parts.length-1
-                let prefix = parts.slice(1, endIndex).join('_')
-                // Get the action of the fetch
-                let action = parts.slice(endIndex, parts.length).join('_')
-                if (['POST', 'PUT', 'PATCH'].indexOf(method) > -1) {
-                    action = method.toLowerCase()
-                }
-                let actionMap = handlerMap[prefix] || {}
-                actionMap[action] = {
-                    fetchHandler: fetchHandler,
-                    requiredParams: fetchParams.requiredParams || [],
-                    queryParams: fetchParams.queryParams || []
-                }
-                // Assign the updated action map to the handlerMap
-                Object.assign(handlerMap, {[prefix]: actionMap})
-            }
-        } catch(err) {
-            //console.warn("Error constructing handlerMap", err)
-            continue
+  console.log("MAKING fetchHandler MAP");
+  let handlerMap = {};
+  for (let funcName of Object.keys(fh)) {
+    try {
+      let fetchHandler = fh[funcName];
+      let { fetchParams, stateParams } = fetchHandler({});
+      let { apiId, method } = fetchParams;
+      if (apiId) {
+        //console.log(`FOUND API ID ${apiId}`)
+        let parts = apiId.split("_");
+        let endIndex = apiId.endsWith("partial_update") ? parts.length - 2 : parts.length - 1;
+        let prefix = parts.slice(1, endIndex).join("_");
+        // Get the action of the fetch
+        let action = parts.slice(endIndex, parts.length).join("_");
+        if (["POST", "PUT", "PATCH"].indexOf(method) > -1) {
+          action = method.toLowerCase();
         }
+        let actionMap = handlerMap[prefix] || {};
+        actionMap[action] = {
+          fetchHandler: fetchHandler,
+          requiredParams: fetchParams.requiredParams || [],
+          queryParams: fetchParams.queryParams || []
+        };
+        // Assign the updated action map to the handlerMap
+        Object.assign(handlerMap, { [prefix]: actionMap });
+      }
+    } catch (err) {
+      //console.warn("Error constructing handlerMap", err)
+      continue;
     }
-    return handlerMap
-}
+  }
+  return handlerMap;
+};
 
-export const handlerMap = makeHandlerMap()
+export const handlerMap = makeHandlerMap();

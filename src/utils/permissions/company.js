@@ -6,7 +6,7 @@ import { fetchToState } from "../../redux/actionCreators";
 
 /**
  * Fetch company user permissions
- * @param  companyId 
+ * @param  companyId
  */
 export const fetchCompanyUserPermissions = function(companyId) {
   let params = fetchHandlers.getCompanyUserPermissions({ companyId });
@@ -15,18 +15,18 @@ export const fetchCompanyUserPermissions = function(companyId) {
 
 /**
  * Get user permissions of a company by ID
- * @param  state 
- * @param  companyId 
+ * @param  state
+ * @param  companyId
  */
 export const getCompanyPermissions = function(state, companyId) {
   return state.getInPath(`entities.companyObjects.byId.${companyId}.userPermission`);
 };
 /**
  * Check the permissions for a company by ID
- * @param  companyId 
- * @param  requiresAdmin 
- * @param  requiredActions 
- * @param  allow_fetch 
+ * @param  companyId
+ * @param  requiresAdmin
+ * @param  requiredActions
+ * @param  allow_fetch
  */
 export const companyPermissionCheck = function(companyId, requiresAdmin, requiredActions, allow_fetch = true) {
   let state = store.getState();
@@ -114,8 +114,8 @@ export const companyPermissionRender = function(
 };
 /**
  * company.js line 116
- * @param  companyId 
- * @param  items 
+ * @param  companyId
+ * @param  items
  */
 export const companyPermissionFilter = function(companyId, items) {
   let state = store.getState();

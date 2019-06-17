@@ -30,4 +30,3 @@ let expect = chai.expect;
 //   expect(utils.sortObjListByKey).to.exist;
 //   expect(utils.copyAlongPath).to.exist;
 // });
-
