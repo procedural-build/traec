@@ -1,12 +1,20 @@
 import Traec from "../src";
 import React from "react";
+import configureStore from "redux-mock-store";
+
+import store from "../src/redux/store";
+jest.mock("store");
 
 describe("fethcManager", () => {
   it("should contain a test", () => {
-    const spyedFetch = spyOn(Traec, "Fetch");
-    const fetches = [new Traec.Fetch("project_reporting_periods", "list")];
-    Traec.fetchRequired(fetches);
-    expect(spyedFetch).toBeCalledTimes(3);
+    const middlewares = [];
+    const mockStore = configureStore(middlewares);
+    const initialState = {};
+    store.mockImplementation(mockStore(initialState));
+
+    let fetch = new Traec.Fetch("company", "list");
+    fetch.dispatch();
+    expect(store.getState().content).toMatchSnapshot();
   });
 });
 
