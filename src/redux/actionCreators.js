@@ -33,3 +33,23 @@ export const setMetricScore = (itemDict, scoreId, commitId) => {
     }
   };
 };
+
+export const setNavBarItems = itemDict => {
+  return {
+    type: "UI_SET_IN",
+    payload: itemDict,
+    stateParams: {
+      itemPath: "navbar.items"
+    }
+  };
+};
+
+export const setSideBarItems = itemDict => {
+  return {
+    type: "UI_SET_IN",
+    payload: itemDict,
+    stateParams: {
+      itemPath: "sidebar.items"
+    }
+  };
+};
