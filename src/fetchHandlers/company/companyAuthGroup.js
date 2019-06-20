@@ -9,7 +9,7 @@ export const getCompanyAuthGroups = ({ companyId }) => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addListToDict(`companyObjects.byId.${companyId}.authgroups`, data);
+    let newState = state.addListToDict(`companyObjects.byId.${companyId}.authGroups`, data);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
@@ -27,7 +27,7 @@ export const postCompanyAuthGroup = ({ companyId }) => {
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
     if (!data.errors) {
-      newState = newState.addToDict(`companyObjects.byId.${companyId}.authgroups`, data);
+      newState = newState.addToDict(`companyObjects.byId.${companyId}.authGroups`, data);
       newState = newState.setInPath(formVisPath, false);
     }
     return newState;
