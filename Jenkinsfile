@@ -60,7 +60,7 @@ environment {
 
     success {
       slackSend(
-         message: "SUCCESS\nJob: ${env.JOB_NAME} \nBuild ${env.BUILD_DISPLAY_NAME} \n URL: ${env.RUN_DISPLAY_URL} \n Master Test Coverage Report: https://procedural.build/docs/traec/coverage/",
+         message: "SUCCESS\nJob: ${env.JOB_NAME} \nBuild ${env.BUILD_DISPLAY_NAME} \n URL: ${env.RUN_DISPLAY_URL} \n Master Test Coverage Report: https://docs.procedural.build/traec/coverage/",
          color: "good",
          token: "${SLACK}",
          baseUrl: 'https://traecker.slack.com/services/hooks/jenkins-ci/',
