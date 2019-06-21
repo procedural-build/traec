@@ -1,6 +1,12 @@
-/*
-Utility functions for parsing the text returned from the API that representes a 
-metric operation
+/** 
+ * Utility functions for parsing the text returned from the API that representes a 
+ * metric operation
+ * @param str
+ * @param parts
+ * @param lastIndex
+ * @param endIndex
+
+
 */
 
 const addPartToParts = (str, parts, lastIndex, endIndex) => {
@@ -11,10 +17,22 @@ const addPartToParts = (str, parts, lastIndex, endIndex) => {
   return parts;
 };
 
+/**
+ * Count characters of a string
+ * @param {*} str 
+ * @param {*} chr 
+ */
 const countChar = (str, chr) => {
   return (str.match(new RegExp(chr, "g")) || []).length;
 };
 
+/**
+ * Split string at certain points between certain points
+ * @param str 
+ * @param splitChars 
+ * @param inChars 
+ * @param outChars 
+ */
 export const splitAtLevel = (str, splitChars, inChars = "", outChars = "") => {
   let depth = 0;
   let lastIndex = 0;
@@ -37,6 +55,11 @@ export const splitAtLevel = (str, splitChars, inChars = "", outChars = "") => {
   return parts;
 };
 
+
+/**
+ * Validate operation string 
+ * @param  parts 
+ */
 export const validateOpStr = parts => {
   // let parts = splitAtLevel(text, "*^", "([", "])")
   if (parts.length == 3) {
@@ -57,6 +80,13 @@ export const validateOpStr = parts => {
   return parts;
 };
 
+/**
+ * 
+ * Get Elements of a string between certain points
+ * @param {String}  str 
+ * @param  startChar 
+ * @param  endChar 
+ */
 export const getBetween = (str, startChar, endChar) => {
   let depth = 0;
   let startIndex = null;
@@ -83,7 +113,12 @@ export const getBetween = (str, startChar, endChar) => {
   //console.warn("Match not found")
   return [null, str, null];
 };
-
+/**
+ * metricOperations.js line 117
+ * 
+ * @param  text 
+ * @param  opDetailList 
+ */
 export const getAllOps = (text, opDetailList = []) => {
   let parts = splitAtLevel(text, "*^", "([", "])");
   let ops = getBetween(parts[1], "[", "]")[1];

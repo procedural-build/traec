@@ -2,22 +2,23 @@ pipeline {
   agent {
     docker {
       image 'node:10.14-slim'
+      args '-u 0:0'
     }
 
   }
 environment {
         SECRET = credentials('TOKEN')
         SLACK = credentials('slack')
+        HOME = '.'
     }
 
   stages {
     stage('NPM Install') {
       steps {
-        sh 'npm install'
+        sh 'npm install && npm install -g documentation'
       }
     }
     stage('Test') {
-
       steps {
         withEnv(["JEST_JUNIT_OUTPUT=./jest-test-results.xml"]) {
           sh 'npm test -- --ci --coverage --testResultsProcessor="jest-junit"'
@@ -29,18 +30,24 @@ environment {
           }
       }
     }
-    stage('Publish') {
+    stage('Build Doc & Publish') {
       when {
         branch 'master'
       }
       steps {
         ftpPublisher paramPublish: null, masterNodeName: '', alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, publishers: [
-                                        [configName: 'Homepage', transfers: [
-                                                [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/traec/coverage", remoteDirectorySDF: false, removePrefix: 'coverage/lcov-report', sourceFiles: 'coverage/lcov-report/**']
-                                        ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
-                ]
+                                [configName: 'Docs', transfers: [
+                                        [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/traec/coverage", remoteDirectorySDF: false, removePrefix: 'coverage/lcov-report', sourceFiles: 'coverage/lcov-report/**']
+                                ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
+        ]
+
 
         sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
+        ftpPublisher paramPublish: null, masterNodeName: '', alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, publishers: [
+                                [configName: 'Docs', transfers: [
+                                        [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/traec", remoteDirectorySDF: false, removePrefix: 'docs', sourceFiles: 'docs/**']
+                                ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
+        ]
       }
     }
   }
