@@ -15,12 +15,12 @@ import { hasFetched } from "./fetchCache";
  * NOTE:  the original body (before the preFetchHook) is backed up to originalBody and these are
  * passed to later "nextHandlers" as the 3rd parameter (the actual body that is dispatched
  * is sent as the second parameter).
- * 
+ *
  * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
  * @param getState Returns the current state tree of your application. It is equal to the last value returned by the store's reducer.
  * @return {function(*): Function}
  */
-export const callAPIMiddleware = ({ dispatch, getState}) => {
+export const callAPIMiddleware = ({ dispatch, getState }) => {
   return next => action => {
     const { APICallTypes } = action;
 
@@ -58,9 +58,9 @@ export const callAPIMiddleware = ({ dispatch, getState}) => {
 
 /**
  * Check for Throttling that this URL has not been requested recently milliseconds between calls
- * @param getState Returns the current state tree of your application. It is equal to the last value returned by the store's reducer. 
+ * @param getState Returns the current state tree of your application. It is equal to the last value returned by the store's reducer.
  * @param fetchParams
- * @param action Payloads of information that send data from your application to your store. 
+ * @param action Payloads of information that send data from your application to your store.
  * @param next
  * @return {*}
  */

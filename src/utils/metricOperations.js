@@ -19,8 +19,8 @@ const addPartToParts = (str, parts, lastIndex, endIndex) => {
 
 /**
  * Count characters of a string
- * @param {*} str 
- * @param {*} chr 
+ * @param {*} str
+ * @param {*} chr
  */
 const countChar = (str, chr) => {
   return (str.match(new RegExp(chr, "g")) || []).length;
@@ -28,10 +28,10 @@ const countChar = (str, chr) => {
 
 /**
  * Split string at certain points between certain points
- * @param str 
- * @param splitChars 
- * @param inChars 
- * @param outChars 
+ * @param str
+ * @param splitChars
+ * @param inChars
+ * @param outChars
  */
 export const splitAtLevel = (str, splitChars, inChars = "", outChars = "") => {
   let depth = 0;
@@ -55,10 +55,9 @@ export const splitAtLevel = (str, splitChars, inChars = "", outChars = "") => {
   return parts;
 };
 
-
 /**
- * Validate operation string 
- * @param  parts 
+ * Validate operation string
+ * @param  parts
  */
 export const validateOpStr = parts => {
   // let parts = splitAtLevel(text, "*^", "([", "])")
@@ -81,11 +80,11 @@ export const validateOpStr = parts => {
 };
 
 /**
- * 
+ *
  * Get Elements of a string between certain points
- * @param {String}  str 
- * @param  startChar 
- * @param  endChar 
+ * @param {String}  str
+ * @param  startChar
+ * @param  endChar
  */
 export const getBetween = (str, startChar, endChar) => {
   let depth = 0;
@@ -115,9 +114,9 @@ export const getBetween = (str, startChar, endChar) => {
 };
 /**
  * metricOperations.js line 117
- * 
- * @param  text 
- * @param  opDetailList 
+ *
+ * @param  text
+ * @param  opDetailList
  */
 export const getAllOps = (text, opDetailList = []) => {
   let parts = splitAtLevel(text, "*^", "([", "])");

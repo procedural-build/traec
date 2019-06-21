@@ -29,21 +29,20 @@ const initialState = Im.fromJS({});
 
 /**
  * Add or Remove entities from Dictionary
- * 
+ *
  * @param state
  * @param action
  */
 
- const addOrRemove = (state, action) => {
-    let {itemPath: path, keyField="uid"} = action.stateParams
-    let itemPath = `${path}.${action.payload[keyField]}`
-    if (state.getInPath(itemPath)) {
-        return state.removeInPath(itemPath)
-    } else {
-        return state.addToDict(path, action.payload, keyField)
-    }
-}
-
+const addOrRemove = (state, action) => {
+  let { itemPath: path, keyField = "uid" } = action.stateParams;
+  let itemPath = `${path}.${action.payload[keyField]}`;
+  if (state.getInPath(itemPath)) {
+    return state.removeInPath(itemPath);
+  } else {
+    return state.addToDict(path, action.payload, keyField);
+  }
+};
 
 export default function(state = initialState, action) {
   switch (action.type) {

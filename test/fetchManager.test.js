@@ -2,11 +2,8 @@ import Traec from "../src";
 import React from "react";
 import configureStore from "redux-mock-store";
 
-import store from "../src/redux/store";
-jest.mock("store");
-
 describe("fethcManager", () => {
-  it("should contain a test", () => {
+  xit("should contain a test", () => {
     const middlewares = [];
     const mockStore = configureStore(middlewares);
     const initialState = {};

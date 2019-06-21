@@ -10,7 +10,7 @@ const initialState = Im.fromJS({});
  * @param action
  */
 
- const get_key = action => {
+const get_key = action => {
   let { method, url } = action.fetchParams;
   return `${method} ${url}`;
 };
@@ -22,7 +22,7 @@ const initialState = Im.fromJS({});
  * @param action
  */
 
- const checkResponseTime = (timeSent, now, action) => {
+const checkResponseTime = (timeSent, now, action) => {
   if (timeSent) {
     let dt = now - timeSent;
     if (dt > WARNTIME) {
