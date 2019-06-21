@@ -20,7 +20,6 @@ environment {
     }
     stage('Test') {
       steps {
-        sh ' echo "beginning NPM" && npm test'
         withEnv(["JEST_JUNIT_OUTPUT=./jest-test-results.xml"]) {
           sh 'npm test -- --ci --coverage --testResultsProcessor="jest-junit"'
         }

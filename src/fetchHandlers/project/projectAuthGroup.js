@@ -9,7 +9,7 @@ export const getProjectAuthGroups = ({ projectId }) => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addListToDict(`projectObjects.byId.${projectId}.authgroups`, data);
+    let newState = state.addListToDict(`projectObjects.byId.${projectId}.authGroups`, data);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
@@ -27,7 +27,7 @@ export const postProjectAuthGroup = ({ projectId }) => {
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
     if (!data.errors) {
-      newState = newState.addToDict(`projectObjects.byId.${projectId}.authgroups`, data);
+      newState = newState.addToDict(`projectObjects.byId.${projectId}.authGroups`, data);
       newState = newState.setInPath(formVisPath, false);
     }
     return newState;
