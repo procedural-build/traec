@@ -25,7 +25,7 @@ export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBo
       successHandler(json);
     })
     .catch(error => {
-      console.warn("ERROR IN API FETCH to " + path, error);
+      console.warn("ERROR IN API FETCH to " + url, error);
       error.json().then(json => {
         console.log(json);
         failureHandler(json);

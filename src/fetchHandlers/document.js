@@ -56,6 +56,7 @@ export const postDocument = ({ trackerId, refId, commitId, treeId }) => {
   };
 };
 
+
 export const getDocumentObjects = ({ trackerId, refId, commitId, documentId }) => {
   const fetchParams = {
     method: "PUT",
@@ -79,6 +80,7 @@ export const getDocumentObjects = ({ trackerId, refId, commitId, documentId }) =
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
+
 
 export const putDocumentObject = ({ trackerId, refId, commitId, documentId }) => {
   const fetchParams = {
@@ -106,6 +108,27 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId }) =>
       newState = newState.setInPath(`commitEdges.byId.${commitId}.documents.${documentId}.status`, status.uid);
       // Finally hide the form
       newState = newState.setInPath(formVisPath, false);
+    }
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
+
+export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/tracker/${trackerId}/ref/${refId}/document/${docId}/`,
+    apiId: "api_tracker_ref_document_delete",
+    requiredParams: ["trackerId", "refId", "commitId", "docId"],
+  };
+  const stateSetFunc = (state, action) => {
+    let parentId = state.getInPath(`commitEdges.byId.${commitId}.documents.${docId}.parent`);
+    let newState = state.removeInPath(`commitEdges.byId.${commitId}.documents.${docId}`);
+    if (parentId) {
+      newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
+        i ? i.delete(docId) : null
+      );
     }
     return newState;
   };
