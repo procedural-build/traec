@@ -57,3 +57,19 @@ export const setSideBarItems = itemDict => {
     }
   };
 };
+
+export const setUIItems = (itemDict, stateParams) => {
+  return {
+    type: "UI_SET_IN",
+    payload: itemDict,
+    stateParams
+  };
+};
+
+export const mergeInUI = (itemDict, stateParams) => {
+  return {
+    type: "UI_MERGE_IN",
+    payload: itemDict,
+    stateParams
+  };
+};
