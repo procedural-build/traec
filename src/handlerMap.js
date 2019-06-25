@@ -35,9 +35,9 @@ const makeHandlerMap = function() {
     try {
       let fetchHandler = fh[funcName];
       let { fetchParams, stateParams } = fetchHandler({});
-      if (!fetchParams) { 
+      if (!fetchParams) {
         //console.warn("Skipping function in fetchhandler with fetchParams undefined", fetchHandler)
-        continue 
+        continue;
       }
       let { apiId, method } = fetchParams;
       if (apiId) {

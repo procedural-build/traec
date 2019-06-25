@@ -123,11 +123,14 @@ export const postRootRef = ({ trackerId }) => {
     }
     return newState;
   };
-  return { fetchParams, stateParams: { 
-    stateSetFunc,
-    formVisPath: `ui.tracker.byId.${trackerId}.rootRef.SHOW_FORM`,
-    formObjPath: `ui.tracker.byId.${trackerId}.rootRef.newItem`
-  }};
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `ui.tracker.byId.${trackerId}.rootRef.SHOW_FORM`,
+      formObjPath: `ui.tracker.byId.${trackerId}.rootRef.newItem`
+    }
+  };
 };
 
 export const getRefBranches = ({ trackerId, refId }) => {
@@ -195,21 +198,23 @@ export const postTreeRefBranch = ({ trackerId, refId, commitId, treeId }) => {
     }
     return newState;
   };
-  return { fetchParams, stateParams: { 
-    stateSetFunc,
-    formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
-    formObjPath: `ui.ref.byId.${refId}.branch.newItem`
-   } };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
+      formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+    }
+  };
 };
 
-
-export const postRefBranch = ({ trackerId, refId, commitId}) => {
+export const postRefBranch = ({ trackerId, refId, commitId }) => {
   const fetchParams = {
     method: "POST",
     url: `/api/tracker/${trackerId}/ref/${refId}/branch/`,
     apiId: "api_tracker_ref_branch_create",
     requiredParams: ["trackerId", "refId", "commitId"]
-  }
+  };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     let { formVisPath, formObjPath } = action.stateParams;
@@ -231,23 +236,25 @@ export const postRefBranch = ({ trackerId, refId, commitId}) => {
       };
       newState = newState.setInPath(`commitBranches.commit.${commitId}.branch.${branchId}`, branchObj);
     }
-    return newState;           
-  }
-  return {fetchParams, stateParams: {
-    stateSetFunc,
-    formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
-    formObjPath: `ui.ref.byId.${refId}.branch.newItem`
-  }}
-}
+    return newState;
+  };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
+      formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+    }
+  };
+};
 
-
-export const putRefBranch = ({ trackerId, refId, commitId, branchId}) => {
+export const putRefBranch = ({ trackerId, refId, commitId, branchId }) => {
   const fetchParams = {
     method: "PUT",
     url: `/api/tracker/${trackerId}/ref/${refId}/branch/${branchId}/`,
     apiId: "api_tracker_ref_branch_update",
     requiredParams: ["trackerId", "refId", "commitId", "branchId"]
-  }
+  };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     let { formVisPath, formObjPath } = action.stateParams;
@@ -269,15 +276,17 @@ export const putRefBranch = ({ trackerId, refId, commitId, branchId}) => {
       };
       newState = newState.setInPath(`commitBranches.commit.${commitId}.branch.${branchId}`, branchObj);
     }
-    return newState;           
-  }
-  return {fetchParams, stateParams: {
-    stateSetFunc,
-    formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
-    formObjPath: `ui.ref.byId.${refId}.branch.newItem`
-  }}
-}
-
+    return newState;
+  };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
+      formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+    }
+  };
+};
 
 export const deleteTrackerRef = ({ trackerId, refId, commitId }) => {
   const fetchParams = {
@@ -297,4 +306,3 @@ export const deleteTrackerRef = ({ trackerId, refId, commitId }) => {
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
-

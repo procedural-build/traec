@@ -1,4 +1,4 @@
-export const getGenericReportingPeriods = ({
+const getGenericReportingPeriods = ({
   url,
   path,
   fromDate = null,
@@ -25,7 +25,7 @@ export const getGenericReportingPeriods = ({
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-export const getGenericExcelReport = ({ url, path, fromDate, toDate, ignore_cache, extraQueryParams }) => {
+const getGenericExcelReport = ({ url, path, fromDate, toDate, ignore_cache, extraQueryParams }) => {
   let { fetchParams } = getGenericReportingPeriods(url, path, fromDate, toDate, ignore_cache, extraQueryParams);
 
   Object.assign(fetchParams, { headers: { "content-type": "application/xlsx" } });
