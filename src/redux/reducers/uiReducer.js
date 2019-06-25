@@ -48,7 +48,6 @@ export default function(state = initialState, action) {
     case "UI_MERGE_IN":
       const { itemPath: path } = action.stateParams;
       const keyPath = path.split(".");
-      debugger;
       return state.mergeIn(keyPath, Im.fromJS(action.payload));
     default:
       return state;
