@@ -80,6 +80,7 @@ const edgeSetFunctions = {
     let { tree, document } = edge;
     newState = newState.addToDict("documents.byId", document);
     newState = newState.addListToSets([`commitEdges.byId.${commitId}.trees.${tree.uid}.documents`], [document.uid]);
+    newState = newState.setInPath(`commitEdges.byId.${commitId}.documents.${document.uid}.parent`, tree.uid);
     return newState;
   },
   treecategory: (commitId, edge, newState) => {

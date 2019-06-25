@@ -127,6 +127,7 @@ export default class Fetch {
   hasRequiredParams(obj) {
     for (let paramName of this.requiredParams) {
       if (!obj[paramName]) {
+        //console.warn("Required parameters not available")
         return false;
       }
     }

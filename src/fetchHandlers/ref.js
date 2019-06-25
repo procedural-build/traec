@@ -123,7 +123,11 @@ export const postRootRef = ({ trackerId }) => {
     }
     return newState;
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+  return { fetchParams, stateParams: { 
+    stateSetFunc,
+    formVisPath: `ui.tracker.byId.${trackerId}.rootRef.SHOW_FORM`,
+    formObjPath: `ui.tracker.byId.${trackerId}.rootRef.newItem`
+  }};
 };
 
 export const getRefBranches = ({ trackerId, refId }) => {
@@ -161,7 +165,7 @@ export const getRefBranches = ({ trackerId, refId }) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-export const postBranch = ({ trackerId, refId, commitId, treeId }) => {
+export const postTreeRefBranch = ({ trackerId, refId, commitId, treeId }) => {
   const fetchParams = {
     method: "POST",
     url: `/api/tracker/${trackerId}/ref/${refId}/tree/${treeId}/`,
@@ -191,35 +195,21 @@ export const postBranch = ({ trackerId, refId, commitId, treeId }) => {
     }
     return newState;
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+  return { fetchParams, stateParams: { 
+    stateSetFunc,
+    formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
+    formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+   } };
 };
 
-export const deleteTrackerRef = ({ trackerId, refId, commitId }) => {
-  const fetchParams = {
-    method: "DELETE",
-    url: `/api/tracker/${trackerId}/ref/${refId}/`,
-    apiId: "api_tracker_ref_delete",
-    requiredParams: ["trackerId", "refId", "commitId"],
-    // Deleting a Ref can affect so many things that its
-    // best to reload the page and all data again
-    postSuccessHook: data => {
-      location.reload();
-    }
-  };
-  const stateSetFunc = (state, action) => {
-    let newState = state;
-    return newState;
-  };
-  return { fetchParams, stateParams: { stateSetFunc } };
-};
 
-export const postBranchFork = ({ trackerId, refId }) => {
+export const postRefBranch = ({ trackerId, refId, commitId}) => {
   const fetchParams = {
     method: "POST",
-    url: `/api/tracker/${trackerId}/ref/${refId}/`,
-    apiId: "api_tracker_ref_tree_create",
-    requiredParams: ["trackerId", "refId", "commitId", "treeId"]
-  };
+    url: `/api/tracker/${trackerId}/ref/${refId}/branch/`,
+    apiId: "api_tracker_ref_branch_create",
+    requiredParams: ["trackerId", "refId", "commitId"]
+  }
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     let { formVisPath, formObjPath } = action.stateParams;
@@ -241,7 +231,70 @@ export const postBranchFork = ({ trackerId, refId }) => {
       };
       newState = newState.setInPath(`commitBranches.commit.${commitId}.branch.${branchId}`, branchObj);
     }
+    return newState;           
+  }
+  return {fetchParams, stateParams: {
+    stateSetFunc,
+    formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
+    formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+  }}
+}
+
+
+export const putRefBranch = ({ trackerId, refId, commitId, branchId}) => {
+  const fetchParams = {
+    method: "PUT",
+    url: `/api/tracker/${trackerId}/ref/${refId}/branch/${branchId}/`,
+    apiId: "api_tracker_ref_branch_update",
+    requiredParams: ["trackerId", "refId", "commitId", "branchId"]
+  }
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let { formVisPath, formObjPath } = action.stateParams;
+    let newState = state.setInPath(formObjPath, data);
+    if (!data.errors) {
+      const commitPath = `commitEdges.byId.${commitId}.trees.${treeId}`;
+      newState = newState.addToDict("refs.byId", data);
+      newState = newState.setInPath(formVisPath, false);
+      // Add the root commit to the category list for this tree
+      const branchId = data.latest_commit.root_commit;
+      newState = newState.addListToSets([`${commitPath}.categories`], [branchId]);
+      // Add this as a commitBranch (masterHead) for the parentCommit
+      let target = { commit: null, ref: data.uid };
+      let head = { commit: commitId, target, branchId, is_master: true };
+      let branchObj = {
+        targets: [target],
+        masterHead: head,
+        userHead: head
+      };
+      newState = newState.setInPath(`commitBranches.commit.${commitId}.branch.${branchId}`, branchObj);
+    }
+    return newState;           
+  }
+  return {fetchParams, stateParams: {
+    stateSetFunc,
+    formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
+    formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+  }}
+}
+
+
+export const deleteTrackerRef = ({ trackerId, refId, commitId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/tracker/${trackerId}/ref/${refId}/`,
+    apiId: "api_tracker_ref_delete",
+    requiredParams: ["trackerId", "refId", "commitId"],
+    // Deleting a Ref can affect so many things that its
+    // best to reload the page and all data again
+    postSuccessHook: data => {
+      location.reload();
+    }
+  };
+  const stateSetFunc = (state, action) => {
+    let newState = state;
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
+
