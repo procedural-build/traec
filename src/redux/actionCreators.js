@@ -66,9 +66,9 @@ export const setUIItems = (itemDict, stateParams) => {
   };
 };
 
-export const addUIItems = (itemDict, stateParams) => {
+export const mergeInUI = (itemDict, stateParams) => {
   return {
-    type: "UI_ADD_TO_DICT",
+    type: "UI_MERGE_IN",
     payload: itemDict,
     stateParams
   };
