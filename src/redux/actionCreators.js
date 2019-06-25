@@ -57,3 +57,19 @@ export const setSideBarItems = itemDict => {
     }
   };
 };
+
+export const setUIItems = (itemDict, stateParams) => {
+  return {
+    type: "UI_SET_IN",
+    payload: itemDict,
+    stateParams
+  };
+};
+
+export const addUIItems = (itemDict, stateParams) => {
+  return {
+    type: "UI_ADD_TO_DICT",
+    payload: itemDict,
+    stateParams
+  };
+};
