@@ -1,18 +1,27 @@
 import * as fh from "../../src/fetchHandlers";
-import { handlers } from "./actualFetchHandlers";
 import Glob from "glob";
+import FS from "fs";
 
 const getActualHandlers = () => {
   let files = Glob.sync(`./src/fetchHandlers/**/*.js`);
-  console.log("Found all fetchHandler files", files);
-  return files;
+
+  // Read each of the files to get the functions
+  let handlerFunctionNames = new Set();
+  for (let file of files) {
+    let filestring = FS.readFileSync(file) + "";
+    let lines = filestring.split("\n");
+    for (let line of lines) {
+      if (line.trim().startsWith("export const")) {
+        handlerFunctionNames.add(line.split(" ")[2]);
+      }
+    }
+  }
+  return handlerFunctionNames;
 };
 
 describe("Fetch Handlers", () => {
-  console.log("BBBBBBBBBBBBBBB", getActualHandlers());
-
   let exportedHandlers = new Set(Object.keys(fh));
-  let actualHandlers = new Set(handlers);
+  let actualHandlers = getActualHandlers();
 
   it("There shouldn't be handlers in exportedHandlers that is not in actualHandlers", () => {
     let difference = new Set([...exportedHandlers].filter(x => !actualHandlers.has(x)));

@@ -58,7 +58,7 @@ export const postDocument = ({ trackerId, refId, commitId, treeId }) => {
 
 export const getDocumentObjects = ({ trackerId, refId, commitId, documentId }) => {
   const fetchParams = {
-    method: "PUT",
+    method: "GET",
     url: `/api/tracker/${trackerId}/commit/${commitId}/document/${documentId}/object/`,
     apiId: "api_tracker_commit_document_object_list",
     requiredParams: ["trackerId", "refId", "commitId", "documentId"]
