@@ -56,7 +56,6 @@ export const postDocument = ({ trackerId, refId, commitId, treeId }) => {
   };
 };
 
-
 export const getDocumentObjects = ({ trackerId, refId, commitId, documentId }) => {
   const fetchParams = {
     method: "PUT",
@@ -80,7 +79,6 @@ export const getDocumentObjects = ({ trackerId, refId, commitId, documentId }) =
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
-
 
 export const putDocumentObject = ({ trackerId, refId, commitId, documentId }) => {
   const fetchParams = {
@@ -114,13 +112,12 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId }) =>
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-
 export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
   const fetchParams = {
     method: "DELETE",
     url: `/api/tracker/${trackerId}/ref/${refId}/document/${docId}/`,
     apiId: "api_tracker_ref_document_delete",
-    requiredParams: ["trackerId", "refId", "commitId", "docId"],
+    requiredParams: ["trackerId", "refId", "commitId", "docId"]
   };
   const stateSetFunc = (state, action) => {
     let parentId = state.getInPath(`commitEdges.byId.${commitId}.documents.${docId}.parent`);
