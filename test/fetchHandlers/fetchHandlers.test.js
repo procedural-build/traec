@@ -1,7 +1,16 @@
 import * as fh from "../../src/fetchHandlers";
 import { handlers } from "./actualFetchHandlers";
+import Glob from "glob";
+
+const getActualHandlers = () => {
+  let files = Glob.sync(`./src/fetchHandlers/**/*.js`);
+  console.log("Found all fetchHandler files", files);
+  return files;
+};
 
 describe("Fetch Handlers", () => {
+  console.log("BBBBBBBBBBBBBBB", getActualHandlers());
+
   let exportedHandlers = new Set(Object.keys(fh));
   let actualHandlers = new Set(handlers);
 
