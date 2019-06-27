@@ -14,7 +14,9 @@ https://redux.js.org/advanced/asyncactions#reducers-js
 export const postTreeScore = ({ trackerId, refId, commitId, treeId }) => {
   const fetchParams = {
     method: "POST",
-    url: `/api/tracker/${trackerId}/ref/${refId}/tree/${treeId}/score/`
+    url: `/api/tracker/${trackerId}/ref/${refId}/tree/${treeId}/score/`,
+    apiId: "api_tracker_ref_tree_score_create",
+    requiredParams: ["trackerId", "refId", "commitId", "treeId"]
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
