@@ -7,6 +7,7 @@ const initialState = Im.fromJS({});
 
 /**
  *  fetchReducers.js line 9
+ * @memberof redux.reducers
  * @param action
  */
 
@@ -17,11 +18,11 @@ const get_key = action => {
 
 /**
  * fetchReducers.js line 19
+ * @memberof redux.reducers
  * @param timeSent
  * @param now
  * @param action
  */
-
 const checkResponseTime = (timeSent, now, action) => {
   if (timeSent) {
     let dt = now - timeSent;

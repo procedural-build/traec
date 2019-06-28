@@ -2,6 +2,12 @@ import { fetchJSON } from "./fetch";
 import { fetchToState } from "./actionCreators";
 import { hasFetched } from "./fetchCache";
 
+/**
+ * Redux Middleware for API Fetches
+ * @memberof redux
+ * @namespace middleware
+ */
+
 /* See API fetch Middleware example here
  * https://redux.js.org/recipes/reducing-boilerplate
  */
@@ -16,8 +22,11 @@ import { hasFetched } from "./fetchCache";
  * passed to later "nextHandlers" as the 3rd parameter (the actual body that is dispatched
  * is sent as the second parameter).
  *
- * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
- * @param getState Returns the current state tree of your application. It is equal to the last value returned by the store's reducer.
+ * @method
+ * @memberof redux.middleware
+ * @param {object} obj - An object
+ * @param {function} obj.dispatch - Method to dispatch actions and trigger state changes to the store
+ * @param {function} obj.getState - Returns the current state tree of your application. It is equal to the last value returned by the store's reducer.
  * @return {function(*): Function}
  */
 export const callAPIMiddleware = ({ dispatch, getState }) => {
@@ -58,6 +67,8 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
 
 /**
  * Check for Throttling that this URL has not been requested recently milliseconds between calls
+ * @method
+ * @memberof redux.middleware
  * @param getState Returns the current state tree of your application. It is equal to the last value returned by the store's reducer.
  * @param fetchParams
  * @param action Payloads of information that send data from your application to your store.
@@ -76,6 +87,8 @@ export const checkThrottling = function(getState, fetchParams, action, next) {
 
 /**
  * Make a record in the redux store of this fetch (so other components wont fetch twice and also for throttling)
+ * @method
+ * @memberof redux.middleware
  * @param fetchParams
  * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
  */
@@ -89,6 +102,8 @@ export const recordFetch = function(fetchParams, dispatch) {
 /**
  * Set the success and failure types to default if they dont exist.
  * Otherwise if we don't have a success and failure type defined and error wil be thrown
+ * @method
+ * @memberof redux.middleware
  * @param APICallTypes
  * @return {{failureType: *, successType: *}}
  */
@@ -108,6 +123,8 @@ export const responseTypes = function(APICallTypes) {
 
 /**
  * Catches any errors returned from the fetch
+ * @method
+ * @memberof redux.middleware
  * @param error
  * @param failureType
  * @param fetchParams
@@ -134,6 +151,8 @@ export const failureHandler = function(error, failureType, fetchParams, statePar
  * Processes the fetch if successful.
  * If more fetchHandlers are defined then they will be processed here.
  * If a post success hook is defined it will be processed here as well.
+ * @method
+ * @memberof redux.middleware
  * @param data
  * @param successType
  * @param originalBody

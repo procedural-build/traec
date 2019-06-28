@@ -18,6 +18,7 @@ const initialState = Im.fromJS({
 });
 /**
  * rootAccess.js line 22
+ * @memberof redux.reducers
  * @param state
  * @param action
  */

@@ -1,33 +1,29 @@
 import * as fh from "./fetchHandlers";
 
-/*
-Object for getting the fetch handler functions to use based on API endpoint.
-The map also includes methods for checking if the object already exists in
-the Redux State
-
-NOTE: the FIRST key is the API reference (ie api_company_list) but with the
-prefix "api_" removed and the action-suffix (ie. _list) also removed.  The 
-second KEY is the http method which are:
-    list    = list
-    read    = read
-    post    = create
-    put     = update
-    patch   = update
-    delete  = delete
-
-{
-    company: {
-        list: fh.fetchCompanies
-    },
-    company_invite_all: {
-        list: fh.fetchAllCompanyInvites
-    },
-    company_invite: {
-        list: fh.fetchCompanyInvites,
-    }
-}
-*/
-
+/**
+ * Object for getting the fetch handler functions to use based on API endpoint.
+ * The map also includes methods for checking if the object already exists in
+ * the Redux State
+ *
+ * Note that this method is called on initialization of the 'traec' library
+ * in order to provide a mapping to all of the functions in fetchHandlers.
+ *
+ * Generally users will not need to call this function directly.  Use the
+ * fetchManager "Fetch" class instead.
+ *
+ * The FIRST key is the API reference (ie api_company_list) but with the
+ * prefix "api_" removed and the action-suffix (ie. _list) also removed.  The
+ * second KEY is the http method which are:
+ * * list    = list
+ * * read    = read
+ * * post    = create
+ * * put     = update
+ * * patch   = update
+ * * delete  = delete
+ *
+ * @method
+ * @memberof utils
+ */
 const makeHandlerMap = function() {
   console.log("MAKING fetchHandler MAP");
   let handlerMap = {};

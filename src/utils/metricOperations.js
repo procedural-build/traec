@@ -1,63 +1,18 @@
-/** 
- * Utility functions for parsing the text returned from the API that representes a 
+import { getBetween, splitAtLevel, countChar } from "./text";
+
+/**
+ * Utility functions for parsing the text returned from the API that representes a
  * metric operation
- * @param str
- * @param parts
- * @param lastIndex
- * @param endIndex
-
-
-*/
-
-const addPartToParts = (str, parts, lastIndex, endIndex) => {
-  let part = str.slice(lastIndex, endIndex);
-  if (part) {
-    parts.push(part);
-  }
-  return parts;
-};
-
-/**
- * Count characters of a string
- * @param {*} str
- * @param {*} chr
+ * @namespace metricOperations
+ * @memberof utils
+ *
  */
-const countChar = (str, chr) => {
-  return (str.match(new RegExp(chr, "g")) || []).length;
-};
-
-/**
- * Split string at certain points between certain points
- * @param str
- * @param splitChars
- * @param inChars
- * @param outChars
- */
-export const splitAtLevel = (str, splitChars, inChars = "", outChars = "") => {
-  let depth = 0;
-  let lastIndex = 0;
-  let parts = [];
-  let part = null;
-  for (let i = 0; i < str.length; i++) {
-    let chr = str.charAt(i);
-    if (inChars.includes(chr)) {
-      depth += 1;
-    }
-    if (outChars.includes(chr)) {
-      depth -= 1;
-    }
-    if (splitChars.includes(chr) && depth === 0) {
-      parts = addPartToParts(str, parts, lastIndex, i);
-      lastIndex = i + 1;
-    }
-  }
-  parts = addPartToParts(str, parts, lastIndex, str.length);
-  return parts;
-};
 
 /**
  * Validate operation string
- * @param  parts
+ * @method
+ * @memberof utils.metricOperations
+ * @param  {array} - Parts should be three (3) parts to the operation: 1) factor, 2) operation and 3) exponent
  */
 export const validateOpStr = parts => {
   // let parts = splitAtLevel(text, "*^", "([", "])")
@@ -80,43 +35,13 @@ export const validateOpStr = parts => {
 };
 
 /**
- *
- * Get Elements of a string between certain points
- * @param {String}  str
- * @param  startChar
- * @param  endChar
- */
-export const getBetween = (str, startChar, endChar) => {
-  let depth = 0;
-  let startIndex = null;
-  let endIndex = null;
-  for (let i = 0; i < str.length; i++) {
-    let chr = str.charAt(i);
-    if (chr === startChar) {
-      if (depth === 0) {
-        startIndex = i;
-      }
-      depth += 1;
-    }
-    if (chr === endChar) {
-      depth -= 1;
-      if (depth === 0) {
-        endIndex = i;
-        break;
-      }
-    }
-  }
-  if (startIndex != null && endIndex != null) {
-    return [str.slice(0, startIndex), str.slice(startIndex + 1, endIndex), str.slice(endIndex + 1, str.length)];
-  }
-  //console.warn("Match not found")
-  return [null, str, null];
-};
-/**
- * metricOperations.js line 117
- *
- * @param  text
- * @param  opDetailList
+ * Extracts all of the individual (possibly nested) operations from the text returned from the API.
+ * Note this method is recursive
+ * @method
+ * @memberof utils.metricOperations
+ * @param {String} text - the text to extract
+ * @param {Array} opDetailList - the list of operations gathered so far in the recursive calls (leave empty for general use)
+ * @returns {Array} - the list of operations
  */
 export const getAllOps = (text, opDetailList = []) => {
   let parts = splitAtLevel(text, "*^", "([", "])");

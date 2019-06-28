@@ -29,7 +29,7 @@ const initialState = Im.fromJS({});
 
 /**
  * Add or Remove entities from Dictionary
- *
+ * @memberof redux.reducers
  * @param state
  * @param action
  */

@@ -1,9 +1,20 @@
 import Im from "../index";
 import { listToObj } from "../../utils";
 
-/*
-UTILITIES FOR MANIPULATING AN IMMUTABLE STATE OBJECT EN-MASSE
-*/
+/**
+ * Utilities for manipulating an Immutable object (or state) en-masse
+ *
+ * **These functions generally should NOT be used as they are monkey-patched onto Immutable iteself using the stateBindings.**
+ *
+ * @namespace functions
+ * @memberof immutable.utils
+ * @example
+ * const state = Traec.Im.fromJS(plainjsobject)
+ * // Using state set (passing immutable object as first argument)
+ * getInPath(state, 'some.deep.path.in.dot.notation')
+ * // Using bindings that are monkey-patched onto Immutable at app initialization
+ * state.getInPath('some.deep.path.in.dot.notation')
+ */
 
 // Set a list of items into a Immutable Set O(log32 N)
 export const addListToSet = (state, path, keyList) => {

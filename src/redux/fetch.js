@@ -1,6 +1,15 @@
 /**
- * Traec main fetch call. Handles the header and body modifications before it makes the fetch.
+ * Redux Middleware for API Fetches
+ * @memberof redux
+ * @namespace fetch
+ */
+
+/**
+ * Traec main (lowest level) fetch call. Handles the header and body modifications
+ * before it makes the fetch.
  * Afterwards success, failure and error handling are done.
+ * @method
+ * @memberof redux.fetch
  * @param {string} path - api call path
  * @param {string} method - REST methods [GET, PUT, PATCH, DELETE]
  * @param {object} body - Body to send with request
@@ -38,6 +47,8 @@ export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBo
  * The access token is attached to the headers at this stage.
  * If the headers don't have a "content-type" key, the key will be attached with the
  * value: application/json. If content-type exists but have value null the key-value pair wil be removed.
+ * @method
+ * @memberof redux.fetch
  * @param {object} headers
  */
 export const updateHeaders = function(headers) {
@@ -57,6 +68,8 @@ export const updateHeaders = function(headers) {
 
 /**
  * Stringifies the body if rawBody is not defined
+ * @method
+ * @memberof redux.fetch
  * @param {object} body
  * @param {boolean} rawBody
  */
@@ -72,6 +85,8 @@ export const updateBody = function(body, rawBody) {
 /**
  * Checks the response. If the content-type header is "application/xlsx".
  * The response will be returned as a blob otherwise it will be returned as json.
+ * @method
+ * @memberof redux.fetch
  * @param response
  * @param headers
  */

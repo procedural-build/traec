@@ -3,8 +3,16 @@ import React from "react";
 import store from "../../redux/store";
 import * as fetchHandlers from "../../fetchHandlers";
 import { fetchToState } from "../../redux/actionCreators";
+
+/**
+ * Utilities for checking and getting **project** permissions
+ * @namespace project
+ * @memberof utils.permissions
+ */
+
 /**
  * Fetch user permissions for a project by ID
+ * @memberof utils.permissions.project
  * @param  projectId
  */
 export const fetchProjectUserPermissions = function(projectId) {
@@ -14,14 +22,17 @@ export const fetchProjectUserPermissions = function(projectId) {
 
 /**
  * Get permissions of a project by ID
+ * @memberof utils.permissions.project
  * @param  state
  * @param  projectId
  */
 export const getProjectPermissions = function(state, projectId) {
   return state.getInPath(`entities.projectObjects.byId.${projectId}.userPermission`);
 };
+
 /**
  * Fetch project user permissions if allowed
+ * @memberof utils.permissions.project
  * @param  projectId
  * @param  requiresAdmin
  * @param  requiredActions
@@ -110,8 +121,10 @@ export const projectPermissionRender = function(
     }
   }
 };
+
 /**
  * project.js line 114
+ * @memberof utils.permissions.project
  * @param projectId
  * @param items
  */

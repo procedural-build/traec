@@ -1,14 +1,28 @@
 import Im from "../index";
 import { listToObj } from "../../utils";
 
-/*
-UTILITIES FOR MANIPULATING AN IMMUTABLE STATE OBJECT EN-MASSE.
+/**
+ * Utilities for manipulating an Immutable object (or state) en-masse
+ *
+ * **These functions are defined so as to be monkey-patched onto the Immutable.Map.prototype.**
+ *
+ * @namespace bindings
+ * @memberof immutable.utils
+ * @example
+ * const state = Traec.Im.fromJS(plainjsobject)
+ * // Using state set (passing immutable object as first argument)
+ * getInPath(state, 'some.deep.path.in.dot.notation')
+ * // Using bindings that are monkey-patched onto Immutable at app initialization
+ * state.getInPath('some.deep.path.in.dot.notation')
+ */
 
-These functions are defined to be monkey-patched onto the
-Immutable.Map.prototype.
-*/
-
-// Set a list of items into a Immutable Set O(log32 N)
+/**
+ * Set a list of items into a Immutable Set O(log32 N)
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {string} path - Path to the set as a string in dot-notation
+ * @param {array} keyList - Array of objects (generally ID-keys) that will be added to the set
+ */
 export const addListToSet = function(path, keyList) {
   path = path.split(".");
   let curSet = this.getIn(path);
@@ -31,6 +45,13 @@ export const addListToSet = function(path, keyList) {
   return newState.updateIn(path, item => item.union(Im.Set(keyListIm)));
 };
 
+/**
+ * Set a list of items into multiple sets a Immutable Set O(log32 N)
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {array} paths - Array of paths to the sets where object will be added as strings in dot-notation
+ * @param {array} keyList - Array of objects (generally ID-keys) that will be added to the set
+ */
 export const addListToSets = function(paths, keyList) {
   let newState = this;
   paths.map(path => {
@@ -39,6 +60,13 @@ export const addListToSets = function(paths, keyList) {
   return newState;
 };
 
+/**
+ * Set an item within the Immutable object at a location defined using dot-notation string reference *
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {string} path - Path to the location as a string in dot-notation
+ * @param {object} data - Object to be added at the path (plain JS objects will be converted to Immutable)
+ */
 export const setInPath = function(path, data) {
   if (!path) {
     return this;
@@ -46,14 +74,35 @@ export const setInPath = function(path, data) {
   return this.setIn(path.split("."), Im.fromJS(data));
 };
 
+/**
+ * Get an item from the Immutable object using dot-notation string reference
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {string} path - Path to the location as a string in dot-notation
+ */
 export const getInPath = function(path) {
   return this.getIn(path.split("."));
 };
 
+/**
+ * Remove an item from the Immutable object the location defined using dot-notation string reference
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {string} path - Path to the location as a string in dot-notation
+ */
 export const removeInPath = function(path) {
   return this.removeIn(path.split("."));
 };
 
+/**
+ * Add an object to a List nested within an Immutable object at the path specified by dot-notation string.
+ * A deep comparison will be made between the **last** item in the list to add and the new incoming item.
+ * If they are the same then the new item will not be added.
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {string} path - Path to the location as a string in dot-notation
+ * @param {string} data - The object to append to the list.  Plain JS objects will be converted to Immutable.
+ */
 export const addToList = function(path, data) {
   // Create a list at the path if it is not already there
   path = path.split(".");
@@ -65,10 +114,36 @@ export const addToList = function(path, data) {
   return newState;
 };
 
+/**
+ * Add an object to an existing "map" (ie. dictionary) at the path specified using dot-notation string.
+ *
+ * In order to add the object to the map a value to use for the key is required.  This is by default taken
+ * to be the field "uid" that is expected to exist in the data.  However you may provide an alternative
+ * "keyField" parameter that will use that field value from data as the key-value in the map
+ *
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {string} path - Path to the location as a string in dot-notation
+ * @param {object} data - The object to store.  Plain-JS objects will be convered to Immutable.
+ * @param {string} [keyField="uid"] - The field from within "data" that will be used to make the key in the dictionary
+ */
 export const addToDict = function(path, data, keyField = "uid") {
   return this.addListToDict(path, data, keyField);
 };
 
+/**
+ * Add multiple objects to an existing "map" (ie. dictionary) at the path specified using dot-notation string.
+ *
+ * In order to add each object to the map a value to use for the key is required.  This is by default taken
+ * to be the field "uid" that is expected to exist in the data.  However you may provide an alternative
+ * "keyField" parameter that will use that field value from data as the key-value in the map
+ *
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {string} path - Path to the location as a string in dot-notation
+ * @param {array} dataList - The array of objects to store.  Plain-JS objects will be convered to Immutable.
+ * @param {string} [keyField="uid"] - The field from within each "data" object that will be used to make the key in the dictionary
+ */
 export const addListToDict = function(path, dataList, keyField = "uid") {
   path = path.split(".");
   dataList = !Array.isArray(dataList) ? [dataList] : dataList;
