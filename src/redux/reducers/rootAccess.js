@@ -1,12 +1,8 @@
-//import { combineReducers } from 'redux';
 import { combineReducers } from "redux-immutable";
 import Im from "../../immutable";
 
 import entities from "./entitiesReducer";
 import auth from "./reducers";
-
-// import entities from "./entities";
-// import auth from "../auth/_redux/reducers";
 
 /* 
 Class for accessing the root namespace of the state.  We should not need

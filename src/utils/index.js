@@ -159,7 +159,6 @@ export const setItemInListAndVis = (state, itemData, stateParams) => {
  *
  *
  */
-
 export const setItemInDictAndVis = (state, itemData, stateParams) => {
   let { itemPath, itemListPath, formVisPath, keyField } = stateParams;
   let newState = state.setIn(itemPath.split("."), Im.fromJS(itemData));
@@ -185,7 +184,7 @@ export const setItemInDictAndVis = (state, itemData, stateParams) => {
  * That is why we use IMMUTABLE.js
  *
  * @param state
- * @param itemData
+ * @param itemList
  * @param stateParams
  */
 export const setListInIndexedObj = (state, itemList, stateParams) => {
@@ -231,6 +230,7 @@ export const keyListToSet = (state, keyList, pathToSet) => {
   let path = pathToSet.split(".");
   let curSet = state.getIn(path);
   let newState = state;
+
   // Change a List to a Set
   if (curSet && Im.List.isList(curSet)) {
     newState = newState.updateIn(path, item => Im.Set(item));
@@ -255,9 +255,9 @@ export const keyListToSet = (state, keyList, pathToSet) => {
  * @param itemList
  * @param stateParams
  */
-
 export const setRelatedItems = (state, itemList, stateParams) => {
   let { itemPath, keyField, relatedSets } = stateParams;
+
   // Convert to a list (if we have a single item only)
   itemList = !Array.isArray(itemList) ? [itemList] : itemList;
   relatedSets = !Array.isArray(relatedSets) ? [relatedSets] : relatedSets;
