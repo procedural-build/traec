@@ -1,5 +1,5 @@
-import Im from "traec/immutable";
-import { setItemInListAndVis, setItemInDictAndVis, setListInIndexedObj } from "traec/immutable/utils";
+import Im from "../../immutable";
+import { setItemInListAndVis, setItemInDictAndVis, setListInIndexedObj } from "../../immutable/utils";
 
 /*
 "entities" database as per documentation here 
