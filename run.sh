@@ -8,8 +8,11 @@ case "$1" in
   bash)
     docker run -it --rm -w "/src/" -v "$PWD:/src" node:10.14-slim bash
     ;;
+  builddocs)
+    docker run -it --rm -w "/src/" -v "$PWD:/src" node:10.14-slim npm install && npm install -g documentation && documentation build src/** -f html -o docs
+    ;;
   *)
-    echo $"Usage: $0 {tests|bash}"
+    echo $"Usage: $0 { tests | bash | builddocs }"
     exit 1
 
 esac
