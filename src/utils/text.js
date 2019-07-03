@@ -49,7 +49,7 @@ const addPartToParts = (str, parts, lastIndex, endIndex) => {
  * @param {String} str - The string
  * @param {Char} chr - The character to count occurances of
  */
-const countChar = (str, chr) => {
+export const countChar = (str, chr) => {
   return (str.match(new RegExp(chr, "g")) || []).length;
 };
 
