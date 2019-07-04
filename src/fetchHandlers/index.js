@@ -73,6 +73,7 @@ export * from "./company/companyAuthGroup";
 export * from "./company/companyInvite";
 export * from "./company/companyMembers";
 export * from "./company/companyReporting";
+export * from "./company/companyEmails";
 export * from "./metric";
 export * from "./convFactors";
 export * from "./company/companyTargets";
