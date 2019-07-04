@@ -28,6 +28,28 @@ export const getProjectEmailRecipient = ({ projectId, recipientId }) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
+export const postProjectEmailRecipient = ({ projectId }) => {
+  const fetchParams = {
+    method: "POST",
+    url: `/api/project/${projectId}/email/recipient/`,
+    apiId: "api_project_email_recipient_create",
+    requiredParams: ["projectId"]
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.addListToDict(`projectObjects.byId.${projectId}.recipients`, data);
+    return newState;
+  };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `ui.projectObjects.byId.${projectId}.recipient.SHOW_FORM`,
+      formObjPath: `ui.projectObjects.byId.${projectId}.recipient.newItem`
+    }
+  };
+};
+
 export const putProjectEmailRecipient = ({ projectId, recipientId }) => {
   const fetchParams = {
     method: "PUT",
