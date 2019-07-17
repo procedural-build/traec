@@ -13,6 +13,21 @@ export const getProjectEmailRecipients = ({ projectId }) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
+export const getProjectEmails = ({ projectId }) => {
+  const fetchParams = {
+    method: "GET",
+    url: `/api/project/${projectId}/email/`,
+    apiId: "api_project_email_list",
+    requiredParams: ["projectId"]
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.setInPath(`projectObjects.byId.${projectId}.emails`, data);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
 export const getProjectEmailRecipient = ({ projectId, recipientId }) => {
   const fetchParams = {
     method: "GET",
