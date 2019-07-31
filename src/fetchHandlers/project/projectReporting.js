@@ -1,5 +1,3 @@
-import Traec from "traec";
-
 const get_query_string = ({
   refId = null,
   fromDate = null,
