@@ -95,6 +95,26 @@ export const removeInPath = function(path) {
 };
 
 /**
+ * Shallow-merge an object with the data at location defined using dot-notation string reference
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {string} path - Path to the location as a string in dot-notation
+ */
+export const mergeInPath = function(path, data) {
+  return this.mergeIn(path.split("."), Im.fromJS(data));
+};
+
+/**
+ * Deep-merge an object with the data at location defined using dot-notation string reference
+ * @method
+ * @memberof immutable.utils.bindings
+ * @param {string} path - Path to the location as a string in dot-notation
+ */
+export const mergeDeepInPath = function(path, data) {
+  return this.mergeDeepIn(path.split("."), Im.fromJS(data));
+};
+
+/**
  * Add an object to a List nested within an Immutable object at the path specified by dot-notation string.
  * A deep comparison will be made between the **last** item in the list to add and the new incoming item.
  * If they are the same then the new item will not be added.

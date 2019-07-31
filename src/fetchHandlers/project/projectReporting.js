@@ -1,9 +1,12 @@
+import Traec from "traec";
+
 const get_query_string = ({
   refId = null,
   fromDate = null,
   toDate = null,
   ignore_cache = false,
   exclude_summary = false,
+  summary_cumulation_period = null,
   include_commit_results = false,
   format = null
 }) => {
@@ -12,9 +15,10 @@ const get_query_string = ({
   const toDate_ = toDate ? `&toDate=${toDate}` : "";
   const ignoreCache = ignore_cache ? `&ignore_cache=true` : "";
   const excludeSummary = exclude_summary ? `&exclude_summary=true` : "";
+  const summaryCumulationPeriod = summary_cumulation_period ? "&summary_cumulation_period=total" : "";
   const include_commit_results_ = include_commit_results ? `&include_commit_results=true` : "";
   const format_ = format ? `&output_format=${format}` : "";
-  let query_params = `?${refId_}${fromDate_}${toDate_}${ignoreCache}${include_commit_results_}${excludeSummary}${format_}`;
+  let query_params = `?${refId_}${fromDate_}${toDate_}${ignoreCache}${include_commit_results_}${excludeSummary}${summaryCumulationPeriod}${format_}`;
   return query_params;
 };
 
@@ -25,6 +29,7 @@ export const getProjectReportingPeriods = ({
   toDate = null,
   ignore_cache = null,
   exclude_summary = null,
+  summary_cumulation_period = null,
   include_commit_results = null,
   format = null
 }) => {
@@ -34,6 +39,7 @@ export const getProjectReportingPeriods = ({
     toDate,
     ignore_cache,
     exclude_summary,
+    summary_cumulation_period,
     include_commit_results,
     format
   });
@@ -49,7 +55,18 @@ export const getProjectReportingPeriods = ({
     let path = refId
       ? `projectReportingPeriods.ref.${refId}.byId.${projectId}`
       : `projectReportingPeriods.byId.${projectId}`;
-    return state.addListToDict(path, data);
+    // As the reporting period can hold nested summary data (totals or current values) then merge them in here
+    let newState = state;
+    for (let item of data) {
+      let itemPath = `${path}.${item.uid}`;
+      let existingItem = state.getInPath(itemPath);
+      if (existingItem) {
+        newState = newState.mergeDeepInPath(itemPath, item);
+      } else {
+        newState = newState.addToDict(path, item);
+      }
+    }
+    return newState;
   };
   // Adjust the headers based on if the format is excel
   if (format == "excel") {
