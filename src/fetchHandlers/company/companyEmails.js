@@ -13,6 +13,21 @@ export const getCompanyEmailRecipients = ({ companyId }) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
+export const getCompanyEmails = ({ companyId }) => {
+  const fetchParams = {
+    method: "GET",
+    url: `/api/company/${companyId}/email/`,
+    apiId: "api_company_email_list",
+    requiredParams: ["companyId"]
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.setInPath(`companyObjects.byId.${companyId}.emails`, data);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
 export const getCompanyEmailRecipient = ({ companyId, recipientId }) => {
   const fetchParams = {
     method: "GET",
