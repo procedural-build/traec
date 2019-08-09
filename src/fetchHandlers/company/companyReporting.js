@@ -2,15 +2,17 @@ const get_query_string = ({
   fromDate = null,
   toDate = null,
   ignore_cache = false,
+  summary_cumulation_period = null,
   include_project_results = false,
   format = null
 }) => {
   const fromDate_ = fromDate ? `fromDate=${fromDate}` : "";
   const toDate_ = toDate ? `toDate=${toDate}` : "";
   const ignoreCache = ignore_cache ? `&ignore_cache=true` : "";
+  const summaryCumulationPeriod = summary_cumulation_period ? "&summary_cumulation_period=total" : "";
   const include_project_results_ = include_project_results ? `&include_project_results=true` : "";
   const format_ = format ? `&output_format=${format}` : "";
-  let query_params = `?${fromDate_}&${toDate_}${ignoreCache}${include_project_results_}${format_}`;
+  let query_params = `?${fromDate_}&${toDate_}${ignoreCache}${summaryCumulationPeriod}${include_project_results_}${format_}`;
   return query_params;
 };
 
@@ -20,9 +22,17 @@ export const getCompanyReportingPeriods = ({
   toDate = null,
   ignore_cache = null,
   include_project_results = null,
+  summary_cumulation_period = null,
   format = null
 }) => {
-  let query_params = get_query_string({ fromDate, toDate, ignore_cache, include_project_results, format });
+  let query_params = get_query_string({
+    fromDate,
+    toDate,
+    ignore_cache,
+    include_project_results,
+    format,
+    summary_cumulation_period
+  });
   const fetchParams = {
     method: "GET",
     url: `/api/company/${companyId}/report/${query_params}`,
