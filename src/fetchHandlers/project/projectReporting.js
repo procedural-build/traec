@@ -77,6 +77,64 @@ export const getProjectReportingPeriods = ({
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
+export const postProjectReportingPeriod = ({ projectId }) => {
+  let formVisPath = `ui.projectObjects.byId.${projectId}.reportingPeriod.SHOW_FORM`;
+  const fetchParams = {
+    method: "POST",
+    url: `/api/project/${projectId}/reporting_periods/`,
+    apiId: "api_project_reporting_periods_create",
+    requiredParams: ["projectId"]
+  };
+  let stateSetFunc = (state, action) => {
+    // This endpoint returns a list of reporting periods that have bee updated
+    let data = action.payload;
+    let newState = state;
+    for (let item of data) {
+      newState = newState.mergeInPath(`projectReportingPeriods.byId.${projectId}.${item.uid}`, item);
+    }
+    // Hide the form
+    newState = newState.setInPath(formVisPath, false);
+    return newState;
+  };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath,
+      formObjPath: `ui.projectObjects.byId.${projectId}.reportingPeriod.newItem`
+    }
+  };
+};
+
+export const patchProjectReportingPeriod = ({ projectId, reportingPeriodId }) => {
+  let formVisPath = `ui.projectObjects.byId.${projectId}.reportingPeriod.${reportingPeriodId}.SHOW_FORM`;
+  const fetchParams = {
+    method: "PATCH",
+    url: `/api/project/${projectId}/reporting_periods/${reportingPeriodId}/`,
+    apiId: "api_project_reporting_periods_partial_update",
+    requiredParams: ["projectId", "reportingPeriodId"]
+  };
+  let stateSetFunc = (state, action) => {
+    // This endpoint returns a list of reporting periods that have bee updated
+    let data = action.payload;
+    let newState = state;
+    for (let item of data) {
+      newState = newState.mergeInPath(`projectReportingPeriods.byId.${projectId}.${item.uid}`, item);
+    }
+    // Hide the form
+    newState = newState.setInPath(formVisPath, false);
+    return newState;
+  };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath,
+      formObjPath: `ui.projectObjects.byId.${projectId}.reportingPeriod.${reportingPeriodId}.newItem`
+    }
+  };
+};
+
 export const deleteProjectReportingPeriod = ({ projectId, reportingPeriodId }) => {
   const fetchParams = {
     method: "DELETE",
