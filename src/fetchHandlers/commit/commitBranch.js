@@ -1,10 +1,10 @@
-import Traec from "traec";
+import Im from "../../immutable";
 import { edgeDictToState } from "./commitEdges";
 
 export const reduceCommitBranch = item => {
   /*Returns a reduced version of the commitBranch without mutating the original object */
   // Get an immutable copy of the object
-  let imItem = Traec.Im.fromJS(item);
+  let imItem = Im.fromJS(item);
   // Replace the Ref with its id
   imItem = imItem.setInPath("target.ref", item.target.ref ? item.target.ref.uid : null);
   // Add the target commit into the store
