@@ -1,4 +1,29 @@
+import Traec from "traec";
 import { edgeDictToState } from "./commitEdges";
+
+export const reduceCommitBranch = item => {
+  /*Returns a reduced version of the commitBranch without mutating the original object */
+  // Get an immutable copy of the object
+  let imItem = Traec.Im.fromJS(item);
+  // Replace the Ref with its id
+  imItem = imItem.setInPath("target.ref", item.target.ref ? item.target.ref.uid : null);
+  // Add the target commit into the store
+  imItem = imItem.setInPath("target.commit", item.target.commit ? item.target.commit.uid : null);
+  return imItem;
+};
+
+export const getCommitBranchRootPath = item => {
+  // If this item belongs to a commit then store it
+  let isRoot = item.commit ? false : true;
+  let commitId = item.commit
+    ? item.commit
+    : item.target.commit
+    ? item.target.commit.uid
+    : null || item.target.ref.latest_commit.uid;
+  let branchId = item.branchId;
+  let rootPath = isRoot ? `root.branch.${branchId}.byId` : `commit.${commitId}.branch.${branchId}.byId`;
+  return `commitBranches.${rootPath}`;
+};
 
 export const storeCommitBranch = (state, item) => {
   if (!item) {
@@ -10,20 +35,12 @@ export const storeCommitBranch = (state, item) => {
     let commitId = item.target_commit.uid;
     newState = edgeDictToState(newState, commitId, item.target_edges);
   }
-  // Add the ref into the store
-  let targetRef = item.target.ref;
-  item.target.ref = targetRef ? targetRef.uid : null;
-  newState = targetRef ? newState.addToDict(`refs.byId`, targetRef) : newState;
-  // Add the target commit into the store
-  let targetCommit = item.target.commit;
-  item.target.commit = targetCommit ? targetCommit.uid : null;
-  newState = targetCommit ? newState.addToDict(`commits.byId`, targetCommit) : newState;
-  // If this item belongs to a commit then store it
-  let isRoot = item.commit ? false : true;
-  let commitId = item.commit ? item.commit : targetCommit ? targetCommit.uid : null || targetRef.latest_commit.uid;
-  let branchId = item.branchId;
-  let rootPath = isRoot ? `root.branch.${branchId}.byId` : `commit.${commitId}.branch.${branchId}.byId`;
-  newState = newState.addToDict(`commitBranches.${rootPath}`, [item]);
+  // Add the ref and commit into the store
+  newState = item.target.ref ? newState.addToDict(`refs.byId`, item.target.ref) : newState;
+  newState = item.target.commit ? newState.addToDict(`commits.byId`, item.target.commit) : newState;
+  // Add the new item to the state
+  newState = newState.setInPath(`${getCommitBranchRootPath(item)}.${item.uid}`, reduceCommitBranch(item));
+  //newState = newState.addToDict(`commitBranches.${rootPath}`, [item]);
   return newState;
 };
 
