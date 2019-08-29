@@ -143,7 +143,7 @@ describe("fetchJSON", () => {
       body: {},
       bodyUsed: false
     };
-    fetch.mockResponseOnce(JSON.stringify(resp));
+    fetch.mockReject(JSON.stringify(resp));
     fetchJSON({ url: "/api/bad-test" }, success, failure);
 
     expect(fetch).toHaveBeenCalled();
