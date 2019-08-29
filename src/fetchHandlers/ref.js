@@ -211,7 +211,7 @@ export const postTreeRefBranch = ({ trackerId, refId, commitId, treeId }) => {
   };
 };
 
-export const postRefBranch = ({ trackerId, refId, commitId }) => {
+export const postRefBranch = ({ trackerId, refId, commitId, treeId }) => {
   const fetchParams = {
     method: "POST",
     url: `/api/tracker/${trackerId}/ref/${refId}/branch/`,
