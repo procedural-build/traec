@@ -82,12 +82,17 @@ export const getDocumentObjects = ({ trackerId, commitId, docId, thisCommitOnly 
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-export const putDocumentObject = ({ trackerId, refId, commitId, documentId }) => {
+const getDocQueryParams = ({ allow_commit_change }) => {
+  return allow_commit_change ? "?allow_commit_change=true" : "";
+};
+
+export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allow_commit_change }) => {
   const fetchParams = {
     method: "PUT",
-    url: `/api/tracker/${trackerId}/ref/${refId}/document/${documentId}/`,
+    url: `/api/tracker/${trackerId}/ref/${refId}/document/${documentId}/${getDocQueryParams({ allow_commit_change })}`,
     apiId: "api_tracker_ref_document_update",
     requiredParams: ["trackerId", "refId", "commitId", "documentId"],
+    queryParams: { allow_commit_change: false },
     headers: { "content-type": undefined },
     rawBody: true
   };
@@ -112,6 +117,24 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId }) =>
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
+};
+
+export const putDocumentObjectCommit = ({ trackerId, commitId, documentId, allow_commit_change }) => {
+  let { fetchParams, stateParams } = putDocumentObject({
+    trackerId,
+    refId: null,
+    commitId,
+    documentId,
+    allow_commit_change
+  });
+  Object.assign(fetchParams, {
+    url: `/api/tracker/${trackerId}/commit/${commitId}/document/${documentId}/${getDocQueryParams({
+      allow_commit_change
+    })}`,
+    apiId: "api_tracker_commit_document_update",
+    requiredParams: ["trackerId", "commitId", "documentId"]
+  });
+  return { fetchParams, stateParams };
 };
 
 export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
