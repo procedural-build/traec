@@ -52,4 +52,26 @@ describe("Fetch Reducer", () => {
       })
     ).toEqual(expected);
   });
+
+  it("should handle FETCH_FAIL", () => {
+    const initialState = Im.fromJS({ "POST /auth-jwt/verify/": {} });
+    const fetchParams = {
+      url: "/auth-jwt/verify/",
+      method: "POST",
+      body: {
+        token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+      }
+    };
+    const statusText = "This is an Error!!!";
+    const expected = Im.fromJS({
+      "POST /auth-jwt/verify/": { status: "failed", timeRecv: new Date(), failures: 1, errors: statusText }
+    });
+    expect(
+      fetch(initialState, {
+        type: "FETCH_FAIL",
+        fetchParams,
+        error: { statusText }
+      })
+    ).toEqual(expected);
+  });
 });

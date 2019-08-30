@@ -133,10 +133,10 @@ export const responseTypes = function(APICallTypes) {
  */
 export const failureHandler = function(error, failureType, fetchParams, stateParams, dispatch) {
   console.warn("Error with API request:", error);
-
   dispatch({
     type: "FETCH_FAIL",
-    fetchParams
+    fetchParams,
+    error
   });
 
   dispatch({
