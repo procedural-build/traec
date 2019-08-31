@@ -95,12 +95,13 @@ export default class Fetch {
     return this._fetchParams ? this._fetchParams.method : null;
   }
 
-  get redux_key() {
-    return `${this._method} ${this._url}`;
+  get redux_cache_key() {
+    return `${this.method} ${this.url}`;
   }
 
-  get fetch_cache_object() {
-    return state.getInPath(`fetch.${this.redux_key}`);
+  get redux_cache_object() {
+    let state = store.getState();
+    return state.getIn([`fetch`, `${this.redux_cache_key}`]);
   }
 
   /**
