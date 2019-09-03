@@ -24,7 +24,7 @@ import * as utils from "./utils/stateBindins";
 var isIE = false || !!document.documentMode;
 
 if(isIE ){
-  alert("The Sustainability Tool is no longer supported on Internet Explorer.Please use another internet browser application or contact us for more information. ")
+  alert("The Sustainability Tool is no longer supported on Internet Explorer. Please use another internet browser application or contact us for more information. ")
   window.location = "error.html"
 }
 
