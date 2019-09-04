@@ -136,3 +136,17 @@ export const patchTracker = ({ trackerId }) => {
   Object.assign(fetchParams, { method: "PATCH" });
   return { fetchParams, stateParams };
 };
+
+export const postDispatch = ({trackerId}) => {
+  const fetchParams = {
+    method: "POST",
+    url: `/api/tracker/${trackerId}/dispatch/`,
+    apiId: "api_tracker_dispatch_create",
+    headers: { "content-type": undefined },
+    rawBody: true
+  };
+  const stateSetFunc = (state, action) => {
+    return state
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+}

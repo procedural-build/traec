@@ -240,10 +240,12 @@ export default class Fetch {
    * @return {object} Return a plain Javascrip fetch Promise object
    */
   rawFetch(options = {}) {
-    // Adjust headers to include JWT authetication etc.
-    Object.assign(options, {
-      headers: updateHeaders(options.headers || {})
+    let {fetchParams} = this.params
+    return fetch(this.url, {
+      headers: updateHeaders(fetchParams.headers || {}),
+      method: this.method,
+      body: fetchParams.body,
+      ...options
     })
-    return fetch(this.url, options)
   }
 }
