@@ -183,20 +183,22 @@ export const getProjectReportCommits = ({ projectId, reportPeriodId, category = 
     let data = action.payload;
     let newState = state;
     let path = `projectReportingPeriods.byId.${projectId}.${reportPeriodId}.commit_results`;
-    for (let item of data) {
-      let categories = {};
-      let indicators = {};
-      if (item.results) {
-        for (let result of item.results) {
-          if (result.category) {
-            categories[result.category] = result;
-          } else {
-            indicators[result.metric_calc] = result;
+    if (data.length) {
+      for (let item of data) {
+        let categories = {};
+        let indicators = {};
+        if (item.results) {
+          for (let result of item.results) {
+            if (result.category) {
+              categories[result.category] = result;
+            } else {
+              indicators[result.metric_calc] = result;
+            }
           }
         }
+        item.results = { categories, indicators };
+        newState = newState.addListToDict(path, item);
       }
-      item.results = { categories, indicators };
-      newState = newState.addListToDict(path, item);
     }
     return newState;
   };
