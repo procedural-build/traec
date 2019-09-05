@@ -137,7 +137,7 @@ export const patchTracker = ({ trackerId }) => {
   return { fetchParams, stateParams };
 };
 
-export const postDispatch = ({trackerId}) => {
+export const postDispatch = ({ trackerId }) => {
   const fetchParams = {
     method: "POST",
     url: `/api/tracker/${trackerId}/dispatch/`,
@@ -146,7 +146,7 @@ export const postDispatch = ({trackerId}) => {
     rawBody: true
   };
   const stateSetFunc = (state, action) => {
-    return state
+    return state;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
-}
+};

@@ -1,7 +1,7 @@
 import { fetchToState, toggleForm } from "./redux/actionCreators";
 import { handlerMap } from "./handlerMap";
 import { hasFetched } from "./redux/fetchCache";
-import { updateHeaders } from './redux/fetch';
+import { updateHeaders } from "./redux/fetch";
 import store from "./redux/store";
 
 /**
@@ -233,19 +233,19 @@ export default class Fetch {
     }
   }
 
-   /**
+  /**
    * Perform a plain Javascript async fetch call.  Only the authorisation headers are
    * injected.  This bypasses all of the Redux-based fetch handling and throttling.
    * @param {object} [options={}] Options to pass to the plain Javascript fetch
    * @return {object} Return a plain Javascrip fetch Promise object
    */
   rawFetch(options = {}) {
-    let {fetchParams} = this.params
+    let { fetchParams } = this.params;
     return fetch(this.url, {
       headers: updateHeaders(fetchParams.headers || {}),
       method: this.method,
       body: fetchParams.body,
       ...options
-    })
+    });
   }
 }
