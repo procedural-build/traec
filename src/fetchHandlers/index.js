@@ -82,3 +82,4 @@ export * from "./company/companyIndicator";
 export * from "./indicators";
 export * from "./comment";
 export * from "./project/projectEmails";
+export * from "./tenant";
