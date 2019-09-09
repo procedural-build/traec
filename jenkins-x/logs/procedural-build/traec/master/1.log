@@ -1,0 +1,559 @@
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mmeta-pipeline[0m and container [32mstep-credential-initializer-g98gn[0m
+{"level":"warn","ts":1568017823.2554224,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1568017823.2568035,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mmeta-pipeline[0m and container [32mstep-working-dir-initializer-2ztct[0m
+{"level":"warn","ts":1568017824.2550774,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1568017824.2564013,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mmeta-pipeline[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mmeta-pipeline[0m and container [32mstep-git-source-meta-procedural-build-traec-mas-ztgj4[0m
+{"level":"warn","ts":1568017830.3132672,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1568017831.6756907,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/procedural-build/traec.git @ 3c7d0f17ee22866ace07ec9d0d0994d1d7e6df34 in path /workspace/source"}
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mmeta-pipeline[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:3c7d0f17ee22866ace07ec9d0d0994d1d7e6df34
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mmeta-pipeline[0m and container [32mstep-merge-pull-refs[0m
+SKIP merge-pull-refs: Nothing to merge
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mmeta-pipeline[0m and container [32mstep-create-effective-pipeline[0m
+Deleting and cloning the Jenkins X versions repo
+Cloning the Jenkins X versions repo https://github.com/jenkins-x/jenkins-x-versions.git with ref refs/heads/master to /builder/home/.**/jenkins-x-versions
+Effective pipeline written to jenkins-x-effective.yml
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mmeta-pipeline[0m and container [32mstep-create-tekton-crds[0m
+running command: echo \$(**-release-version) > VERSION
+
+running command: ** step tag --version \$(cat VERSION)
+Updating chart version in charts/traec/Chart.yaml to 0.0.1
+Updating repository in charts/traec/values.yaml to 598950368936.dkr.ecr.eu-west-2.amazonaws.com/procedural-build/traec
+Updating tag in charts/traec/values.yaml to 0.0.1
+Tag v0.0.1 created and pushed to remote origin
+
+WARNING: failed to find secret kaniko-secret in namespace **: secrets "kaniko-secret" not found
+PipelineActivity for procedural-build-traec-master-1
+Applying changes 
+upserted PipelineResource procedural-build-traec-master for the git repository https://github.com/procedural-build/traec.git
+upserted Task procedural-build-traec-master-from-build-pack-1
+upserted Pipeline procedural-build-traec-master-1
+created PipelineRun procedural-build-traec-master-1
+created PipelineStructure procedural-build-traec-master-1
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-credential-initializer-vvcf9[0m
+{"level":"warn","ts":1568017843.9424403,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1568017843.9427083,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-working-dir-initializer-tm9qz[0m
+{"level":"warn","ts":1568017844.9272807,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1568017844.9283586,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source /workspace/source/charts/traec\""}
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-git-source-procedural-build-traec-master-qq8s7[0m
+{"level":"warn","ts":1568017869.966069,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1568017871.3097675,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/procedural-build/traec.git @ v0.0.1 in path /workspace/source"}
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:3c7d0f17ee22866ace07ec9d0d0994d1d7e6df34
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-setup-jx-git-credentials[0m
+Generated Git credentials file /workspace/xdg_config/git/credentials
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-build-npmrc[0m
+WARNING: failed to find Secret npm-token in namespace **
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-build-npm-install[0m
+
+> node@10.15.3 preinstall /workspace/source/node_modules/node
+> node installArchSpecificPackage
+
++ node-linux-x64@10.15.3
+added 1 package in 1.066s
+found 0 vulnerabilities
+
+
+> husky@2.4.1 install /workspace/source/node_modules/husky
+> node husky install
+
+husky > Setting up git hooks
+CI detected, skipping Git hooks installation.
+
+> core-js@3.1.2 postinstall /workspace/source/node_modules/@babel/register/node_modules/core-js
+> node -e "try { require('./scripts/postinstall'); } catch (e) { /* empty */ }"
+
+[96mThank you for using core-js ([94m https://github.com/zloirock/core-js [96m)![0m
+
+[96mPlease consider supporting of core-js on Open Collective or Patreon: [0m
+[96m>[94m https://opencollective.com/core-js [0m
+[96m>[94m https://www.patreon.com/zloirock [0m
+
+[96mAlso, the author of core-js ([94m https://github.com/zloirock [96m) is looking for a good job -)[0m
+
+
+> core-js@2.6.8 postinstall /workspace/source/node_modules/core-js
+> node -e "try { require('./scripts/postinstall'); } catch (e) { /* empty */ }"
+
+[96mThank you for using core-js ([94m https://github.com/zloirock/core-js [96m)![0m
+
+[96mPlease consider supporting of core-js on Open Collective or Patreon: [0m
+[96m>[94m https://opencollective.com/core-js [0m
+[96m>[94m https://www.patreon.com/zloirock [0m
+
+[96mAlso, the author of core-js ([94m https://github.com/zloirock [96m) is looking for a good job -)[0m
+
+
+> core-js-pure@3.1.2 postinstall /workspace/source/node_modules/core-js-pure
+> node -e "try { require('./scripts/postinstall'); } catch (e) { /* empty */ }"
+
+[96mThank you for using core-js ([94m https://github.com/zloirock/core-js [96m)![0m
+
+[96mPlease consider supporting of core-js on Open Collective or Patreon: [0m
+[96m>[94m https://opencollective.com/core-js [0m
+[96m>[94m https://www.patreon.com/zloirock [0m
+
+[96mAlso, the author of core-js ([94m https://github.com/zloirock [96m) is looking for a good job -)[0m
+
+
+> parse-domain@2.3.1 postinstall /workspace/source/node_modules/parse-domain
+> run-s build:tries
+
+
+> parse-domain@2.3.1 build:tries /workspace/source/node_modules/parse-domain
+> node scripts/build-tries.js
+
+Downloading public suffix list from https://publicsuffix.org/list/public_suffix_list.dat... ok
+Writing /workspace/source/node_modules/parse-domain/build/tries/icann.complete.json... ok
+Writing /workspace/source/node_modules/parse-domain/build/tries/icann.light.json... ok
+Writing /workspace/source/node_modules/parse-domain/build/tries/private.complete.json... ok
+Running sanity check... ok
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+added 1230 packages from 1366 contributors and audited 889127 packages in 20.018s
+found 12911 vulnerabilities (2 low, 12909 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-build-npm-test[0m
+
+> traec@1.1.12 test /workspace/source
+> jest
+
+PASS test/apiMiddleware.test.js
+  ● Console
+
+    console.log src/redux/apiMiddleware.js:181
+      Dispatching next fetchHandlers
+    console.log src/redux/apiMiddleware.js:181
+      Dispatching next fetchHandlers
+
+(node:20) UnhandledPromiseRejectionWarning: TypeError: body used already for: undefined
+(node:20) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 2)
+(node:20) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+(node:20) UnhandledPromiseRejectionWarning: TypeError: error.json is not a function
+(node:20) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 4)
+PASS test/fetch.test.js
+  ● Console
+
+    console.warn src/redux/fetch.js:37
+      ERROR IN API FETCH to /api/bad-test {"type":"basic","url":"http://0.0.0.0:8080/auth-jwt/get/","redirected":false,"status":404,"ok":false,"statusText":"NOPE!","headers":{},"body":{},"bodyUsed":false}
+
+PASS test/reducers/fetchReducer.test.js
+PASS test/handlerMap.test.js
+  ● Console
+
+    console.log src/handlerMap.js:28
+      MAKING fetchHandler MAP
+    console.log test/handlerMap.test.js:33
+      CCCCCCCCCCC { tracker_commit_tree_comment: [ 'list', 'post' ],
+        tracker_ref_commit: [ 'list', 'post', 'put' ],
+        tracker_commit_all: [ 'list' ],
+        tracker_branch: [ 'list' ],
+        tracker_commit_branch: [ 'list' ],
+        tracker_commit_edge: [ 'read', 'put' ],
+        company: [ 'list', 'read', 'post', 'put', 'delete' ],
+        company_authgroup: [ 'list', 'post', 'put' ],
+        company_permission: [ 'list' ],
+        company_email_recipient: [ 'list', 'read', 'post', 'put', 'patch' ],
+        company_email: [ 'list' ],
+        company_indicator: [ 'list', 'post', 'delete' ],
+        company_invite: [ 'list', 'post', 'put', 'delete' ],
+        company_invite_all: [ 'list' ],
+        company_member: [ 'list', 'delete' ],
+        company_report: [ 'list' ],
+        company_report_excel: [ 'list' ],
+        company_target: [ 'list', 'post', 'put', 'patch' ],
+        tracker_commit_convfactor: [ 'list', 'post', 'put' ],
+        tracker_ref_tree_document: [ 'post' ],
+        tracker_commit_document_object: [ 'list' ],
+        tracker_ref_document: [ 'put', 'delete' ],
+        tracker_commit_document: [ 'put' ],
+        tracker_ref_head: [ 'put' ],
+        tracker_commit_indicator: [ 'list', 'post', 'put', 'delete' ],
+        tracker_ref_tree_score: [ 'post', 'patch' ],
+        tracker_ref_tree_tree_and_metric: [ 'post' ],
+        tracker_commit_value: [ 'list', 'post' ],
+        tracker_commit_score_value: [ 'post', 'put' ],
+        project: [ 'list', 'post', 'put', 'patch', 'read', 'delete' ],
+        project_authgroup: [ 'list', 'post', 'put' ],
+        project_permission: [ 'list' ],
+        project_discipline: [ 'list', 'post', 'put', 'delete' ],
+        project_email_recipient: [ 'list', 'read', 'post', 'put', 'patch' ],
+        project_email: [ 'list' ],
+        project_inputs: [ 'list' ],
+        project_invite: [ 'list', 'post', 'put', 'delete' ],
+        project_invite_all: [ 'list' ],
+        project_member: [ 'list', 'delete' ],
+        project_reporting_periods: [ 'list', 'post', 'patch', 'delete' ],
+        project_reporting_periods_excel: [ 'list' ],
+        project_reporting_periods_commits: [ 'list' ],
+        project_reporting_periods_inputs: [ 'list' ],
+        project_and_setup: [ 'post' ],
+        tracker_ref_all: [ 'list' ],
+        tracker_ref: [ 'list', 'read', 'patch', 'post', 'delete' ],
+        tracker_ref_tree_branch: [ 'post' ],
+        tracker_ref_submodule: [ 'list' ],
+        tracker_ref_tree: [ 'post', 'delete' ],
+        tracker_ref_branch: [ 'post', 'put' ],
+        tracker_commit_target: [ 'list', 'post', 'put', 'patch', 'delete' ],
+        tenant_*****_basemetric: [ 'list' ],
+        tracker: [ 'read', 'list', 'post', 'put' ],
+        project_tracker: [ 'list' ],
+        tracker_dispatch: [ 'post' ],
+        tracker_ref_tree_tree: [ 'post' ] }
+    console.log test/handlerMap.test.js:42
+      tracker_commit_tree_comment list
+    console.log test/handlerMap.test.js:42
+      tracker_commit_tree_comment post
+    console.log test/handlerMap.test.js:42
+      tracker_ref_commit list
+    console.log test/handlerMap.test.js:42
+      tracker_ref_commit post
+    console.log test/handlerMap.test.js:42
+      tracker_ref_commit put
+    console.log test/handlerMap.test.js:42
+      tracker_commit_all list
+    console.log test/handlerMap.test.js:42
+      tracker_branch list
+    console.log test/handlerMap.test.js:42
+      tracker_commit_branch list
+    console.log test/handlerMap.test.js:42
+      tracker_commit_edge read
+    console.log test/handlerMap.test.js:42
+      tracker_commit_edge put
+    console.log test/handlerMap.test.js:42
+      company list
+    console.log test/handlerMap.test.js:42
+      company read
+    console.log test/handlerMap.test.js:42
+      company post
+    console.log test/handlerMap.test.js:42
+      company put
+    console.log test/handlerMap.test.js:42
+      company delete
+    console.log test/handlerMap.test.js:42
+      company_authgroup list
+    console.log test/handlerMap.test.js:42
+      company_authgroup post
+    console.log test/handlerMap.test.js:42
+      company_authgroup put
+    console.log test/handlerMap.test.js:42
+      company_permission list
+    console.log test/handlerMap.test.js:42
+      company_email_recipient list
+    console.log test/handlerMap.test.js:42
+      company_email_recipient read
+    console.log test/handlerMap.test.js:42
+      company_email_recipient post
+    console.log test/handlerMap.test.js:42
+      company_email_recipient put
+    console.log test/handlerMap.test.js:42
+      company_email_recipient patch
+    console.log test/handlerMap.test.js:42
+      company_email list
+    console.log test/handlerMap.test.js:42
+      company_indicator list
+    console.log test/handlerMap.test.js:42
+      company_indicator post
+    console.log test/handlerMap.test.js:42
+      company_indicator delete
+    console.log test/handlerMap.test.js:42
+      company_invite list
+    console.log test/handlerMap.test.js:42
+      company_invite post
+    console.log test/handlerMap.test.js:42
+      company_invite put
+    console.log test/handlerMap.test.js:42
+      company_invite delete
+    console.log test/handlerMap.test.js:42
+      company_invite_all list
+    console.log test/handlerMap.test.js:42
+      company_member list
+    console.log test/handlerMap.test.js:42
+      company_member delete
+    console.log test/handlerMap.test.js:42
+      company_report list
+    console.log test/handlerMap.test.js:42
+      company_report_excel list
+    console.log test/handlerMap.test.js:42
+      company_target list
+    console.log test/handlerMap.test.js:42
+      company_target post
+    console.log test/handlerMap.test.js:42
+      company_target put
+    console.log test/handlerMap.test.js:42
+      company_target patch
+    console.log test/handlerMap.test.js:42
+      tracker_commit_convfactor list
+    console.log test/handlerMap.test.js:42
+      tracker_commit_convfactor post
+    console.log test/handlerMap.test.js:42
+      tracker_commit_convfactor put
+    console.log test/handlerMap.test.js:42
+      tracker_ref_tree_document post
+    console.log test/handlerMap.test.js:42
+      tracker_commit_document_object list
+    console.log test/handlerMap.test.js:42
+      tracker_ref_document put
+    console.log test/handlerMap.test.js:42
+      tracker_ref_document delete
+    console.log test/handlerMap.test.js:42
+      tracker_commit_document put
+    console.log test/handlerMap.test.js:42
+      tracker_ref_head put
+    console.log test/handlerMap.test.js:42
+      tracker_commit_indicator list
+    console.log test/handlerMap.test.js:42
+      tracker_commit_indicator post
+    console.log test/handlerMap.test.js:42
+      tracker_commit_indicator put
+    console.log test/handlerMap.test.js:42
+      tracker_commit_indicator delete
+    console.log test/handlerMap.test.js:42
+      tracker_ref_tree_score post
+    console.log test/handlerMap.test.js:42
+      tracker_ref_tree_score patch
+    console.log test/handlerMap.test.js:42
+      tracker_ref_tree_tree_and_metric post
+    console.log test/handlerMap.test.js:42
+      tracker_commit_value list
+    console.log test/handlerMap.test.js:42
+      tracker_commit_value post
+    console.log test/handlerMap.test.js:42
+      tracker_commit_score_value post
+    console.log test/handlerMap.test.js:42
+      tracker_commit_score_value put
+    console.log test/handlerMap.test.js:42
+      project list
+    console.log test/handlerMap.test.js:42
+      project post
+    console.log test/handlerMap.test.js:42
+      project put
+    console.log test/handlerMap.test.js:42
+      project patch
+    console.log test/handlerMap.test.js:42
+      project read
+    console.log test/handlerMap.test.js:42
+      project delete
+    console.log test/handlerMap.test.js:42
+      project_authgroup list
+    console.log test/handlerMap.test.js:42
+      project_authgroup post
+    console.log test/handlerMap.test.js:42
+      project_authgroup put
+    console.log test/handlerMap.test.js:42
+      project_permission list
+    console.log test/handlerMap.test.js:42
+      project_discipline list
+    console.log test/handlerMap.test.js:42
+      project_discipline post
+    console.log test/handlerMap.test.js:42
+      project_discipline put
+    console.log test/handlerMap.test.js:42
+      project_discipline delete
+    console.log test/handlerMap.test.js:42
+      project_email_recipient list
+    console.log test/handlerMap.test.js:42
+      project_email_recipient read
+    console.log test/handlerMap.test.js:42
+      project_email_recipient post
+    console.log test/handlerMap.test.js:42
+      project_email_recipient put
+    console.log test/handlerMap.test.js:42
+      project_email_recipient patch
+    console.log test/handlerMap.test.js:42
+      project_email list
+    console.log test/handlerMap.test.js:42
+      project_inputs list
+    console.log test/handlerMap.test.js:42
+      project_invite list
+    console.log test/handlerMap.test.js:42
+      project_invite post
+    console.log test/handlerMap.test.js:42
+      project_invite put
+    console.log test/handlerMap.test.js:42
+      project_invite delete
+    console.log test/handlerMap.test.js:42
+      project_invite_all list
+    console.log test/handlerMap.test.js:42
+      project_member list
+    console.log test/handlerMap.test.js:42
+      project_member delete
+    console.log test/handlerMap.test.js:42
+      project_reporting_periods list
+    console.log test/handlerMap.test.js:42
+      project_reporting_periods post
+    console.log test/handlerMap.test.js:42
+      project_reporting_periods patch
+    console.log test/handlerMap.test.js:42
+      project_reporting_periods delete
+    console.log test/handlerMap.test.js:42
+      project_reporting_periods_excel list
+    console.log test/handlerMap.test.js:42
+      project_reporting_periods_commits list
+    console.log test/handlerMap.test.js:42
+      project_reporting_periods_inputs list
+    console.log test/handlerMap.test.js:42
+      project_and_setup post
+    console.log test/handlerMap.test.js:42
+      tracker_ref_all list
+    console.log test/handlerMap.test.js:42
+      tracker_ref list
+    console.log test/handlerMap.test.js:42
+      tracker_ref read
+    console.log test/handlerMap.test.js:42
+      tracker_ref patch
+    console.log test/handlerMap.test.js:42
+      tracker_ref post
+    console.log test/handlerMap.test.js:42
+      tracker_ref delete
+    console.log test/handlerMap.test.js:42
+      tracker_ref_tree_branch post
+    console.log test/handlerMap.test.js:42
+      tracker_ref_submodule list
+    console.log test/handlerMap.test.js:42
+      tracker_ref_tree post
+    console.log test/handlerMap.test.js:42
+      tracker_ref_tree delete
+    console.log test/handlerMap.test.js:42
+      tracker_ref_branch post
+    console.log test/handlerMap.test.js:42
+      tracker_ref_branch put
+    console.log test/handlerMap.test.js:42
+      tracker_commit_target list
+    console.log test/handlerMap.test.js:42
+      tracker_commit_target post
+    console.log test/handlerMap.test.js:42
+      tracker_commit_target put
+    console.log test/handlerMap.test.js:42
+      tracker_commit_target patch
+    console.log test/handlerMap.test.js:42
+      tracker_commit_target delete
+    console.log test/handlerMap.test.js:42
+      tenant_*****_basemetric list
+    console.log test/handlerMap.test.js:42
+      tracker read
+    console.log test/handlerMap.test.js:42
+      tracker list
+    console.log test/handlerMap.test.js:42
+      tracker post
+    console.log test/handlerMap.test.js:42
+      tracker put
+    console.log test/handlerMap.test.js:42
+      project_tracker list
+    console.log test/handlerMap.test.js:42
+      tracker_dispatch post
+    console.log test/handlerMap.test.js:42
+      tracker_ref_tree_tree post
+
+PASS test/fetchHandlers/project/projectReporting.test.js
+PASS test/fetchHandlers/project/projectEmails.test.js
+PASS test/reducers/authReducer.test.js
+PASS test/fetchHandlers/fetchHandlers.test.js
+  ● Console
+
+    console.log test/fetchHandlers/fetchHandlers.test.js:28
+      Set {}
+    console.log test/fetchHandlers/fetchHandlers.test.js:35
+      Set {}
+
+PASS test/reducers/uiReducers.test.js
+PASS test/fetchManager.test.js
+  ● Console
+
+    console.log src/handlerMap.js:28
+      MAKING fetchHandler MAP
+
+PASS test/actions.test.js
+PASS test/index.test.js
+  ● Console
+
+    console.log src/handlerMap.js:28
+      MAKING fetchHandler MAP
+
+
+Test Suites: 12 passed, 12 total
+Tests:       2 skipped, 48 passed, 50 total
+Snapshots:   0 total
+Time:        5.331s
+Ran all test suites.
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-build-container-build[0m
+[36mINFO[0m[0000] Downloading base image node:9-slim           
+[36mINFO[0m[0001] Error while retrieving image from cache: getting file info: stat /workspace/sha256:0e0175bbe4f8d9d104590d8d2c591017874e30977cb71aaff1cf6fa99479575c: no such file or directory 
+[36mINFO[0m[0001] Downloading base image node:9-slim           
+[36mINFO[0m[0002] Executing 0 build triggers                   
+[36mINFO[0m[0002] cmd: EXPOSE                                  
+[36mINFO[0m[0002] Adding exposed port: 8080/tcp                
+[36mINFO[0m[0002] Using files from context: [/workspace/source] 
+[36mINFO[0m[0003] Skipping unpacking as no commands require it. 
+[36mINFO[0m[0003] Taking snapshot of full filesystem...        
+[36mINFO[0m[0003] ENV PORT 8080                                
+[36mINFO[0m[0003] No files changed in this command, skipping snapshotting. 
+[36mINFO[0m[0003] EXPOSE 8080                                  
+[36mINFO[0m[0003] cmd: EXPOSE                                  
+[36mINFO[0m[0003] Adding exposed port: 8080/tcp                
+[36mINFO[0m[0003] No files changed in this command, skipping snapshotting. 
+[36mINFO[0m[0003] WORKDIR /usr/src/app                         
+[36mINFO[0m[0003] cmd: workdir                                 
+[36mINFO[0m[0003] Changed working directory to /usr/src/app    
+[36mINFO[0m[0003] Creating directory /usr/src/app              
+[36mINFO[0m[0003] Taking snapshot of files...                  
+[36mINFO[0m[0003] Using files from context: [/workspace/source] 
+[36mINFO[0m[0004] COPY . .                                     
+[36mINFO[0m[0009] Taking snapshot of files...                  
+[36mINFO[0m[0015] CMD ["npm", "start"]                         
+[36mINFO[0m[0015] No files changed in this command, skipping snapshotting. 
+2019/09/09 08:31:57 pushed blob: sha256:dafc8c39ab70f39c06ef31b465beb2a3c24c665e9e7d13fd99071af0ebafa8c1
+2019/09/09 08:31:57 pushed blob: sha256:78c7400f7225dcd34310ea28829ee34e8d03b9bc7011237c3b3118bd86942d96
+2019/09/09 08:31:58 pushed blob: sha256:7d083412657baa2dafba8d093034ef26f9ed2c90fb6ed95f76bb55aff03ed429
+2019/09/09 08:31:58 pushed blob: sha256:196b8e3c919d5639193ba6c6e54774528942041bbc37606631a2250502985c3c
+2019/09/09 08:31:59 pushed blob: sha256:e01bd28a434b56ffd2a3fe9aa99b9b69aecca69904843edd30b1ee7150d79904
+2019/09/09 08:32:02 pushed blob: sha256:5bba3ecb4cd6374a19da45f2a3db0a9c0804984358b3bb4b666c28944016e5ff
+2019/09/09 08:32:03 pushed blob: sha256:a88538b9cd05cfa611e43a25582a95ad7879f6fa708b0386a26b71ee62235bb3
+2019/09/09 08:32:06 pushed blob: sha256:300fbff4e111fef502e17f257d55fecdb7fb9b4c9863278da71c44b66abd9019
+2019/09/09 08:32:06 598950368936.dkr.ecr.eu-west-2.amazonaws.com/procedural-build/traec:0.0.1: digest: sha256:8b1100c917fc8b7a8101de80f6a8ad631f4ff9885f56dff54409f32cfeefbb5d size: 1407
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-build-post-build[0m
+no CVE provider running in the current ** namespace so skip adding image to be analysed
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-promote-changelog[0m
+Converted /workspace/source/charts/traec to an unshallow repository
+no previous commit version found so change diff unavailable
+
+Showing logs for build [32mprocedural-build-traec-master-1[0m stage [32mfrom-build-pack[0m and container [32mstep-promote-helm-release[0m
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Adding missing Helm repo: storage.googleapis.com https://storage.googleapis.com/chartmuseum.jenkins-x.io
+Successfully added Helm repository storage.googleapis.com.
+Adding missing Helm repo: jenkins-x-chartmuseum http://jenkins-x-chartmuseum:8080
+Successfully added Helm repository jenkins-x-chartmuseum.
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Uploading chart file traec-0.0.1.tgz to http://jenkins-x-chartmuseum:8080/api/charts
+Received 401 response: {"error":"unauthorized"}
+error: Failed to post chart to http://jenkins-x-chartmuseum:8080/api/charts due to response 401: {"error":"unauthorized"}
+[31m
+Pipeline failed on stage 'from-build-pack' : container 'step-promote-helm-release'. The execution of the pipeline has stopped.[0m
