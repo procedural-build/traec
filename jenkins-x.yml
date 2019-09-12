@@ -1,14 +1,13 @@
 buildPack: javascript
 pipelineConfig:
+  env:
+    - name: NPM
+      valueFrom:
+        secretKeyRef:
+          key: token
+          name: secret/pipeline/npm
   pipelines:
     release:
-      pipeline:
-        environment:
-          - name: NPM_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: token
-                name: secret/pipeline/npm
       promote:
         steps:
           - command: echo "Found token:" $NPM_TOKEN
