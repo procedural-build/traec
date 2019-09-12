@@ -2,12 +2,16 @@ buildPack: javascript
 pipelineConfig:
   pipelines:
     release:
-      build:
-        steps:
-          - command: echo "YEAH"
+      pipeline:
+        environment:
+          - name: NPM_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: token
+                name: secret/pipeline/npm
       promote:
         steps:
-          - command: echo $NPM_TOKEN
+          - command: echo "Found token:" $NPM_TOKEN
           - command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           - command: npm run matchversion
           - command: npm run patchversion
