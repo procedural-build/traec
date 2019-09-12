@@ -5,7 +5,7 @@ pipelineConfig:
       valueFrom:
         secretKeyRef:
           key: token
-          name: secret/pipeline/npm
+          name: pipeline/npm
   pipelines:
     release:
       promote:
