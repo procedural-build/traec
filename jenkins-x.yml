@@ -4,6 +4,7 @@ pipelineConfig:
     release:
       promote:
         steps:
+          - command: eval $(jx get vault-config) && vault kv get secret/pipelines/npm
           - command: export NPM_TOKEN=$(eval $(jx get vault-config) && vault kv get secret/pipelines/npm | grep -P -o "[0-9]{3}\w{2}[0-9]{3}-.{5,}")
           - command: echo "Found token:" $NPM_TOKEN
           - command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
