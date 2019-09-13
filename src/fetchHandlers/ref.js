@@ -222,6 +222,7 @@ export const postRefBranch = ({ trackerId, refId, commitId, treeId }) => {
     const data = action.payload;
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
+    console.log("PAYLOAD", data);
     if (!data.errors) {
       const commitPath = `commitEdges.byId.${commitId}.trees.${treeId}`;
       newState = newState.addToDict("refs.byId", data);
@@ -245,8 +246,8 @@ export const postRefBranch = ({ trackerId, refId, commitId, treeId }) => {
     fetchParams,
     stateParams: {
       stateSetFunc,
-      formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
-      formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+      formVisPath: `refs.byId.${refId}.branch.SHOW_FORM`,
+      formObjPath: `refs.byId.${refId}.branch.newItem`
     }
   };
 };
@@ -285,8 +286,8 @@ export const putRefBranch = ({ trackerId, refId, commitId, branchId }) => {
     fetchParams,
     stateParams: {
       stateSetFunc,
-      formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
-      formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+      formVisPath: `refs.byId.${refId}.branch.SHOW_FORM`,
+      formObjPath: `refs.byId.${refId}.branch.newItem`
     }
   };
 };
