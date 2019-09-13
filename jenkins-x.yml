@@ -8,7 +8,7 @@ pipelineConfig:
       promote:
         steps:
           - command: jx get vault-config
-          - command: unzip /builder/home/.jx/bin/vault.zip -d /builder/home
+          - command: curl -o vault.zip https://releases.hashicorp.com/vault/1.2.2/vault_1.2.2_linux_amd64.zip && unzip vault.zip -d /builder/home
           - command: ls /builder/home
           - command: eval $(jx get vault-config) && /builder/home/vault kv list secret/pipelines/npm
           - command: export NPM_TOKEN=$(eval $(jx get vault-config) && /builder/home/vault kv get secret/pipelines/npm | grep -P -o "[0-9]{3}\w{2}[0-9]{3}-.{5,}")
