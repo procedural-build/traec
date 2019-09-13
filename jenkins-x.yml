@@ -1,12 +1,17 @@
 buildPack: javascript
 pipelineConfig:
   env:
-    - name: NPM_TOKEN
+    - name: BROKEN_TOKEN
       value: vault:secret/pipelines/npm:token
   pipelines:
     release:
       promote:
         steps:
+          - command: jx get vault-config
+          - command: curl -o vault.zip https://releases.hashicorp.com/vault/1.2.2/vault_1.2.2_linux_amd64.zip && unzip vault.zip -d /builder/home
+          - command: ls /builder/home
+          - command: /builder/home/vault kv list secret/pipelines
+          - command: export NPM_TOKEN=$(eval $(jx get vault-config) && /builder/home/vault kv get secret/pipelines/npm | grep -P -o "[0-9]{3}\w{2}[0-9]{3}-.{5,}")
           - command: echo "Found token:" $NPM_TOKEN
           - command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           - command: npm run matchversion
