@@ -1,7 +1,7 @@
 buildPack: javascript
 pipelineConfig:
   env:
-    - name: NPM
+    - name: NPM_TOKEN
       value: vault:pipeline/npm:token
   pipelines:
     release:
