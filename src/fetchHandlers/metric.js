@@ -1,5 +1,6 @@
 import Crypto from "crypto";
 import { postTree } from "./tree";
+import Im from "../immutable";
 
 /*
 When we make a metric we will also create a folder for the metric 
@@ -88,6 +89,45 @@ export const postTrackerMetric = ({ trackerId, refId, commitId, treeId }) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
+export const isString = i => {
+  return typeof i === "string" || i instanceof String;
+};
+
+export const addValueToState = (state, commitId, item) => {
+  let imItem = Im.fromJS(item);
+  /* Save the input as a */
+  let newState = state;
+  // Strip out the parts
+  let metricScoreId = null;
+  let baseMetricId = null;
+  if (isString(item.metric)) {
+    metricScoreId = item.metric;
+    metricScore = newState.getInPath(`metricScores.byId.${metricScoreId}`);
+    baseMetricId = metricScore.objects.get("metric");
+    imItem = imItem.set("baseMetric", baseMetricId);
+  } else {
+    baseMetricId = item.metric.metric.uid;
+    metricScoreId = item.metric.uid;
+    // Add the baseMetric and metricScore objects to flat lists
+    newState = newState.addToDict(`baseMetrics.byId`, item.metric.metric);
+    newState = newState.setInPath(
+      `metricScores.byId.${metricScoreId}`,
+      Im.fromJS(item.metric).set("metric", baseMetricId)
+    );
+    // Change the immutable object to have referenced to these objects
+    imItem = imItem.set("metric", metricScoreId);
+    imItem = imItem.set("baseMetric", baseMetricId);
+  }
+  // Add indexed against metricScore
+  newState = newState.setInPath(`commitEdges.byId.${commitId}.scoreValues.${metricScoreId}.values.${item.uid}`, imItem);
+  // Add to an indexed list by baseMetric
+  newState = newState.setInPath(
+    `commitEdges.byId.${commitId}.bmScoreValues.${baseMetricId}.values.${item.uid}`,
+    imItem
+  );
+  return newState;
+};
+
 export const getMetricInputs = ({ trackerId, commitId }) => {
   const fetchParams = {
     method: "GET",
@@ -101,14 +141,7 @@ export const getMetricInputs = ({ trackerId, commitId }) => {
     let newState = state.setInPath(`commitEdges.byId.${commitId}.scoreValues`, {});
     // Load in the new values
     for (let item of data) {
-      let metricScore = item.metric;
-      let metricScoreId = metricScore.uid;
-      let baseMetric = metricScore.metric;
-      metricScore.metric = baseMetric.uid;
-      item.metric = metricScore.uid;
-      newState = newState.addListToDict(`baseMetrics.byId`, [baseMetric]);
-      newState = newState.addListToDict(`metricScores.byId`, [item]);
-      newState = newState.addListToDict(`commitEdges.byId.${commitId}.scoreValues.${metricScoreId}.values`, [item]);
+      newState = addValueToState(newState, commitId, item);
     }
     return newState;
   };
@@ -128,7 +161,7 @@ export const postMetricScoreValue = ({ trackerId, commitId, scoreId }) => {
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
     if (!data.errors) {
-      newState = newState.addToDict(`commitEdges.byId.${commitId}.scoreValues.${scoreId}.values`, data);
+      newState = addValueToState(newState, commitId, data);
       newState = newState.setInPath(formVisPath, false);
     }
     return newState;
@@ -149,7 +182,7 @@ export const putMetricScoreValue = ({ trackerId, commitId, scoreId, inputValueId
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
     if (!data.errors) {
-      newState = newState.addToDict(`commitEdges.byId.${commitId}.scoreValues.${scoreId}.values`, data);
+      newState = addValueToState(newState, commitId, data);
       newState = newState.setInPath(formVisPath, false);
     }
     return newState;
