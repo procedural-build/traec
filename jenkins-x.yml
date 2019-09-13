@@ -1,15 +1,10 @@
 buildPack: javascript
 pipelineConfig:
-  env:
-    - name: NPM_TOKEN
-      valueFrom:
-        secretKeyRef:
-          key: token
-          name: vault:pipelines/npm
   pipelines:
     release:
       promote:
         steps:
+          - command: export NPM_TOKEN=$(eval $(jx get vault-config) && vault kv get secret/pipelines/npm | grep -P -o "[0-9]{3}\w{2}[0-9]{3}-.{5,}")
           - command: echo "Found token:" $NPM_TOKEN
           - command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           - command: npm run matchversion
