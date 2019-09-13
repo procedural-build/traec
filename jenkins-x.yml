@@ -2,7 +2,10 @@ buildPack: javascript
 pipelineConfig:
   env:
     - name: NPM_TOKEN
-      value: vault:pipeline/npm:token
+      valueFrom:
+        secretKeyRef:
+          key: token
+          name: vault:pipeline/npm
   pipelines:
     release:
       promote:
