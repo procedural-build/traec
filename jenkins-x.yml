@@ -2,7 +2,7 @@ buildPack: javascript
 pipelineConfig:
   env:
     - name: NPM
-      value: "TEST"
+      value: vault:pipeline/npm:token
   pipelines:
     release:
       promote:
