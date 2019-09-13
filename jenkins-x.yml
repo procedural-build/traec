@@ -8,10 +8,10 @@ pipelineConfig:
       promote:
         steps:
           - command: jx get vault-config
-          - command: ls /builder/home/.jx/bin
-          - command: curl -o vault.zip https://releases.hashicorp.com/vault/1.2.2/vault_1.2.2_linux_amd64.zip && unzip vault.zip -d /builder/home
-          - command: export NPM_TOKEN=$(eval $(jx get vault-config) && /builder/home/vault kv get secret/pipelines/npm | grep -P -o "[0-9]{3}\w{2}[0-9]{3}-.{5,}") && echo "Found token:" $NPM_TOKEN
-          - command: export NPM_TOKEN=$(eval $(jx get vault-config) && /builder/home/vault kv get secret/pipelines/npm | grep -P -o "[0-9]{3}\w{2}[0-9]{3}-.{5,}") && echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          #- command: ls /builder/home/.jx/bin
+          #- command: curl -o vault.zip https://releases.hashicorp.com/vault/1.2.2/vault_1.2.2_linux_amd64.zip && unzip vault.zip -d /builder/home
+          - command: export NPM_TOKEN=$(eval $(jx get vault-config) && /builder/home/.jx/bin/vault kv get secret/pipelines/npm | grep -P -o "[0-9]{3}\w{2}[0-9]{3}-.{5,}") && echo "Found token:" $NPM_TOKEN
+          - command: export NPM_TOKEN=$(eval $(jx get vault-config) && /builder/home/.jx/bin/vault kv get secret/pipelines/npm | grep -P -o "[0-9]{3}\w{2}[0-9]{3}-.{5,}") && echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           - command: npm run matchversion
           - command: npm run patchversion
           - command: npm run pub
