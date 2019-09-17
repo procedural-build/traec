@@ -55,7 +55,7 @@
     "matchversion": "npm --no-git-tag-version --allow-same-version version $(npm view traec version)",
     "patchversion": "npm --no-git-tag-version version patch",
     "build": "npx babel src --out-dir ./dist && cp -v ./package.json ./dist/package.json",
-    "pub": "npm run build && npm publish ./dist"
+    "pub": "npm run matchversion && npm run patchversion && npm run build && npm publish ./dist"
   },
   "repository": {
     "type": "git",
