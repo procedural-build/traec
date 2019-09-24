@@ -38,6 +38,7 @@ export const getTrackerList = ({ onlyTemplates = false }) => {
     method: "GET",
     url: `/api/tracker/${query_params}`,
     apiId: "api_tracker_list",
+    requiredParams: [],
     queryParams: { onlyTemplates: false }
   };
   const stateSetFunc = (state, action) => {
