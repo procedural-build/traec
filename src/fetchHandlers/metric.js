@@ -139,6 +139,7 @@ export const getMetricInputs = ({ trackerId, commitId }) => {
     const data = action.payload;
     // Clear the existing values
     let newState = state.setInPath(`commitEdges.byId.${commitId}.scoreValues`, {});
+    newState = newState.setInPath(`commitEdges.byId.${commitId}.bmScoreValues`, {});
     // Load in the new values
     for (let item of data) {
       newState = addValueToState(newState, commitId, item);
