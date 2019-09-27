@@ -21,10 +21,11 @@ export const fetchProjectUserPermissions = function(projectId) {
 };
 
 /**
- * Get permissions of a project by ID
+ * Get permissions of a project by ID.
  * @memberof utils.permissions.project
- * @param  state
- * @param  projectId
+ * @param   { Object } state      The state of the redux store.
+ * @param   { String } projectId  The id of the project.
+ * @returns { Object }            An object containing the user permissions fetched from the state.
  */
 export const getProjectPermissions = function(state, projectId) {
   return state.getInPath(`entities.projectObjects.byId.${projectId}.userPermission`);
@@ -137,7 +138,7 @@ export const projectPermissionRender = function(
  * let items = [
  *        {
  *          label: "Test Item 1",
- *          requiresAdmin: true,    // The user has to be admin to have access to this object
+ *          requiresAdmin: true,    // Only admin has access to this object
  *        },
  *        {
  *          label: "Test Item 2",
