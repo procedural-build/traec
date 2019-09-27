@@ -129,24 +129,23 @@ export const projectPermissionRender = function(
  * Filters an array of objects, based on the permissions the user has to the given project id.
  *
  * @memberof utils.permissions.project
- * @param {string} projectId  The id of the project.
- * @param {array}  items      The array of objects that will be filterd.
- * @return itmes              Filtered such that it only includes the objects which the use has permission for.
- *         null               If the user doesn't have permission to the project.
+ * @param   { string }    projectId  The id of the project.
+ * @param   { Object[] }  items      The array of objects that will be filterd (See how it can be structured below).
+ * @returns { (Object[] | null) }    The items array exluding objects which the user doesn't have permission for or null if the user doesn't have permissions for the project id.
  *
  * @example
  * let projectId = "DJFJEU2467DEKGI346234DG"
  * let items = [
  *        {
  *          label: "Test Item 1",
- *          requiresAdmin: true,
+ *          requiresAdmin: true,    // The user has to be admin to have access to this object
  *        },
  *        {
  *          label: "Test Item 2",
- *          requiresAdmin: false
+ *          requiresAdmin: false    // All users have access to this object
  *        },
  *        {
- *          label: "Test Item 3"
+ *          label: "Test Item 3"    // All users have access to this object
  *        }
  * ]
  *
