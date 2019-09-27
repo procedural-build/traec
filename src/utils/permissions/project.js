@@ -33,12 +33,11 @@ export const getProjectPermissions = function(state, projectId) {
 /**
  * Fetch project user permissions if allowed
  * @memberof utils.permissions.project
- * @param  projectId
- * @param  requiresAdmin
- * @param  requiredActions
- * @param  allow_fetch
- * @return True if the user has permission to the project, otherwise false.
- *         If no permissions are found return null.
+ * @param  { String }  projectId       The id of the project
+ * @param  { boolean } requiresAdmin   Specifies if the user has to be admin to have permissions.
+ * @param  { Array }   requiredActions
+ * @param  { boolean } allow_fetch     Allows the method to fetch the user permissions.
+ * @return { (boolean | null) }        True if the user has permission to the project, otherwise false. Null if no permissions are found.
  */
 export const projectPermissionCheck = function(projectId, requiresAdmin, requiredActions, allow_fetch = true) {
   let state = store.getState();
