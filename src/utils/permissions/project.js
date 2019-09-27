@@ -37,6 +37,8 @@ export const getProjectPermissions = function(state, projectId) {
  * @param  requiresAdmin
  * @param  requiredActions
  * @param  allow_fetch
+ * @return True if the user has permission to the project, otherwise false.
+ *         If no permissions are found return null.
  */
 export const projectPermissionCheck = function(projectId, requiresAdmin, requiredActions, allow_fetch = true) {
   let state = store.getState();
@@ -124,9 +126,57 @@ export const projectPermissionRender = function(
 
 /**
  * project.js line 114
+ * Filters an array of objects, based on the permissions the user has to the given project id.
+ *
  * @memberof utils.permissions.project
- * @param projectId
- * @param items
+ * @param {string} projectId  The id of the project.
+ * @param {array}  items      The array of objects that will be filterd.
+ * @return itmes              Filtered such that it only includes the objects which the use has permission for.
+ *         null               If the user doesn't have permission to the project.
+ *
+ * @example
+ * let projectId = "DJFJEU2467DEKGI346234DG"
+ * let items = [
+ *        {
+ *          label: "Test Item 1",
+ *          requiresAdmin: true,
+ *        },
+ *        {
+ *          label: "Test Item 2",
+ *          requiresAdmin: false
+ *        },
+ *        {
+ *          label: "Test Item 3"
+ *        }
+ * ]
+ *
+ * let filteredItems = projectPermissionFilter(projectId, items)
+ *
+ * /* If the user is admin:
+ * filteredItems = [
+ *        {
+ *          label: "Test Item 1",
+ *          requiresAdmin: true,
+ *        },
+ *        {
+ *          label: "Test Item 2",
+ *          requiresAdmin: false
+ *        },
+ *        {
+ *          label: "Test Item 3"
+ *        }
+ * ]
+ *
+ * /* If the user is NOT admin:
+ * filteredItems = [
+ *        {
+ *          label: "Test Item 2",
+ *          requiresAdmin: false
+ *        },
+ *        {
+ *          label: "Test Item 3"
+ *        }
+ * ]
  */
 export const projectPermissionFilter = function(projectId, items) {
   let state = store.getState();
@@ -139,9 +189,11 @@ export const projectPermissionFilter = function(projectId, items) {
     if (i.requiresAdmin != null || i.requiredActions != null) {
       let requiresAdmin = i.requiresAdmin || false;
       let requiredActions = i.requiredActions || [];
-      return projectPermissionCheck(projectId, requiresAdmin, requiredActions);
+      return projectPermissionCheck(projectId, requiresAdmin, requiredActions); // Checking if the user has permission to see the item.
     }
     return true;
   });
   return items;
 };
+
+console.log("hello");
