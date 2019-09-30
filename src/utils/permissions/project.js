@@ -32,7 +32,9 @@ export const getProjectPermissions = function(state, projectId) {
 };
 
 /**
- * Fetch project user permissions if allowed
+ * Checks if the user has permission to see the project, based on value of requiresAdmin and requiresActions.
+ * If the permissions aren't in the store it will fetch them if allow_fetch = true. * 
+ * 
  * @memberof utils.permissions.project
  * @param  { String } projectId - The id of the project
  * @param  { boolean } requiresAdmin - Specifies if the user has to be admin to have permissions.
@@ -200,7 +202,7 @@ export const projectPermissionFilter = function(projectId, items) {
     if (i.requiresAdmin != null || i.requiredActions != null) {
       let requiresAdmin = i.requiresAdmin || false;
       let requiredActions = i.requiredActions || [];
-      return projectPermissionCheck(projectId, requiresAdmin, requiredActions); // Checking if the user has permission to see the item.
+      return projectPermissionCheck(projectId, requiresAdmin, requiredActions);
     }
     return true;
   });
