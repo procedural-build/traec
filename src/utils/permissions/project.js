@@ -208,5 +208,3 @@ export const projectPermissionFilter = function(projectId, items) {
   });
   return items;
 };
-
-console.log("hello");
