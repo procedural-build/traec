@@ -1,4 +1,4 @@
-import Im from "immutable";
+import Im, { Map } from "immutable";
 import React from "react";
 import store from "../../redux/store";
 import * as fetchHandlers from "../../fetchHandlers";
@@ -11,9 +11,9 @@ import { fetchToState } from "../../redux/actionCreators";
  */
 
 /**
- * Fetch user permissions for a project by ID
+ * Fetch user permissions for a project by ID, and dispatches an action to update the redux store's state.
  * @memberof utils.permissions.project
- * @param  projectId
+ * @param { String } projectId - The id of the project
  */
 export const fetchProjectUserPermissions = function(projectId) {
   let params = fetchHandlers.getProjectUserPermissions({ projectId });
@@ -21,22 +21,26 @@ export const fetchProjectUserPermissions = function(projectId) {
 };
 
 /**
- * Get permissions of a project by ID
+ * Get permissions of a project by ID.
  * @memberof utils.permissions.project
- * @param  state
- * @param  projectId
+ * @param   { Map } state - The state of the redux store.
+ * @param   { String } projectId - The id of the project.
+ * @returns { Map } - An immutable map object containing the user permissions fetched from the state.
  */
 export const getProjectPermissions = function(state, projectId) {
   return state.getInPath(`entities.projectObjects.byId.${projectId}.userPermission`);
 };
 
 /**
- * Fetch project user permissions if allowed
+ * Checks if the user has permission to see the project, based on value of requiresAdmin and requiresActions.
+ * If the permissions aren't in the store it will fetch them if allow_fetch = true. * 
+ * 
  * @memberof utils.permissions.project
- * @param  projectId
- * @param  requiresAdmin
- * @param  requiredActions
- * @param  allow_fetch
+ * @param  { String } projectId - The id of the project
+ * @param  { boolean } requiresAdmin - Specifies if the user has to be admin to have permissions.
+ * @param  { String[] } requiredActions - Lists the actions the user is required to have.
+ * @param  { boolean } allow_fetch - Allows the method to fetch the user permissions.
+ * @return { (boolean | null) } - True if the user has permission to the project, otherwise false. Null if no permissions are found.
  */
 export const projectPermissionCheck = function(projectId, requiresAdmin, requiredActions, allow_fetch = true) {
   let state = store.getState();
@@ -124,9 +128,68 @@ export const projectPermissionRender = function(
 
 /**
  * project.js line 114
+ * Filters an array of objects, based on the permissions the user has to the given project id.
+ *
  * @memberof utils.permissions.project
- * @param projectId
- * @param items
+ * @param   { string } projectId - The id of the project.
+ * @param   { Object[] } items - The array of objects that will be filterd (See how it can be structured below).
+ * @returns { (Object[] | null) } - The items array exluding objects which the user doesn't have permission for or null if the user doesn't have permissions for the project id.
+ *
+ * @example
+ * let projectId = "DJFJEU2467DEKGI346234DG"
+ * let items = [
+ *        {
+ *          label: "Test Item 1",
+ *          requiresAdmin: true,    // Only admins have access to this object.
+ *          requiredActions: []
+ *        },
+ *        {
+ *          label: "Test Item 2",
+ *          requiresAdmin: false     // Only users who are allowed to write to the project (given by the projectId), have access to this object.
+ *          requiredActions: ["write"]
+ *        },
+ *        {
+ *          label: "Test Item 3"    // All users have access to this object.
+ *        }
+ * ]
+ *
+ * let filteredItems = projectPermissionFilter(projectId, items)
+ *
+ * /* If the user is admin:
+ * filteredItems = [
+ *        {
+ *          label: "Test Item 1",
+ *          requiresAdmin: true,
+ *          requiredActions: []
+ *        },
+ *        {
+ *          label: "Test Item 2",
+ *          requiresAdmin: false,
+ *          requiredActions: ["write"]
+ *        },
+ *        {
+ *          label: "Test Item 3"
+ *        }
+ * ]
+ *
+ * /* If the user is NOT admin but has 'write' permissions:
+ * filteredItems = [
+ *        {
+ *          label: "Test Item 2",
+ *          requiresAdmin: false,
+ *          requiredActions: ["write"]
+ *        },
+ *        {
+ *          label: "Test Item 3"
+ *        }
+ * ]
+ * /* If the user is NOT admin and doesn't have 'write' permissions:
+ * flteredItems = [
+ *        {
+ *          label: "Test Item 3"
+ *        }
+ * ]
+ *
  */
 export const projectPermissionFilter = function(projectId, items) {
   let state = store.getState();
