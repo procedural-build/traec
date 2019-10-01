@@ -18,6 +18,11 @@ export const splitAtLevel = (str, splitChars, inChars = "", outChars = "") => {
   let lastIndex = 0;
   let parts = [];
   let part = null;
+  // Handle an undefined str
+  if (str == null) {
+    return [];
+  }
+  // Do the magic
   for (let i = 0; i < str.length; i++) {
     let chr = str.charAt(i);
     if (inChars.includes(chr)) {
@@ -31,6 +36,7 @@ export const splitAtLevel = (str, splitChars, inChars = "", outChars = "") => {
       lastIndex = i + 1;
     }
   }
+  // Add the last part
   parts = addPartToParts(str, parts, lastIndex, str.length);
   return parts;
 };
@@ -66,6 +72,11 @@ export const getBetween = (str, startChar, endChar) => {
   let depth = 0;
   let startIndex = null;
   let endIndex = null;
+  // Return null for undefined strings
+  if (str == null) {
+    return [null, str, null];
+  }
+  // Do the magic
   for (let i = 0; i < str.length; i++) {
     let chr = str.charAt(i);
     if (chr === startChar) {
@@ -82,6 +93,7 @@ export const getBetween = (str, startChar, endChar) => {
       }
     }
   }
+  // Get the parts before, and after
   if (startIndex != null && endIndex != null) {
     return [str.slice(0, startIndex), str.slice(startIndex + 1, endIndex), str.slice(endIndex + 1, str.length)];
   }
