@@ -67,7 +67,8 @@ describe("Failure Handler", () => {
     const error = "This is an error";
     const firstCall = {
       type: "FETCH_FAIL",
-      fetchParams
+      fetchParams,
+      error
     };
     const secondCall = {
       type: failureType,

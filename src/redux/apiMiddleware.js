@@ -132,11 +132,10 @@ export const responseTypes = function(APICallTypes) {
  * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
  */
 export const failureHandler = function(error, failureType, fetchParams, stateParams, dispatch) {
-  console.warn("Error with API request:", error);
-
   dispatch({
     type: "FETCH_FAIL",
-    fetchParams
+    fetchParams,
+    error
   });
 
   dispatch({

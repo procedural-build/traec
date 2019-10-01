@@ -1,5 +1,5 @@
 import Im from "../../immutable";
-import { storeCommitBranch } from "./commitBranch";
+import { storeCommitBranch, reduceCommitBranch } from "./commitBranch";
 
 export const getCommitEdges = ({ trackerId, commitId }) => {
   const fetchParams = {
@@ -89,7 +89,10 @@ const edgeSetFunctions = {
       return newState;
     }
     newState = storeCommitBranch(newState, commitBranch);
-    newState = newState.addToDict(`commitEdges.byId.${commitId}.trees.${tree.uid}.categories`, commitBranch);
+    newState = newState.setInPath(
+      `commitEdges.byId.${commitId}.trees.${tree.uid}.categories.${commitBranch.uid}`,
+      reduceCommitBranch(commitBranch)
+    );
     return newState;
   },
   treescore: (commitId, edge, newState) => {

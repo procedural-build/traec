@@ -95,6 +95,15 @@ export default class Fetch {
     return this._fetchParams ? this._fetchParams.method : null;
   }
 
+  get redux_cache_key() {
+    return `${this.method} ${this.url}`;
+  }
+
+  get redux_cache_object() {
+    let state = store.getState();
+    return state.getIn([`fetch`, `${this.redux_cache_key}`]);
+  }
+
   /**
    * Check if this fetch has been made within the cache timeout period
    * @return {boolean} True if we have requested data from this endpoint within cacheTimeout period

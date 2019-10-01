@@ -66,6 +66,7 @@ export * from "./document";
 export * from "./ref";
 export * from "./project/projectSetup";
 export * from "./project/projectAuthGroup";
+export * from "./project/projectInputs";
 export * from "./commit/commitEdges";
 export * from "./commit/commitBranch";
 export * from "./company/company";

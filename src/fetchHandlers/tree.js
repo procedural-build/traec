@@ -1,3 +1,5 @@
+import Im from "../immutable";
+
 export const postTree = ({ trackerId, refId, commitId, treeId }) => {
   const fetchParams = {
     method: "POST",
@@ -42,7 +44,7 @@ export const postTree = ({ trackerId, refId, commitId, treeId }) => {
   };
 };
 
-export const deleteTree = ({ trackerId, refId, commitId, treeId }) => {
+export const deleteTree = ({ trackerId, refId, commitId, treeId, cleanTreeStructure = false }) => {
   const fetchParams = {
     method: "DELETE",
     url: `/api/tracker/${trackerId}/ref/${refId}/tree/${treeId}/`,
@@ -51,7 +53,11 @@ export const deleteTree = ({ trackerId, refId, commitId, treeId }) => {
   };
   const stateSetFunc = (state, action) => {
     let parentId = state.getInPath(`commitEdges.byId.${commitId}.trees.${treeId}.parent`);
-    let newState = state.removeInPath(`commitEdges.byId.${commitId}.trees.${treeId}`);
+    let newState = state;
+    if (cleanTreeStructure) {
+      newState = cleanTreeStructureFunction(newState, commitId, treeId);
+    }
+    newState = newState.removeInPath(`commitEdges.byId.${commitId}.trees.${treeId}`);
     if (parentId) {
       newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
         i ? i.delete(treeId) : null
@@ -60,4 +66,25 @@ export const deleteTree = ({ trackerId, refId, commitId, treeId }) => {
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
+};
+
+export const getTreeStructure = (state, commitId, treeId) => {
+  let tree = state.getInPath(`commitEdges.byId.${commitId}.trees.${treeId}`);
+  let subTrees = tree.get("trees");
+  if (subTrees) {
+    return [treeId, subTrees.map(subTreeId => getTreeStructure(state, commitId, subTreeId)).toJS()];
+  } else {
+    return treeId;
+  }
+};
+
+export const cleanTreeStructureFunction = (state, commitId, treeId) => {
+  let toRemove = Im.fromJS(getTreeStructure(state, commitId, treeId));
+  let newState = state;
+
+  for (let tree of toRemove.flatten()) {
+    newState = newState.removeInPath(`commitEdges.byId.${commitId}.trees.${tree}`);
+  }
+
+  return newState;
 };

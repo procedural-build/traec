@@ -1,4 +1,4 @@
-import { storeCommitBranch } from "./commit/commitBranch";
+import { storeCommitBranch, reduceCommitBranch } from "./commit/commitBranch";
 
 export const getAllRefs = ({ isResponsible = true }) => {
   let query_params = isResponsible ? `?isResponsible=true` : "?isResponsible=false";
@@ -60,7 +60,10 @@ export const postCategoryRef = ({ trackerId, refId, commitId, treeId, skip_categ
     let newState = state.setInPath(formObjPath, data);
     if (!data.errors) {
       newState = storeCommitBranch(newState, data);
-      newState = newState.addToDict(`commitEdges.byId.${commitId}.trees.${treeId}.categories`, data);
+      newState = newState.setInPath(
+        `commitEdges.byId.${commitId}.trees.${treeId}.categories.${data.uid}`,
+        reduceCommitBranch(data)
+      );
       newState = newState.setInPath(formVisPath, false);
     }
     return newState;
@@ -208,7 +211,7 @@ export const postTreeRefBranch = ({ trackerId, refId, commitId, treeId }) => {
   };
 };
 
-export const postRefBranch = ({ trackerId, refId, commitId }) => {
+export const postRefBranch = ({ trackerId, refId, commitId, treeId }) => {
   const fetchParams = {
     method: "POST",
     url: `/api/tracker/${trackerId}/ref/${refId}/branch/`,
