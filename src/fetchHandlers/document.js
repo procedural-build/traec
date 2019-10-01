@@ -108,6 +108,7 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allo
         newState = newState.addToDict("docObjects.byId", status.current_object);
         status.current_object = status.current_object.uid;
       }
+
       // Store status and link to commitEdge
       newState = newState.addToDict("docStatuses.byId", status);
       newState = newState.setInPath(`commitEdges.byId.${commitId}.documents.${documentId}.status`, status.uid);
@@ -151,6 +152,10 @@ export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
       newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
         i ? i.delete(docId) : null
       );
+      
+      if (docId) {
+        newState = state.removeInPath(`documents.byId.${docId}`);
+      }
     }
     return newState;
   };
