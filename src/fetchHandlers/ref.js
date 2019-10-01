@@ -1,4 +1,4 @@
-import { storeCommitBranch, reduceCommitBranch } from "./commit/commitBranch";
+import { storeCommitBranch, reduceCommitBranch } from "./utils";
 
 export const getAllRefs = ({ isResponsible = true }) => {
   let query_params = isResponsible ? `?isResponsible=true` : "?isResponsible=false";

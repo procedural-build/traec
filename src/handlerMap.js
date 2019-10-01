@@ -32,7 +32,7 @@ const makeHandlerMap = function() {
       let fetchHandler = fh[funcName];
       let { fetchParams, stateParams } = fetchHandler({});
       if (!fetchParams) {
-        //console.warn("Skipping function in fetchhandler with fetchParams undefined", fetchHandler)
+        console.warn("Skipping function in fetchhandler with fetchParams undefined", fetchHandler);
         continue;
       }
       let { apiId, method } = fetchParams;
@@ -56,7 +56,7 @@ const makeHandlerMap = function() {
         Object.assign(handlerMap, { [prefix]: actionMap });
       }
     } catch (err) {
-      //console.warn("Error constructing handlerMap", err)
+      console.warn("Error constructing handlerMap", err);
       continue;
     }
   }
