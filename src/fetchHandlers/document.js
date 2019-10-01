@@ -142,7 +142,7 @@ export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
   const fetchParams = {
     method: "DELETE",
     url: `/api/tracker/${trackerId}/ref/${refId}/document/${docId}/`,
-    apiId: "api_tracker_ref_tree_document_delete",
+    apiId: "api_tracker_ref_document_delete",
     requiredParams: ["trackerId", "refId", "commitId", "docId"]
   };
   const stateSetFunc = (state, action) => {
