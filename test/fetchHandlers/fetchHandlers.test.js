@@ -3,7 +3,11 @@ import Glob from "glob";
 import FS from "fs";
 
 const getActualHandlers = () => {
-  let files = Glob.sync(`./src/fetchHandlers/**/*.js`);
+  let files = new Set(Glob.sync(`./src/fetchHandlers/**/*.js`));
+  // Skip files that are in utils
+  let skip_files = Glob.sync(`./src/fetchHandlers/utils/**/*.js`);
+  skip_files.map(i => files.delete(i));
+  files = Array.from(files);
 
   // Read each of the files to get the functions
   let handlerFunctionNames = new Set();
