@@ -30,12 +30,12 @@ environment {
           }
       }
     }
+    /*
     stage('Build & Publish NPM and Docs') {
       when {
         branch 'master'
       }
-      steps {
-        /*
+      steps {  
         sh 'documentation build src/** -f html -o docs'
         sh 'echo $SECRET && echo "//registry.npmjs.org/:_authToken=${SECRET}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
         ftpPublisher paramPublish: null, masterNodeName: '', alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, publishers: [
@@ -48,9 +48,9 @@ environment {
                                         [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/traec", remoteDirectorySDF: false, removePrefix: 'docs', sourceFiles: 'docs/**']
                                 ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
         ]
-        */
       }
     }
+    */
   }
 
   post {
