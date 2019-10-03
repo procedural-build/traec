@@ -15,7 +15,7 @@ export const getTenancyBaseMetrics = ({}) => {
 
 export const putTenancyBaseMetric = ({ baseMetricId }) => {
   const fetchParams = {
-    method: "PATCH",
+    method: "PUT",
     url: `/api/tenant/admin/basemetric/${baseMetricId}/`,
     apiId: "api_tenant_admin_basemetric_update",
     requiredParams: ["baseMetricId"],
