@@ -156,3 +156,29 @@ export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
+
+export const getDisciplineDocuments = ({ trackerId }) => {
+  const fetchParams = {
+    method: "GET",
+    url: `/api/tracker/${trackerId}/documents/`,
+    apiId: "api_tracker_documents_list",
+    requiredParams: ["trackerId"]
+  };
+  const stateSetFunc = (state, action) => {
+    // Successful put returns a DocumentStatusSerializer object
+    let data = action.payload;
+    let newState = state;
+    let objectIds = [];
+    let trackerId = action.fetchParams.url.split("/")[3];
+    for (let item of data) {
+      let document = { uid: item.uid, status: item.status.uid, description: item.description.uid, trackerId };
+      // Store the nested current_object separately and refer to only uuid in status
+      newState = newState.addToDict("user.documents.byId", document);
+      newState = newState.addToDict("descriptions.byId", item.description);
+      newState = newState.addToDict("docStatus.byId", item.status);
+    }
+
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
