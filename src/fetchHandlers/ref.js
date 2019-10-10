@@ -105,6 +105,34 @@ export const patchCategoryRef = ({ trackerId, refId }) => {
   };
 };
 
+
+export const putCategoryRef = ({ trackerId, refId }) => {
+  const fetchParams = {
+    method: "PUT",
+    url: `/api/tracker/${trackerId}/ref/${refId}/`,
+    apiId: "api_tracker_ref_update",
+    requiredParams: ["trackerId", "refId"]
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let { formVisPath, formObjPath } = action.stateParams;
+    let newState = state.setInPath(formObjPath, data);
+    if (!data.errors) {
+      newState = newState.setInPath(`refs.byId.${refId}`, data);
+      newState = newState.setInPath(formVisPath, false);
+    }
+    return newState;
+  };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `refs.byId.${refId}.SHOW_FORM`,
+      formObjPath: `refs.editById.${refId}.editObj`
+    }
+  };
+};
+
 export const postRootRef = ({ trackerId }) => {
   const fetchParams = {
     method: "POST",
