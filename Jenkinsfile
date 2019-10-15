@@ -6,11 +6,12 @@ pipeline {
     }
 
   }
-environment {
-        NPM_TOKEN = credentials('npm_token')
-        SLACK = credentials('slack')
-        HOME = '.'
-    }
+
+  environment {
+    NPM_TOKEN = credentials('npm_token')
+    SLACK = credentials('slack')
+    HOME = '.'
+  }
 
   stages {
     stage('NPM Install') {
@@ -37,6 +38,7 @@ environment {
       steps {
         sh 'documentation build src/** -f html -o docs'
         sh 'echo $NPM_TOKEN && echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
+        /*
         ftpPublisher paramPublish: null, masterNodeName: '', alwaysPublishFromMaster: true, continueOnError: false, failOnError: true, publishers: [
                                 [configName: 'Docs', transfers: [
                                         [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/traec/coverage", remoteDirectorySDF: false, removePrefix: 'coverage/lcov-report', sourceFiles: 'coverage/lcov-report/**']
@@ -47,6 +49,7 @@ environment {
                                         [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/traec", remoteDirectorySDF: false, removePrefix: 'docs', sourceFiles: 'docs/**']
                                 ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
         ]
+        */
       }
     }
   }
