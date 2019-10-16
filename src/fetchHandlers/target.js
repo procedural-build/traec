@@ -86,12 +86,14 @@ export const patchCommitMetricTarget = ({ trackerId, commitId, metricTargetId })
   return params;
 };
 
-export const deleteCommitMetricTarget = ({ trackerId, commitId, metricTargetId }) => {
+export const deleteCommitMetricTarget = ({ trackerId, commitId, metricTargetId, all_ref = true }) => {
+  let query_params = all_ref ? "?all_ref=true" : "";
   const fetchParams = {
     method: "DELETE",
-    url: `/api/tracker/${trackerId}/commit/${commitId}/target/${metricTargetId}/`,
+    url: `/api/tracker/${trackerId}/commit/${commitId}/target/${metricTargetId}/${query_params}`,
     apiId: "api_tracker_commit_target_delete",
-    requiredParams: ["trackerId", "commitId", "metricTargetId"]
+    requiredParams: ["trackerId", "commitId", "metricTargetId"],
+    queryParams: { all_ref: true }
   };
   const stateSetFunc = (state, action) => {
     return state.removeInPath(`commitEdges.byId.${commitId}.metricTargets.${metricTargetId}`);
