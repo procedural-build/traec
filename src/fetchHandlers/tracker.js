@@ -138,7 +138,7 @@ export const patchTracker = ({ trackerId }) => {
   return { fetchParams, stateParams };
 };
 
-export const postDispatch = ({ trackerId }) => {
+export const postTrackerDispatch = ({ trackerId }) => {
   const fetchParams = {
     method: "POST",
     url: `/api/tracker/${trackerId}/dispatch/`,
