@@ -10,7 +10,15 @@ export const getAllRefs = ({ isResponsible = true }) => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addListToDict(`refs.byId`, data);
+    let newState = state;
+    if (isResponsible) {
+      for (let item of data) {
+        let ref = { uid: item.uid };
+        newState = newState.addToDict("user.refs.byId", ref);
+      }
+    }
+
+    newState = state.addListToDict(`refs.byId`, data);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
@@ -306,6 +314,27 @@ export const deleteTrackerRef = ({ trackerId, refId, commitId }) => {
   };
   const stateSetFunc = (state, action) => {
     let newState = state;
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
+export const getDisciplineRefs = ({ trackerId }) => {
+  const fetchParams = {
+    method: "GET",
+    url: `/api/tracker/${trackerId}/refs/`,
+    apiId: "api_tracker_refs_list",
+    requiredParams: ["trackerId"]
+  };
+  const stateSetFunc = (state, action) => {
+    let data = action.payload;
+    let newState = state;
+    for (let item of data) {
+      let ref = { uid: item.uid };
+      newState = newState.addToDict("user.refs.byId", ref);
+      newState = newState.addToDict("refs.byId", item);
+    }
+
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };

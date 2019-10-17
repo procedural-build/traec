@@ -4,8 +4,6 @@ METRIC TARGETS
 
 const metricTargetToState = (newState, item, commitId) => {
   let baseMetric = item.metric;
-  //let baseMetricId = baseMetric.uid
-  //item.metric = baseMetricId
   newState = newState.addListToDict(`baseMetrics.byId`, [baseMetric]);
   newState = newState.addListToDict(`commitEdges.byId.${commitId}.metricTargets`, [item]);
   return newState;
@@ -53,7 +51,10 @@ export const postCommitMetricTarget = ({ trackerId, commitId }) => {
     newState = metricTargetToState(newState, data, commitId);
     return newState;
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+  return {
+    fetchParams,
+    stateParams: { stateSetFunc, formVisPath: `metricTargets.SHOW_FORM`, formObjPath: `metricTargets.newItem` }
+  };
 };
 
 export const putCommitMetricTarget = ({ trackerId, commitId, metricTargetId }) => {
@@ -67,7 +68,7 @@ export const putCommitMetricTarget = ({ trackerId, commitId, metricTargetId }) =
     const data = action.payload;
     let newState = state;
     // Remove the old value if the node is replaced
-    if (data.uid != metricTargetId) {
+    if (data.uid !== metricTargetId) {
       newState = newState.removeInPath(`commitEdges.byId.${commitId}.metricTargets.${metricTargetId}`);
     }
     // Load in the new values
