@@ -24,29 +24,6 @@ export function addCategoryRef({ trackerId, refId, commitId, treeId }) {
   return fetch;
 }
 
-export function addTree({ refId, trackerId, treeId, commitId }) {
-  let fetch = new Traec.Fetch("tracker_ref_tree_tree", "post", {
-    trackerId,
-    refId,
-    commitId,
-    treeId
-  });
-  fetch.updateFetchParams({
-    preFetchHook: body => {
-      return {
-        name: Crypto.createHash("sha1")
-          .update(body.title)
-          .digest("hex"),
-        description: {
-          title: body.title,
-          text: body.description
-        }
-      };
-    }
-  });
-  return fetch;
-}
-
 export function addDocument({ trackerId, refId, commitId, treeId }) {
   let fetch = new Traec.Fetch("tracker_ref_tree_document", "post", {
     trackerId,
