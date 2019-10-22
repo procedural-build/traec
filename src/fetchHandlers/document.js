@@ -144,17 +144,36 @@ export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
     apiId: "api_tracker_ref_document_delete",
     requiredParams: ["trackerId", "refId", "commitId", "docId"]
   };
-  const stateSetFunc = (state, action) => {
-    let parentId = state.getInPath(`commitEdges.byId.${commitId}.documents.${docId}.parent`);
-    let newState = state.removeInPath(`commitEdges.byId.${commitId}.documents.${docId}`);
-    if (parentId) {
-      newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
-        i ? i.delete(docId) : null
-      );
-    }
-    return newState;
+
+  return {
+    fetchParams,
+    stateParams: { stateSetFunc: (state, action) => deleteDocumentFromState(state, action, commitId, docId) }
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
+export const deleteTreeDocument = ({ trackerId, treeId, commitId, docId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/tracker/${trackerId}/commit/${commitId}/tree/${treeId}/document/${docId}/`,
+    apiId: "api_tracker_commit_tree_document_delete",
+    requiredParams: ["trackerId", "treeId", "commitId", "docId"]
+  };
+
+  return {
+    fetchParams,
+    stateParams: { stateSetFunc: (state, action) => deleteDocumentFromState(state, action, commitId, docId) }
+  };
+};
+
+const deleteDocumentFromState = (state, action, commitId, docId) => {
+  let parentId = state.getInPath(`commitEdges.byId.${commitId}.documents.${docId}.parent`);
+  let newState = state.removeInPath(`commitEdges.byId.${commitId}.documents.${docId}`);
+  if (parentId) {
+    newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
+      i ? i.delete(docId) : null
+    );
+  }
+  return newState;
 };
 
 export const getDisciplineDocuments = ({ trackerId }) => {
