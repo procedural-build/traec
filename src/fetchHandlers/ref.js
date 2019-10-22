@@ -18,7 +18,7 @@ export const getAllRefs = ({ isResponsible = true }) => {
       }
     }
 
-    newState = state.addListToDict(`refs.byId`, data);
+    newState = newState.addListToDict(`refs.byId`, data);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
