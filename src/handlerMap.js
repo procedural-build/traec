@@ -1,4 +1,4 @@
-import * as fh from "./fetchHandlers";
+import * as defaultFetchHandlers from "./fetchHandlers";
 
 /**
  * Object for getting the fetch handler functions to use based on API endpoint.
@@ -24,12 +24,14 @@ import * as fh from "./fetchHandlers";
  * @method
  * @memberof utils
  */
-const makeHandlerMap = function() {
+export const makeHandlerMap = function(fetchHandlers = null) {
   console.log("MAKING fetchHandler MAP");
   let handlerMap = {};
-  for (let funcName of Object.keys(fh)) {
+  if (fetchHandlers == null) {
+    fetchHandlers = defaultFetchHandlers;
+  }
+  for (let [funcName, fetchHandler] of Object.entries(fetchHandlers)) {
     try {
-      let fetchHandler = fh[funcName];
       let { fetchParams, stateParams } = fetchHandler({});
       if (!fetchParams) {
         console.warn("Skipping function in fetchhandler with fetchParams undefined", fetchHandler);
@@ -56,10 +58,11 @@ const makeHandlerMap = function() {
         Object.assign(handlerMap, { [prefix]: actionMap });
       }
     } catch (err) {
-      console.warn("Error constructing handlerMap", err);
+      console.warn("Error constructing handlerMap", funcName, err);
       continue;
     }
   }
+  console.log(" - generated handlerMap", handlerMap);
   return handlerMap;
 };
 
