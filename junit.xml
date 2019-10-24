@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="50" failures="0" time="1.951">
+  <testsuite name="Fetch Reducer" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:13" time="0.412" tests="4">
+    <testcase classname="Fetch Reducer should return the initial state" name="Fetch Reducer should return the initial state" time="0.002">
+    </testcase>
+    <testcase classname="Fetch Reducer should handle FETCH_SET_SENT" name="Fetch Reducer should handle FETCH_SET_SENT" time="0.001">
+    </testcase>
+    <testcase classname="Fetch Reducer should handle FETCH_SUCCESS" name="Fetch Reducer should handle FETCH_SUCCESS" time="0.001">
+    </testcase>
+    <testcase classname="Fetch Reducer should handle FETCH_FAIL" name="Fetch Reducer should handle FETCH_FAIL" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="handlerMap" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:14" time="0.219" tests="1">
+    <testcase classname="handlerMap should contain all defined endpoints" name="handlerMap should contain all defined endpoints" time="0.077">
+    </testcase>
+  </testsuite>
+  <testsuite name="Traec" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:14" time="0.089" tests="7">
+    <testcase classname="Traec contains FetchHandlers" name="Traec contains FetchHandlers" time="0.001">
+    </testcase>
+    <testcase classname="Traec contains fetchBindings" name="Traec contains fetchBindings" time="0">
+    </testcase>
+    <testcase classname="Traec contains handlerMap" name="Traec contains handlerMap" time="0.001">
+    </testcase>
+    <testcase classname="Traec contains fetchRequired" name="Traec contains fetchRequired" time="0">
+    </testcase>
+    <testcase classname="Traec contains Fetch" name="Traec contains Fetch" time="0">
+    </testcase>
+    <testcase classname="Traec contains Im" name="Traec contains Im" time="0">
+    </testcase>
+    <testcase classname="Traec contains Redux" name="Traec contains Redux" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="fethcManager" errors="0" failures="0" skipped="1" timestamp="2019-10-24T12:45:14" time="0.062" tests="2">
+    <testcase classname="fethcManager should contain a test" name="fethcManager should contain a test" time="0.001">
+      <skipped/>
+    </testcase>
+    <testcase classname="React component with Traec.Fetch should contain a test" name="React component with Traec.Fetch should contain a test" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="getProjectReportingPeriods" errors="0" failures="0" skipped="1" timestamp="2019-10-24T12:45:14" time="0.049" tests="2">
+    <testcase classname="getProjectReportingPeriods contains fetchParams and stateParams" name="getProjectReportingPeriods contains fetchParams and stateParams" time="0.002">
+    </testcase>
+    <testcase classname="getProjectReportingPeriods should handle cumulative values" name="getProjectReportingPeriods should handle cumulative values" time="0">
+      <skipped/>
+    </testcase>
+  </testsuite>
+  <testsuite name="getProjectEmailRecipients" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:14" time="0.047" tests="2">
+    <testcase classname="getProjectEmailRecipients contains fetchParams and stateParams" name="getProjectEmailRecipients contains fetchParams and stateParams" time="0">
+    </testcase>
+    <testcase classname="getProjectEmailRecipient contains fetchParams and stateParams" name="getProjectEmailRecipient contains fetchParams and stateParams" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Fetch Handlers" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:14" time="0.05" tests="2">
+    <testcase classname="Fetch Handlers There shouldn&apos;t be handlers in exportedHandlers that is not in actualHandlers" name="Fetch Handlers There shouldn&apos;t be handlers in exportedHandlers that is not in actualHandlers" time="0.001">
+    </testcase>
+    <testcase classname="Fetch Handlers There shouldn&apos;t be handlers in actualHandlers that is not in exportedHandlers" name="Fetch Handlers There shouldn&apos;t be handlers in actualHandlers that is not in exportedHandlers" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Response Types" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:14" time="0.056" tests="12">
+    <testcase classname="Response Types should handle default type" name="Response Types should handle default type" time="0.001">
+    </testcase>
+    <testcase classname="Response Types should handle success &amp; failure" name="Response Types should handle success &amp; failure" time="0">
+    </testcase>
+    <testcase classname="Response Types should throw error if no type" name="Response Types should throw error if no type" time="0.006">
+    </testcase>
+    <testcase classname="Record Fetch should call dispatch once" name="Record Fetch should call dispatch once" time="0.001">
+    </testcase>
+    <testcase classname="Failure Handler should call dispatch twice" name="Failure Handler should call dispatch twice" time="0">
+    </testcase>
+    <testcase classname="Failure Handler should call dispatch with FETCH_FAIL and failureType" name="Failure Handler should call dispatch with FETCH_FAIL and failureType" time="0">
+    </testcase>
+    <testcase classname="SuccessHandler should call dispatch twice" name="SuccessHandler should call dispatch twice" time="0.001">
+    </testcase>
+    <testcase classname="SuccessHandler should call postSuccessHook" name="SuccessHandler should call postSuccessHook" time="0">
+    </testcase>
+    <testcase classname="SuccessHandler should dispatch next fetchHandlers" name="SuccessHandler should dispatch next fetchHandlers" time="0.001">
+    </testcase>
+    <testcase classname="SuccessHandler should dispatch next fetchHandlers and call the postSuccessHook" name="SuccessHandler should dispatch next fetchHandlers and call the postSuccessHook" time="0.002">
+    </testcase>
+    <testcase classname="check Throttling if fetched, it should call next" name="check Throttling if fetched, it should call next" time="0">
+    </testcase>
+    <testcase classname="check Throttling if not fetched, it should not do anything" name="check Throttling if not fetched, it should not do anything" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Fetch Reducer" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:15" time="0.033" tests="1">
+    <testcase classname="Fetch Reducer should handle LOGIN_SUCCESS" name="Fetch Reducer should handle LOGIN_SUCCESS" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Update fetch body" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:15" time="0.045" tests="12">
+    <testcase classname="Update fetch body Stringify the body" name="Update fetch body Stringify the body" time="0.001">
+    </testcase>
+    <testcase classname="Update fetch body With rawBody" name="Update fetch body With rawBody" time="0">
+    </testcase>
+    <testcase classname="Update headers No token, empty headers" name="Update headers No token, empty headers" time="0.001">
+    </testcase>
+    <testcase classname="Update headers Token, empty headers" name="Update headers Token, empty headers" time="0">
+    </testcase>
+    <testcase classname="Update headers Token, json headers" name="Update headers Token, json headers" time="0">
+    </testcase>
+    <testcase classname="Update headers Token, null headers" name="Update headers Token, null headers" time="0.001">
+    </testcase>
+    <testcase classname="check Responses ok response" name="check Responses ok response" time="0">
+    </testcase>
+    <testcase classname="check Responses 204 response" name="check Responses 204 response" time="0">
+    </testcase>
+    <testcase classname="check Responses 404 response" name="check Responses 404 response" time="0.001">
+    </testcase>
+    <testcase classname="check Responses xlsx header" name="check Responses xlsx header" time="0.001">
+    </testcase>
+    <testcase classname="fetchJSON should fetch successfully" name="fetchJSON should fetch successfully" time="0.001">
+    </testcase>
+    <testcase classname="fetchJSON should fetch unsuccesfully" name="fetchJSON should fetch unsuccesfully" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="UI Reducer" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:15" time="0.034" tests="3">
+    <testcase classname="UI Reducer should return the initial state" name="UI Reducer should return the initial state" time="0.001">
+    </testcase>
+    <testcase classname="UI Reducer should handle UI_SET_IN" name="UI Reducer should handle UI_SET_IN" time="0">
+    </testcase>
+    <testcase classname="UI Reducer should handle UI_MERGE_IN" name="UI Reducer should handle UI_MERGE_IN" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Action Fetch to State" errors="0" failures="0" skipped="0" timestamp="2019-10-24T12:45:15" time="0.051" tests="2">
+    <testcase classname="Action Fetch to State Call fetchToState and expect an API call" name="Action Fetch to State Call fetchToState and expect an API call" time="0.001">
+    </testcase>
+    <testcase classname="Action Toggle Form Call Toggleform" name="Action Toggle Form Call Toggleform" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>
