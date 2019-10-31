@@ -1,4 +1,4 @@
-import { storeCommitBranch, reduceCommitBranch } from "./commit/commitBranch";
+import { storeCommitBranch, reduceCommitBranch } from "./utils";
 
 export const getAllRefs = ({ isResponsible = true }) => {
   let query_params = isResponsible ? `?isResponsible=true` : "?isResponsible=false";
@@ -10,7 +10,15 @@ export const getAllRefs = ({ isResponsible = true }) => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addListToDict(`refs.byId`, data);
+    let newState = state;
+    if (isResponsible) {
+      for (let item of data) {
+        let ref = { uid: item.uid };
+        newState = newState.addToDict("user.refs.byId", ref);
+      }
+    }
+
+    newState = newState.addListToDict(`refs.byId`, data);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
@@ -250,6 +258,7 @@ export const postRefBranch = ({ trackerId, refId, commitId, treeId }) => {
     const data = action.payload;
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
+    console.log("PAYLOAD", data);
     if (!data.errors) {
       const commitPath = `commitEdges.byId.${commitId}.trees.${treeId}`;
       newState = newState.addToDict("refs.byId", data);
@@ -273,8 +282,8 @@ export const postRefBranch = ({ trackerId, refId, commitId, treeId }) => {
     fetchParams,
     stateParams: {
       stateSetFunc,
-      formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
-      formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+      formVisPath: `refs.byId.${refId}.branch.SHOW_FORM`,
+      formObjPath: `refs.byId.${refId}.branch.newItem`
     }
   };
 };
@@ -313,8 +322,8 @@ export const putRefBranch = ({ trackerId, refId, commitId, branchId }) => {
     fetchParams,
     stateParams: {
       stateSetFunc,
-      formVisPath: `ui.ref.byId.${refId}.branch.SHOW_FORM`,
-      formObjPath: `ui.ref.byId.${refId}.branch.newItem`
+      formVisPath: `refs.byId.${refId}.branch.SHOW_FORM`,
+      formObjPath: `refs.byId.${refId}.branch.newItem`
     }
   };
 };
@@ -333,6 +342,27 @@ export const deleteTrackerRef = ({ trackerId, refId, commitId }) => {
   };
   const stateSetFunc = (state, action) => {
     let newState = state;
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
+export const getDisciplineRefs = ({ trackerId }) => {
+  const fetchParams = {
+    method: "GET",
+    url: `/api/tracker/${trackerId}/refs/`,
+    apiId: "api_tracker_refs_list",
+    requiredParams: ["trackerId"]
+  };
+  const stateSetFunc = (state, action) => {
+    let data = action.payload;
+    let newState = state;
+    for (let item of data) {
+      let ref = { uid: item.uid };
+      newState = newState.addToDict("user.refs.byId", ref);
+      newState = newState.addToDict("refs.byId", item);
+    }
+
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };

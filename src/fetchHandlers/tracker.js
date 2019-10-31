@@ -38,6 +38,7 @@ export const getTrackerList = ({ onlyTemplates = false }) => {
     method: "GET",
     url: `/api/tracker/${query_params}`,
     apiId: "api_tracker_list",
+    requiredParams: [],
     queryParams: { onlyTemplates: false }
   };
   const stateSetFunc = (state, action) => {
@@ -135,4 +136,18 @@ export const patchTracker = ({ trackerId }) => {
   let { fetchParams, stateParams } = putTracker({ trackerId });
   Object.assign(fetchParams, { method: "PATCH" });
   return { fetchParams, stateParams };
+};
+
+export const postTrackerDispatch = ({ trackerId }) => {
+  const fetchParams = {
+    method: "POST",
+    url: `/api/tracker/${trackerId}/dispatch/`,
+    apiId: "api_tracker_dispatch_create",
+    headers: { "content-type": undefined },
+    rawBody: true
+  };
+  const stateSetFunc = (state, action) => {
+    return state;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
 };

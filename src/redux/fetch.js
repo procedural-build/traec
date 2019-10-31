@@ -35,11 +35,11 @@ export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBo
     })
     .catch(error => {
       console.warn("ERROR IN API FETCH to " + url, error);
-      if (typeof error === "object") {
+      if (typeof error === "object" && !error.type) {
         failureHandler(error);
       } else {
         error.json().then(json => {
-          console.log(json);
+          console.log("Error", json);
           failureHandler(json);
         });
       }

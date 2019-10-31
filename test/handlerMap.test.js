@@ -8,8 +8,8 @@ const getHandlerMapProperties = () => {
   // Read each of the files to get the functions
   let handlerProps = {};
   for (let file of files) {
-    let filestring = FS.readFileSync(file) + "";
-    let lines = filestring.split("\n");
+    let fileString = FS.readFileSync(file) + "";
+    let lines = fileString.split("\n");
     for (let line of lines) {
       if (line.includes("apiId")) {
         let apiId = (line.match(/[\"\|\'].*[\"\|\']/) + "").slice(1, -1);
@@ -30,7 +30,6 @@ const getHandlerMapProperties = () => {
       }
     }
   }
-  console.log("CCCCCCCCCCC", handlerProps);
   return handlerProps;
 };
 
@@ -43,10 +42,5 @@ describe("handlerMap", () => {
         expect(handlerMap[key]).toHaveProperty(restCall);
       }
     }
-    //expect(handlerMap.company).toHaveProperty("delete");
-    //expect(handlerMap.company).toHaveProperty("list");
-    //expect(handlerMap.company).toHaveProperty("post");
-    //expect(handlerMap.company).toHaveProperty("put");
-    //expect(handlerMap.company).toHaveProperty("read");
   });
 });

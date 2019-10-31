@@ -19,10 +19,11 @@ export default function(state = initialState, action) {
         Im.fromJS(action.payload),
         Im.fromJS({ isAuthenticated: true, status: "confirmed", decoded_token })
       );
+
     case types.LOGIN_STATUS:
       return state.merge(Im.fromJS(action.payload));
+
     case types.LOGIN_FAILURE:
-      //console.log("LOGIN FAILURE", action.payload)
       localStorage.removeItem("token");
       return state.merge(
         Im.fromJS(action.payload),
@@ -33,6 +34,7 @@ export default function(state = initialState, action) {
           status: "failed"
         })
       );
+
     case types.REGISTER_SUCCESS:
       return state.mergeIn(
         ["registration"],

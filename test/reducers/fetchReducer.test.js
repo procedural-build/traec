@@ -64,7 +64,13 @@ describe("Fetch Reducer", () => {
     };
     const statusText = "This is an Error!!!";
     const expected = Im.fromJS({
-      "POST /auth-jwt/verify/": { status: "failed", timeRecv: new Date(), failures: 1, errors: statusText }
+      "POST /auth-jwt/verify/": {
+        status: "failed",
+        timeRecv: new Date(),
+        failures: 1,
+        errors: statusText,
+        error: Im.fromJS({ statusText })
+      }
     });
     expect(
       fetch(initialState, {

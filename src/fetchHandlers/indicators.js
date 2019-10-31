@@ -52,12 +52,23 @@ export const putCommitIndicator = ({ trackerId, commitId, indicatorId }) => {
   return { fetchParams, stateParams };
 };
 
-export const deleteCommitIndicator = ({ trackerId, commitId, indicatorId }) => {
+export const patchCommitIndicator = ({ trackerId, commitId, indicatorId }) => {
+  let { fetchParams, stateParams } = putCommitIndicator({ trackerId, commitId, indicatorId });
+  Object.assign(fetchParams, {
+    method: "PATCH",
+    apiId: "api_tracker_commit_indicator_partial_update"
+  });
+  return { fetchParams, stateParams };
+};
+
+export const deleteCommitIndicator = ({ trackerId, commitId, indicatorId, all_ref = true }) => {
+  let query_params = all_ref ? "?all_ref=true" : "";
   const fetchParams = {
     method: "DELETE",
-    url: `/api/tracker/${trackerId}/commit/${commitId}/indicator/${indicatorId}/`,
+    url: `/api/tracker/${trackerId}/commit/${commitId}/indicator/${indicatorId}/${query_params}`,
     apiId: "api_tracker_commit_indicator_delete",
-    requiredParams: ["trackerId", "commitId", "indicatorId"]
+    requiredParams: ["trackerId", "commitId", "indicatorId"],
+    queryParams: { all_ref: true }
   };
   const stateSetFunc = (state, action) => {
     return state.removeInPath(`commitEdges.byId.${commitId}.indicators.${indicatorId}`);

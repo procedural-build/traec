@@ -1,5 +1,6 @@
 import Crypto from "crypto";
 import { postTree } from "./tree";
+import { addValueToState } from "./utils";
 
 /*
 When we make a metric we will also create a folder for the metric 
@@ -99,16 +100,10 @@ export const getMetricInputs = ({ trackerId, commitId }) => {
     const data = action.payload;
     // Clear the existing values
     let newState = state.setInPath(`commitEdges.byId.${commitId}.scoreValues`, {});
+    newState = newState.setInPath(`commitEdges.byId.${commitId}.bmScoreValues`, {});
     // Load in the new values
     for (let item of data) {
-      let metricScore = item.metric;
-      let metricScoreId = metricScore.uid;
-      let baseMetric = metricScore.metric;
-      metricScore.metric = baseMetric.uid;
-      item.metric = metricScore.uid;
-      newState = newState.addListToDict(`baseMetrics.byId`, [baseMetric]);
-      newState = newState.addListToDict(`metricScores.byId`, [item]);
-      newState = newState.addListToDict(`commitEdges.byId.${commitId}.scoreValues.${metricScoreId}.values`, [item]);
+      newState = addValueToState(newState, commitId, item);
     }
     return newState;
   };
@@ -128,7 +123,7 @@ export const postMetricScoreValue = ({ trackerId, commitId, scoreId }) => {
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
     if (!data.errors) {
-      newState = newState.addToDict(`commitEdges.byId.${commitId}.scoreValues.${scoreId}.values`, data);
+      newState = addValueToState(newState, commitId, data);
       newState = newState.setInPath(formVisPath, false);
     }
     return newState;
@@ -149,7 +144,7 @@ export const putMetricScoreValue = ({ trackerId, commitId, scoreId, inputValueId
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
     if (!data.errors) {
-      newState = newState.addToDict(`commitEdges.byId.${commitId}.scoreValues.${scoreId}.values`, data);
+      newState = addValueToState(newState, commitId, data);
       newState = newState.setInPath(formVisPath, false);
     }
     return newState;

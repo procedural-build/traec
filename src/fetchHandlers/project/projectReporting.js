@@ -170,8 +170,18 @@ export const getProjectExcelReport = ({
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-export const getProjectReportCommits = ({ projectId, reportPeriodId, category = null, indicator = null }) => {
-  let query_params = "";
+export const getProjectReportCommits = ({
+  projectId,
+  reportPeriodId,
+  category = null,
+  indicatorId = null,
+  cum_period = "current"
+}) => {
+  let query_params = indicatorId || category ? `?include_results=true` : "";
+  if (query_params) {
+    query_params = query_params + (indicatorId ? `&indicator=${indicatorId}` : "");
+    query_params = query_params + (cum_period == "total" ? `&cum_period=total` : "");
+  }
   const fetchParams = {
     method: "GET",
     url: `/api/project/${projectId}/reporting_periods/${reportPeriodId}/commits/${query_params}`,
@@ -182,21 +192,29 @@ export const getProjectReportCommits = ({ projectId, reportPeriodId, category = 
   let stateSetFunc = (state, action) => {
     let data = action.payload;
     let newState = state;
-    let path = `projectReportingPeriods.byId.${projectId}.${reportPeriodId}.commit_results`;
-    for (let item of data) {
-      let categories = {};
-      let indicators = {};
-      if (item.results) {
-        for (let result of item.results) {
-          if (result.category) {
-            categories[result.category] = result;
-          } else {
-            indicators[result.metric_calc] = result;
+    let path = `projectReportingPeriods.byId.${projectId}.${reportPeriodId}.commit_results.${cum_period}`;
+    if (data.length) {
+      for (let item of data) {
+        let categories = {};
+        let indicators = {};
+        if (item.results) {
+          for (let result of item.results) {
+            if (result.category) {
+              categories[result.category] = result;
+            } else {
+              indicators[result.metric_calc] = result;
+            }
           }
         }
+        item.results = { categories, indicators };
+        // Save to Redux by adding or merging in
+        let itemPath = `${path}.${item.uid}`;
+        if (!newState.getInPath(itemPath)) {
+          newState = newState.addToDict(path, item);
+        } else {
+          newState = newState.mergeDeepInPath(itemPath, item);
+        }
       }
-      item.results = { categories, indicators };
-      newState = newState.addListToDict(path, item);
     }
     return newState;
   };

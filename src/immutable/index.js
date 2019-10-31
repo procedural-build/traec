@@ -19,15 +19,15 @@ import * as utils from "./utils/stateBindins";
  * @namespace immutable
  */
 
-
- //Check if the browser is IE, and display the error message if true
+//Check if the browser is IE, and display the error message if true
 var isIE = false || !!document.documentMode;
 
-if(isIE ){
-  alert("The Sustainability Tool is no longer supported on Internet Explorer. Please use another internet browser application or contact us for more information. ")
-  window.location = "error.html"
+if (isIE) {
+  alert(
+    "The Sustainability Tool is no longer supported on Internet Explorer. Please use another internet browser application or contact us for more information. "
+  );
+  window.location = "error.html";
 }
-
 
 // Patch all of the functions from utils onto the Map prototype
 // to make them available within Immutable.map objects

@@ -108,7 +108,6 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allo
         newState = newState.addToDict("docObjects.byId", status.current_object);
         status.current_object = status.current_object.uid;
       }
-
       // Store status and link to commitEdge
       newState = newState.addToDict("docStatuses.byId", status);
       newState = newState.setInPath(`commitEdges.byId.${commitId}.documents.${documentId}.status`, status.uid);
@@ -145,18 +144,59 @@ export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
     apiId: "api_tracker_ref_document_delete",
     requiredParams: ["trackerId", "refId", "commitId", "docId"]
   };
+
+  return {
+    fetchParams,
+    stateParams: { stateSetFunc: (state, action) => deleteDocumentFromState(state, action, commitId, docId) }
+  };
+};
+
+export const deleteTreeDocument = ({ trackerId, treeId, commitId, docId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/tracker/${trackerId}/commit/${commitId}/tree/${treeId}/document/${docId}/`,
+    apiId: "api_tracker_commit_tree_document_delete",
+    requiredParams: ["trackerId", "treeId", "commitId", "docId"]
+  };
+
+  return {
+    fetchParams,
+    stateParams: { stateSetFunc: (state, action) => deleteDocumentFromState(state, action, commitId, docId) }
+  };
+};
+
+const deleteDocumentFromState = (state, action, commitId, docId) => {
+  let parentId = state.getInPath(`commitEdges.byId.${commitId}.documents.${docId}.parent`);
+  let newState = state.removeInPath(`commitEdges.byId.${commitId}.documents.${docId}`);
+  if (parentId) {
+    newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
+      i ? i.delete(docId) : null
+    );
+  }
+  return newState;
+};
+
+export const getDisciplineDocuments = ({ trackerId }) => {
+  const fetchParams = {
+    method: "GET",
+    url: `/api/tracker/${trackerId}/documents/`,
+    apiId: "api_tracker_documents_list",
+    requiredParams: ["trackerId"]
+  };
   const stateSetFunc = (state, action) => {
-    let parentId = state.getInPath(`commitEdges.byId.${commitId}.documents.${docId}.parent`);
-    let newState = state.removeInPath(`commitEdges.byId.${commitId}.documents.${docId}`);
-    if (parentId) {
-      newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
-        i ? i.delete(docId) : null
-      );
-      
-      if (docId) {
-        newState = state.removeInPath(`documents.byId.${docId}`);
-      }
+    // Successful put returns a DocumentStatusSerializer object
+    let data = action.payload;
+    let newState = state;
+    let objectIds = [];
+    let trackerId = action.fetchParams.url.split("/")[3];
+    for (let item of data) {
+      let document = { uid: item.uid, status: item.status.uid, description: item.description.uid, trackerId };
+      // Store the nested current_object separately and refer to only uuid in status
+      newState = newState.addToDict("user.documents.byId", document);
+      newState = newState.addToDict("descriptions.byId", item.description);
+      newState = newState.addToDict("docStatus.byId", item.status);
     }
+
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };

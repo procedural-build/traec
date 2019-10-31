@@ -1,4 +1,4 @@
-import Im from "../immutable";
+import { cleanTreeStructureFunction } from "./utils";
 
 export const postTree = ({ trackerId, refId, commitId, treeId }) => {
   const fetchParams = {
@@ -66,25 +66,4 @@ export const deleteTree = ({ trackerId, refId, commitId, treeId, cleanTreeStruct
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
-};
-
-export const getTreeStructure = (state, commitId, treeId) => {
-  let tree = state.getInPath(`commitEdges.byId.${commitId}.trees.${treeId}`);
-  let subTrees = tree.get("trees");
-  if (subTrees) {
-    return [treeId, subTrees.map(subTreeId => getTreeStructure(state, commitId, subTreeId)).toJS()];
-  } else {
-    return treeId;
-  }
-};
-
-export const cleanTreeStructureFunction = (state, commitId, treeId) => {
-  let toRemove = Im.fromJS(getTreeStructure(state, commitId, treeId));
-  let newState = state;
-
-  for (let tree of toRemove.flatten()) {
-    newState = newState.removeInPath(`commitEdges.byId.${commitId}.trees.${tree}`);
-  }
-
-  return newState;
 };

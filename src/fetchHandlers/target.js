@@ -4,8 +4,6 @@ METRIC TARGETS
 
 const metricTargetToState = (newState, item, commitId) => {
   let baseMetric = item.metric;
-  //let baseMetricId = baseMetric.uid
-  //item.metric = baseMetricId
   newState = newState.addListToDict(`baseMetrics.byId`, [baseMetric]);
   newState = newState.addListToDict(`commitEdges.byId.${commitId}.metricTargets`, [item]);
   return newState;
@@ -53,7 +51,10 @@ export const postCommitMetricTarget = ({ trackerId, commitId }) => {
     newState = metricTargetToState(newState, data, commitId);
     return newState;
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+  return {
+    fetchParams,
+    stateParams: { stateSetFunc, formVisPath: `metricTargets.SHOW_FORM`, formObjPath: `metricTargets.newItem` }
+  };
 };
 
 export const putCommitMetricTarget = ({ trackerId, commitId, metricTargetId }) => {
@@ -67,7 +68,7 @@ export const putCommitMetricTarget = ({ trackerId, commitId, metricTargetId }) =
     const data = action.payload;
     let newState = state;
     // Remove the old value if the node is replaced
-    if (data.uid != metricTargetId) {
+    if (data.uid !== metricTargetId) {
       newState = newState.removeInPath(`commitEdges.byId.${commitId}.metricTargets.${metricTargetId}`);
     }
     // Load in the new values
@@ -86,12 +87,14 @@ export const patchCommitMetricTarget = ({ trackerId, commitId, metricTargetId })
   return params;
 };
 
-export const deleteCommitMetricTarget = ({ trackerId, commitId, metricTargetId }) => {
+export const deleteCommitMetricTarget = ({ trackerId, commitId, metricTargetId, all_ref = true }) => {
+  let query_params = all_ref ? "?all_ref=true" : "";
   const fetchParams = {
     method: "DELETE",
-    url: `/api/tracker/${trackerId}/commit/${commitId}/target/${metricTargetId}/`,
+    url: `/api/tracker/${trackerId}/commit/${commitId}/target/${metricTargetId}/${query_params}`,
     apiId: "api_tracker_commit_target_delete",
-    requiredParams: ["trackerId", "commitId", "metricTargetId"]
+    requiredParams: ["trackerId", "commitId", "metricTargetId"],
+    queryParams: { all_ref: true }
   };
   const stateSetFunc = (state, action) => {
     return state.removeInPath(`commitEdges.byId.${commitId}.metricTargets.${metricTargetId}`);
