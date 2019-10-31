@@ -42,18 +42,3 @@ export const postProjectMember = ({ projectId }) => {
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
-
-export const putProjectMember = ({ projectId, memberId }) => {
-  const fetchParams = {
-    method: "PUT",
-    url: `/api/project/${projectId}/member/${memberId}/`,
-    apiId: "api_project_member_update",
-    requiredParams: ["projectId", "memberId"]
-  };
-  const stateSetFunc = (state, action) => {
-    const data = action.payload;
-    let newState = state.setInPath(`projectObjects.byId.${projectId}.members.${memberId}`, data);
-    return newState;
-  };
-  return { fetchParams, stateParams: { stateSetFunc } };
-};
