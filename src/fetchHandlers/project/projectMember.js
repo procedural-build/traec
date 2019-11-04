@@ -27,3 +27,18 @@ export const deleteProjectMember = ({ projectId, memberId }) => {
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
+
+export const postProjectMember = ({ projectId }) => {
+  const fetchParams = {
+    method: "POST",
+    url: `/api/project/${projectId}/member/`,
+    apiId: "api_project_member_create",
+    requiredParams: ["projectId"]
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.addToDict(`projectObjects.byId.${projectId}.members`, data);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
