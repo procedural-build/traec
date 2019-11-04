@@ -19,7 +19,7 @@ export const storeCommitBranch = (state, item) => {
   let newState = state;
   // If there are edges included then store them away
   if (item.target_edges) {
-    let commitId = item.target_commit.uid;
+    let commitId = item.target.commit ? item.target.commit.uid : item.target.ref.latest_commit.uid;
     newState = edgeDictToState(newState, commitId, item.target_edges);
   }
   // Add the ref and commit into the store
