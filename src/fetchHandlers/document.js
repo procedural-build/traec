@@ -176,12 +176,13 @@ const deleteDocumentFromState = (state, action, commitId, docId) => {
   return newState;
 };
 
-export const getDisciplineDocuments = ({ trackerId }) => {
+export const getDisciplineDocuments = ({ trackerId, all_disciplines = false }) => {
   const fetchParams = {
     method: "GET",
-    url: `/api/tracker/${trackerId}/documents/`,
+    url: `/api/tracker/${trackerId}/documents/${all_disciplines ? "?all_disciplines=true" : ""}`,
     apiId: "api_tracker_documents_list",
-    requiredParams: ["trackerId"]
+    requiredParams: ["trackerId"],
+    queryParams: { all_disciplines: false }
   };
   const stateSetFunc = (state, action) => {
     // Successful put returns a DocumentStatusSerializer object
