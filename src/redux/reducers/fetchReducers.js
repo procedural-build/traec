@@ -86,7 +86,8 @@ export default function(state = initialState, action) {
           status: "failed",
           timeRecv: now,
           failures: details.get("failures", 0) + 1,
-          errors: action.error.statusText
+          errors: action.error.statusText,
+          error: action.error
         })
       );
     default:
