@@ -116,7 +116,14 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allo
     }
     return newState;
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `documents.editById.${documentId}.SHOW_EDIT_DESCRIPTION_FORM`,
+      formObjPath: `documents.editById.${documentId}.editDescription`
+    }
+  };
 };
 
 export const putDocumentObjectCommit = ({ trackerId, commitId, documentId, allow_commit_change }) => {
