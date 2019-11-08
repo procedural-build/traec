@@ -93,7 +93,7 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allo
     apiId: "api_tracker_ref_document_update",
     requiredParams: ["trackerId", "refId", "commitId", "documentId"],
     queryParams: { allow_commit_change: false },
-    headers: { "content-type": undefined },
+    headers: { "content-type": null },
     rawBody: true
   };
   const stateSetFunc = (state, action) => {
