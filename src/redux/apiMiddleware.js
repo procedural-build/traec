@@ -76,7 +76,9 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
  * @return {*}
  */
 export const checkThrottling = function(getState, fetchParams, action, next) {
-  if (hasFetched(getState(), fetchParams, 1000)) {
+  // Get the time to check since the last request was made to this endpoint (or default to 1 second)
+  let time_check = fetchParams.throttleTimeCheck === undefined ? 1000 : fetchParams.throttleTimeCheck
+  if (hasFetched(getState(), fetchParams, time_check)) {
     console.log("SKIPPING FETCH DUE TO THROTTLING", action);
     return next({
       type: "FETCH_THROTTLED",

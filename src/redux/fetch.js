@@ -24,6 +24,7 @@ export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBo
 
   headers = updateHeaders(headers);
   body = updateBody(body, rawBody);
+  console.log(body)
   fetch(url, {
     method: method,
     headers: headers,
