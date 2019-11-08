@@ -182,6 +182,17 @@ export default class Fetch {
   }
 
   /**
+   * Check if the form is set to visible based on formVisPath togggle in Redux
+   *
+   * **Note**:
+   * * it is expected that there are commponents connected to Redux and watching the formVisPath to determine if the required form for this fetch should be displayed. This is done automatically by the BaseForm class of 'traec-react'.
+   */
+  isFormVisible() {
+    let { stateParams } = this.params;
+    return store.getState().getInPath(`entities.${stateParams.formVisPath}`);
+  }
+
+  /**
    * Dispatch the fetch (ie. request from the API) IFF the request has not already been made within cacheTimeout
    * period before the current request.
    *
