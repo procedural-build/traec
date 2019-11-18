@@ -101,16 +101,24 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allo
     let data = action.payload;
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
-    let status = data;
+    let { status, description } = data;
     if (!data.errors) {
-      // Store the nested current_object separately and refer to only uuid in status
-      if (status.current_object) {
-        newState = newState.addToDict("docObjects.byId", status.current_object);
-        status.current_object = status.current_object.uid;
+      if (status) {
+        // Store the nested current_object separately and refer to only uuid in status
+        if (status.current_object) {
+          newState = newState.addToDict("docObjects.byId", status.current_object);
+          status.current_object = status.current_object.uid;
+        }
+        // Store status and link to commitEdge
+        newState = newState.addToDict("docStatuses.byId", status);
+        newState = newState.setInPath(`commitEdges.byId.${commitId}.documents.${documentId}.status`, status.uid);
       }
-      // Store status and link to commitEdge
-      newState = newState.addToDict("docStatuses.byId", status);
-      newState = newState.setInPath(`commitEdges.byId.${commitId}.documents.${documentId}.status`, status.uid);
+      if (description) {
+        newState = newState.addToDict("descriptions.byId", description);
+        newState = newState.addListToSet(`commitEdges.byId.${commitId}.documents.${documentId}.descriptions`, [
+          description.uid
+        ]);
+      }
       // Finally hide the form
       newState = newState.setInPath(formVisPath, false);
     }
