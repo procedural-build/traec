@@ -203,14 +203,17 @@ export const getDisciplineDocuments = ({ trackerId, all_disciplines = false }) =
     // Successful put returns a DocumentStatusSerializer object
     let data = action.payload;
     let newState = state;
-    let objectIds = [];
     let trackerId = action.fetchParams.url.split("/")[3];
     for (let item of data) {
-      let document = { uid: item.uid, status: item.status.uid, description: item.description.uid, trackerId };
-      // Store the nested current_object separately and refer to only uuid in status
-      newState = newState.addToDict("user.documents.byId", document);
-      newState = newState.addToDict("descriptions.byId", item.description);
-      newState = newState.addToDict("docStatus.byId", item.status);
+      let status = item.status ? item.status.uid : null;
+      let description = item.description ? item.description.uid : null;
+      if (item) {
+        let document = { uid: item.uid, status, description, trackerId };
+        // Store the nested current_object separately and refer to only uuid in status
+        newState = newState.addToDict("user.documents.byId", document);
+        if (description) newState = newState.addToDict("descriptions.byId", item.description);
+        if (status) newState = newState.addToDict("docStatus.byId", item.status);
+      }
     }
 
     return newState;
