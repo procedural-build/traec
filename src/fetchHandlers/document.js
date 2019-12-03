@@ -205,9 +205,9 @@ export const getDisciplineDocuments = ({ trackerId, all_disciplines = false }) =
     let newState = state;
     let trackerId = action.fetchParams.url.split("/")[3];
     for (let item of data) {
-      let status = item.status ? item.status.uid : null;
-      let description = item.description ? item.description.uid : null;
       if (item) {
+        let status = item.status ? item.status.uid : null;
+        let description = item.description ? item.description.uid : null;
         let document = { uid: item.uid, status, description, trackerId };
         // Store the nested current_object separately and refer to only uuid in status
         newState = newState.addToDict("user.documents.byId", document);
