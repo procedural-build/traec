@@ -208,10 +208,13 @@ export const getDisciplineDocuments = ({ trackerId, all_disciplines = false }) =
       if (item) {
         let statusId = item.status ? item.status.uid : null;
         let descriptionId = item.description ? item.description.uid : null;
-        let document = { uid: item.uid, status: statusId, description: descriptionId, trackerId };
+        let refId = item.cref ? item.cref.uid : null;
+        let document = { uid: item.uid, status: statusId, description: descriptionId, trackerId, refId: refId };
+
         // Store the nested current_object separately and refer to only uuid in status
         newState = newState.addToDict("user.documents.byId", document);
         if (descriptionId) newState = newState.addToDict("descriptions.byId", item.description);
+
         if (statusId) {
           let current_object_id = item.status.current_object ? item.status.current_object.uid : null;
           let status = { ...item.status, current_object: current_object_id };
@@ -219,6 +222,9 @@ export const getDisciplineDocuments = ({ trackerId, all_disciplines = false }) =
           if (current_object_id) {
             newState = newState.addToDict("docObjects.byId", item.status.current_object);
           }
+        }
+        if (refId) {
+          newState = newState.addToDict("refs.byId", item.cref);
         }
       }
     }
