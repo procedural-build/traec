@@ -51,24 +51,12 @@
  *
  */
 
-export * from "./target";
-export * from "./project/projectMember";
-export * from "./tree";
-export * from "./project/projectReporting";
-export * from "./project/projectDiscipline";
-export * from "./head";
-export * from "./commit/commit";
-export * from "./tracker";
-export * from "./project/projectInvite";
-export * from "./treeDescription";
-export * from "./project/project";
-export * from "./document";
-export * from "./ref";
-export * from "./project/projectSetup";
-export * from "./project/projectAuthGroup";
-export * from "./project/projectInputs";
+// COMMIT
 export * from "./commit/commitEdges";
 export * from "./commit/commitBranch";
+export * from "./commit/commit";
+
+//COMPANY
 export * from "./company/company";
 export * from "./company/companyAuthGroup";
 export * from "./company/companyInvite";
@@ -76,12 +64,34 @@ export * from "./company/companyMembers";
 export * from "./company/companyReporting";
 export * from "./company/companyEmails";
 export * from "./company/dispatch";
-export * from "./metric";
-export * from "./convFactors";
 export * from "./company/companyTargets";
 export * from "./company/companyIndicator";
+
+//PROJECT
+export * from "./project/projectReporting";
+export * from "./project/projectDiscipline";
+export * from "./project/projectMember";
+export * from "./project/projectInvite";
+export * from "./project/project";
+export * from "./project/projectSetup";
+export * from "./project/projectAuthGroup";
+export * from "./project/projectInputs";
+export * from "./project/projectSupplierRequest";
+export * from "./project/projectEmails";
+
+//TENANT
+export * from "./tenant";
+
+//UTILS
+export * from "./target";
+export * from "./tree";
+export * from "./head";
+export * from "./tracker";
+export * from "./treeDescription";
+export * from "./document";
+export * from "./ref";
+export * from "./metric";
+export * from "./convFactors";
 export * from "./indicators";
 export * from "./comment";
-export * from "./project/projectEmails";
-export * from "./tenant";
 export * from "./store";
