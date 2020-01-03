@@ -50,7 +50,7 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
 
     let originalBody = fetchParams.body;
     if (fetchParams.preFetchHook) {
-      fetchParams.body = fetchParams.preFetchHook(fetchParams.body);
+      fetchParams.body = fetchParams.preFetchHook(fetchParams.body, fetchParams);
     }
 
     checkThrottling(getState, fetchParams, action, next);

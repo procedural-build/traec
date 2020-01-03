@@ -259,4 +259,17 @@ export default class Fetch {
       ...options
     });
   }
+
+  /**
+   * Dispatch the success handler (to run stateSetFunc for example after deleting)
+   */
+  dispatchActionType(data = {}, type = "ENTITY_SET_FUNC") {
+    let { fetchParams, stateParams } = this.params;
+    store.dispatch({
+      type,
+      payload: data,
+      stateParams,
+      fetchParams
+    });
+  }
 }
