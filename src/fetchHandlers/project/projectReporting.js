@@ -106,11 +106,12 @@ export const postProjectReportingPeriod = ({ projectId }) => {
   };
 };
 
-export const patchProjectReportingPeriod = ({ projectId, reportingPeriodId }) => {
+export const patchProjectReportingPeriod = ({ projectId, reportingPeriodId, future = false }) => {
+  let queryParams = future ? "?future=true" : "";
   let formVisPath = `ui.projectObjects.byId.${projectId}.reportingPeriod.${reportingPeriodId}.SHOW_FORM`;
   const fetchParams = {
     method: "PATCH",
-    url: `/api/project/${projectId}/reporting_periods/${reportingPeriodId}/`,
+    url: `/api/project/${projectId}/reporting_periods/${reportingPeriodId}/${queryParams}`,
     apiId: "api_project_reporting_periods_partial_update",
     requiredParams: ["projectId", "reportingPeriodId"]
   };

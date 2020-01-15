@@ -88,10 +88,10 @@ export const patchCommitMetricTarget = ({ trackerId, commitId, metricTargetId })
 };
 
 export const deleteCommitMetricTarget = ({ trackerId, commitId, metricTargetId, all_ref = true }) => {
-  let query_params = all_ref ? "?all_ref=true" : "";
+  let queryParams = all_ref ? "?all_ref=true" : "";
   const fetchParams = {
     method: "DELETE",
-    url: `/api/tracker/${trackerId}/commit/${commitId}/target/${metricTargetId}/${query_params}`,
+    url: `/api/tracker/${trackerId}/commit/${commitId}/target/${metricTargetId}/${queryParams}`,
     apiId: "api_tracker_commit_target_delete",
     requiredParams: ["trackerId", "commitId", "metricTargetId"],
     queryParams: { all_ref: true }
