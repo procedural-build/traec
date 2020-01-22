@@ -55,13 +55,15 @@ export const getProjectReportingPeriods = ({
       : `projectReportingPeriods.byId.${projectId}`;
     // As the reporting period can hold nested summary data (totals or current values) then merge them in here
     let newState = state;
-    for (let item of data) {
-      let itemPath = `${path}.${item.uid}`;
-      let existingItem = state.getInPath(itemPath);
-      if (existingItem) {
-        newState = newState.mergeDeepInPath(itemPath, item);
-      } else {
-        newState = newState.addToDict(path, item);
+    if (!data.errors) {
+      for (let item of data) {
+        let itemPath = `${path}.${item.uid}`;
+        let existingItem = state.getInPath(itemPath);
+        if (existingItem) {
+          newState = newState.mergeDeepInPath(itemPath, item);
+        } else {
+          newState = newState.addToDict(path, item);
+        }
       }
     }
     return newState;
@@ -89,11 +91,18 @@ export const postProjectReportingPeriod = ({ projectId }) => {
     // This endpoint returns a list of reporting periods that have bee updated
     let data = action.payload;
     let newState = state;
-    for (let item of data) {
-      newState = newState.mergeInPath(`projectReportingPeriods.byId.${projectId}.${item.uid}`, item);
+    if (!data.errors) {
+      for (let item of data) {
+        newState = newState.mergeInPath(`projectReportingPeriods.byId.${projectId}.${item.uid}`, item);
+      }
+      newState = newState.setInPath(formVisPath, false);
+    } else {
+      newState = newState.mergeInPath(
+        `ui.projectObjects.byId.${projectId}.reportingPeriod.newItem.errors`,
+        data.errors
+      );
     }
-    // Hide the form
-    newState = newState.setInPath(formVisPath, false);
+
     return newState;
   };
   return {
