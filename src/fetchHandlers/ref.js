@@ -113,7 +113,6 @@ export const patchCategoryRef = ({ trackerId, refId }) => {
   };
 };
 
-
 export const putCategoryRef = ({ trackerId, refId }) => {
   const fetchParams = {
     method: "PUT",
