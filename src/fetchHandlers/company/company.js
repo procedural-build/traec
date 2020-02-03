@@ -7,7 +7,7 @@ export const getCompanies = () => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addListToDict(`companies.byId`, data);
+    let newState = state.addListToDict(`companies.byId`, data);    
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
@@ -40,7 +40,8 @@ export const postCompany = () => {
     let { formVisPath, formObjPath } = action.stateParams;
     let newState = state.setInPath(formObjPath, data);
     if (!data.errors) {
-      newState = newState.addToDict("companies.byId", data);
+      // Use setInPath over addListToDict to prevent duplication of elements, such as projects, in redux.
+      newState = newState.setInPath(`companies.byId.${data.uid}`, data);
       newState = newState.setInPath(formVisPath, false);
     }
     // Add a to the parent list of childids
