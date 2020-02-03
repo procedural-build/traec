@@ -52,16 +52,19 @@ export const deleteTree = ({ trackerId, refId, commitId, treeId, cleanTreeStruct
     requiredParams: ["trackerId", "refId", "commitId", "treeId"]
   };
   const stateSetFunc = (state, action) => {
-    let parentId = state.getInPath(`commitEdges.byId.${commitId}.trees.${treeId}.parent`);
+    let payload = action.payload;
     let newState = state;
-    if (cleanTreeStructure) {
-      newState = cleanTreeStructureFunction(newState, commitId, treeId);
-    }
-    newState = newState.removeInPath(`commitEdges.byId.${commitId}.trees.${treeId}`);
-    if (parentId) {
-      newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
-        i ? i.delete(treeId) : null
-      );
+    if (!payload.errors) {
+      let parentId = state.getInPath(`commitEdges.byId.${commitId}.trees.${treeId}.parent`);
+      if (cleanTreeStructure) {
+        newState = cleanTreeStructureFunction(newState, commitId, treeId);
+      }
+      newState = newState.removeInPath(`commitEdges.byId.${commitId}.trees.${treeId}`);
+      if (parentId) {
+        newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
+          i ? i.delete(treeId) : null
+        );
+      }
     }
     return newState;
   };
