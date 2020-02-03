@@ -94,3 +94,18 @@ export const getAllProjectSupplierRequests = ({ projectId }) => {
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
+
+export const deleteProjectSupplierSentRequest = ({ projectId, requestId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/project/${projectId}/supplier/sent/${requestId}/`,
+    apiId: "api_project_supplier_sent_delete",
+    requiredParams: []
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.removeInPath(`projectObjects.byId.${projectId}.requests.${requestId}`);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
