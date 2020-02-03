@@ -7,7 +7,7 @@ export const getCompanies = () => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addListToDict(`companies.byId`, data);    
+    let newState = state.addListToDict(`companies.byId`, data);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
