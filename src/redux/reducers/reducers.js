@@ -1,4 +1,5 @@
 import Im from "../../immutable";
+import store from "../store";
 import * as types from "./types";
 import jwt_decode from "jwt-decode";
 
@@ -8,16 +9,96 @@ const initialState = Im.fromJS({
   errors: null
 });
 
+class TokenRefresher {
+  constructor() {
+    this.intervals = {};
+
+    this.doRefresh = this.doRefresh.bind(this);
+  }
+
+  doRefresh(refreshToken) {
+    // Dispatch an action that will be caught by the APIMiddleware for fetching
+    console.log("Requesting refresh for JWT token");
+    // Get the token-refresh
+    let fetchParams = {
+      url: "/auth-jwt/refresh/",
+      method: "POST",
+      body: {
+        refresh: refreshToken
+      }
+    };
+    store.dispatch({
+      APICallTypes: {
+        successType: "LOGIN_SUCCESS",
+        failureType: "LOGIN_FAILURE"
+      },
+      fetchParams
+    });
+  }
+
+  setRefresh(exp, refreshToken) {
+    let now = new Date();
+    let expTime = new Date(exp * 1000);
+    let msRemaining = expTime - now - 10 * 1000;
+    console.log("Refreshing access token again in ", msRemaining / 1000, "seconds");
+    let id = setInterval(
+      refreshToken => {
+        // Only do it once
+        this.doRefresh(refreshToken);
+        clearInterval(id);
+      },
+      msRemaining,
+      refreshToken
+    );
+    this.intervals[id] = refreshToken;
+  }
+
+  clearAll() {
+    for (let id in this.intervals) {
+      clearInterval(id);
+    }
+    this.intervals = {};
+  }
+}
+
+const TOKEN_REFRESHER = new TokenRefresher();
+
 export default function(state = initialState, action) {
   //console.log("Reducing auth data")
   switch (action.type) {
     case types.LOGIN_SUCCESS:
-      let token = action.payload.token;
-      localStorage.setItem("token", token);
+      // Try to get the token from either "token" or "access" keys
+      let token = action.payload.access || action.payload.token;
+      let refresh = action.payload.refresh || localStorage.getItem("token-refresh");
+      // If we have a new token then store that in localStorage
+      if (token) {
+        localStorage.setItem("token", token);
+        // Store the refreshToken in localStorage also
+      } else {
+        token = localStorage.getItem("token");
+      }
+      // Store the refresh token in localStorage also (if provided)
+      if (action.payload.refresh) {
+        localStorage.setItem("token-refresh", refresh);
+      }
+      // Decode the access token for display in Redux
       let decoded_token = token ? jwt_decode(token) : null;
+      // Set a timer to request a new token
+      if (decoded_token.exp && refresh) {
+        TOKEN_REFRESHER.clearAll();
+        TOKEN_REFRESHER.setRefresh(decoded_token.exp, refresh);
+      }
+      // Add this data to your Redux
       return state.merge(
-        Im.fromJS(action.payload),
-        Im.fromJS({ isAuthenticated: true, status: "confirmed", decoded_token })
+        Im.fromJS({
+          ...action.payload,
+          token,
+          access: token,
+          refresh: refresh,
+          isAuthenticated: true,
+          status: "confirmed",
+          decoded_token
+        })
       );
 
     case types.LOGIN_STATUS:
