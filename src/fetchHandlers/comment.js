@@ -3,11 +3,14 @@ export const getTreeComments = ({ trackerId, refId, commitId, treeId }) => {
     method: "GET",
     url: `/api/tracker/${trackerId}/commit/${commitId}/tree/${treeId}/comment/`,
     apiId: "api_tracker_commit_tree_comment_list",
-    requiredParams: ["trackerId", "refId", "commitId", "treeId"]
+    requiredParams: ["trackerId", "commitId", "treeId", "refId"]
   };
+  console.log(trackerId, commitId, treeId);
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    return state;
+    console.log("Fetching comments", data);
+    let newState = state.addListToDict("comments.byId", data);
+    return newState;
   };
   return {
     fetchParams,
