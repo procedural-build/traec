@@ -73,7 +73,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case types.LOGIN_SUCCESS:
       // Try to get the access token from either "token" or "access" keys
-      let { access, token } = action.payload;
+      let { access, token, user } = action.payload;
       token = access || token;
       // If we have a new token then store that in localStorage
       if (token) {
@@ -92,11 +92,14 @@ export default function(state = initialState, action) {
       for (let key of ["access", "refresh", "token"]) {
         delete action.payload[key];
       }
-      // Get a mock user object
-      let user = { ...decoded_token };
-      for (let key of ["token_type", "exp", "jti"]) {
-        delete user[key];
+      // Get a mock user object (if the user data is not provided in the response)
+      if (!user) {
+        user = { ...decoded_token };
+        for (let key of ["token_type", "exp", "jti"]) {
+          delete user[key];
+        }
       }
+      // The data that will be set
       return state.merge(
         Im.fromJS({
           ...action.payload,
