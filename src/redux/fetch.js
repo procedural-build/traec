@@ -18,7 +18,7 @@
  * @param {function} success - SuccessHandler function
  * @param {function} failure - FailureHandler function
  */
-export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBody = false, responseHeaders=null }, success, failure) => {
+export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBody = false }, success, failure) => {
   const successHandler = success;
   const failureHandler = failure;
 
@@ -29,7 +29,7 @@ export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBo
     headers: headers,
     body: body
   })
-    .then(response => checkResponse(response, headers, responseHeaders))
+    .then(response => checkResponse(response, headers))
     .then(json => {
       successHandler(json);
     })
@@ -94,7 +94,7 @@ export const updateBody = function(body, rawBody) {
  * @param response
  * @param headers
  */
-export const checkResponse = function(response, headers, responseHeaders) {
+export const checkResponse = function(response, headers) {
   if (!response.ok) {
     throw response;
   }
@@ -102,9 +102,6 @@ export const checkResponse = function(response, headers, responseHeaders) {
     return {};
   }
   if (headers["content-type"] === "application/xlsx") {
-    return response.blob();
-  }
-  if (responseHeaders === "application/pdf") {
     return response.blob();
   }
   return response.json();
