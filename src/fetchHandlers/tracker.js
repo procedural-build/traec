@@ -147,6 +147,12 @@ export const postTrackerDispatch = ({ trackerId }) => {
     rawBody: true
   };
   const stateSetFunc = (state, action) => {
+    const data = action.payload;
+
+    if (data.errors) {
+      let newState = state.setInPath(`errors.tracker.byId.${trackerId}.dispatch`, data.errors);
+      return newState;
+    }
     return state;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
