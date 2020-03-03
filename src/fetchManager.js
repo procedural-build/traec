@@ -1,7 +1,7 @@
 import { fetchToState, toggleForm } from "./redux/actionCreators";
 import { handlerMap } from "./handlerMap";
 import { hasFetched } from "./redux/fetchCache";
-import { updateHeaders } from "./redux/fetch";
+import { updateHeaders, updateBody } from "./redux/fetch";
 import store from "./redux/store";
 
 /**
@@ -252,10 +252,15 @@ export default class Fetch {
    */
   rawFetch(options = {}) {
     let { fetchParams } = this.params;
+    let updatedHeaders = updateHeaders(fetchParams.headers || {})
+    let body = fetchParams.body
+    if (options.updateBody){
+      body = updateBody(fetchParams.body)
+    }
     return fetch(this.url, {
-      headers: updateHeaders(fetchParams.headers || {}),
+      headers: updatedHeaders,
       method: this.method,
-      body: fetchParams.body,
+      body: body,
       ...options
     });
   }

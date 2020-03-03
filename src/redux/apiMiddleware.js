@@ -161,8 +161,7 @@ export const failureHandler = function(error, failureType, fetchParams, statePar
  */
 export const successHandler = function(data, successType, originalBody, fetchParams, stateParams, dispatch) {
   Object.assign(data, { errors: null }); // nullify errors if success
-
-  //console.log("Success with API request", data)
+  //console.log("Success with API request", data, successType)
   dispatch({
     type: "FETCH_SUCCESS",
     fetchParams

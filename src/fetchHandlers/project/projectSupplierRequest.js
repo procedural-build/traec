@@ -62,10 +62,10 @@ export const putProjectSupplierRequest = ({ projectId, requestId }) => {
   };
 };
 
-export const deleteProjectSupplierRequest = ({ projectId, requestId }) => {
+export const deleteProjectSupplierRequest = ({ clientProjectId, requestId, ownProjectId }) => {
   const fetchParams = {
     method: "DELETE",
-    url: `/api/project/${projectId}/supplier/${requestId}/`,
+    url: `/api/project/${clientProjectId}/supplier/${requestId}/`,
     apiId: "api_project_supplier_delete",
     requiredParams: ["projectId", "requestId"]
   };
@@ -73,7 +73,7 @@ export const deleteProjectSupplierRequest = ({ projectId, requestId }) => {
     const data = action.payload;
     let newState = state;
     if (!data.errors) {
-      newState = newState.deleteIn(`projectObjects.byId.${projectId}.request.${requestId}`.split("."));
+      newState = newState.deleteIn(`projectObjects.byId.${ownProjectId}.requests.${requestId}`.split("."));
     }
     return newState;
   };
@@ -90,6 +90,21 @@ export const getAllProjectSupplierRequests = ({ projectId }) => {
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     let newState = state.addListToDict(`projectObjects.byId.${projectId}.requests`, data);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
+export const deleteProjectSupplierSentRequest = ({ projectId, requestId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/project/${projectId}/supplier/sent/${requestId}/`,
+    apiId: "api_project_supplier_sent_delete",
+    requiredParams: []
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.removeInPath(`projectObjects.byId.${projectId}.requests.${requestId}`);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
