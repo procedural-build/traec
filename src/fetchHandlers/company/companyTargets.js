@@ -54,3 +54,16 @@ export const patchCompanyTarget = ({ companyId, metricTargetId }) => {
   });
   return params;
 };
+
+export const deleteCompanyTarget = ({ companyId, metricTargetId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/company/${companyId}/target/${metricTargetId}/`,
+    apiId: "api_company_target_delete",
+    requiredParams: ["companyId", "metricTargetId"]
+  };
+  const stateSetFunc = (state, action) => {
+    return state.removeInPath(`companyObjects.byId.${companyId}.targets.${metricTargetId}`);
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
