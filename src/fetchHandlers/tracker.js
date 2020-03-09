@@ -1,7 +1,7 @@
 const addTrackerToState = (state, data) => {
   // Cut out the root_master ref data
   let refData = data.root_master;
-  data.root_master = refData.uid;
+  data.root_master = refData ? refData.uid : null;
   // Get the alternative root masters out
   let altRootMasters = data.alt_root_masters;
   let branchRefMap = {};
@@ -13,7 +13,11 @@ const addTrackerToState = (state, data) => {
   }
   // Add the tracker and ref to dict
   let newState = state.addToDict("trackers.byId", data);
-  newState = newState.addToDict("refs.byId", refData);
+  // Add the root master
+  if (refData) {
+    newState = newState.addToDict("refs.byId", refData);
+  }
+  // Add in the alt root masters
   if (altRootMasters) {
     newState = newState.addListToDict("refs.byId", altRootMasters);
   }
