@@ -93,5 +93,14 @@ const edgeSetFunctions = {
     newState = newState.addToDict("score.byId", score);
     newState = newState.addListToSets([`commitEdges.byId.${commitId}.documents.${document.uid}.scores`], [score.uid]);
     return newState;
+  },
+  treetrackercomment: (commitId, edge, newState) => {
+    let { tree, trackercomment } = edge;
+    newState = newState.addToDict("comments.byId", trackercomment);
+    newState = newState.addListToSets(
+      [`commitEdges.byId.${commitId}.trees.${tree.uid}.comments`],
+      [trackercomment.uid]
+    );
+    return newState;
   }
 };
