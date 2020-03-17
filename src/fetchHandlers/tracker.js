@@ -15,7 +15,7 @@ const addTrackerToState = (state, data) => {
   let newState = state.addToDict("trackers.byId", data);
   // Add the root master
   if (refData) {
-    newState = newState.addToDict("refs.byId", refData);
+    newState = newState.addToDict("refs.byId", refData, "uid", refData.uid.substring(0, 8));
   }
   // Add in the alt root masters
   if (altRootMasters) {

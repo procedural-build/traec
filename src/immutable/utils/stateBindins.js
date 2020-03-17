@@ -147,8 +147,13 @@ export const addToList = function(path, data) {
  * @param {object} data - The object to store.  Plain-JS objects will be convered to Immutable.
  * @param {string} [keyField="uid"] - The field from within "data" that will be used to make the key in the dictionary
  */
-export const addToDict = function(path, data, keyField = "uid") {
-  return this.addListToDict(path, data, keyField);
+export const addToDict = function(path, data, keyField = "uid", requestId = null) {
+  let newState = this.addListToDict(path, data, keyField);
+  // Set an pointer from the requesting Id (may be an 8-char UUID) to the full Id and object
+  if (requestId && requestId != data[keyField]) {
+    newState = newState.mergeInPath(path, { [requestId]: { [keyField]: data[keyField] } });
+  }
+  return newState;
 };
 
 /**

@@ -8,6 +8,10 @@ export const getCompanies = () => {
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     let newState = state.addListToDict(`companies.byId`, data);
+    // Store abbreviated references (for getFullId utility to find fullId from 8-char uuid)
+    for (let companyData of data) {
+      newState = newState.addToDict(`companies.byId`, { uid: companyData.uid }, "uid", companyData.uid.substring(0, 8));
+    }
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
