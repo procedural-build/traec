@@ -12,7 +12,7 @@ export const getCommits = ({ trackerId, refId }) => {
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     const uids = data.map(item => item.uid);
-    let newState = state.addListToDict("commits.byId", data);
+    let newState = state.addListToDict("commits.byId", data, "uid", true);
     newState = newState.addListToSets([`categoryCommits.byId.${refId}`], uids);
     return newState;
   };

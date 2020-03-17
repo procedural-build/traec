@@ -169,12 +169,19 @@ export const addToDict = function(path, data, keyField = "uid", requestId = null
  * @param {array} dataList - The array of objects to store.  Plain-JS objects will be convered to Immutable.
  * @param {string} [keyField="uid"] - The field from within each "data" object that will be used to make the key in the dictionary
  */
-export const addListToDict = function(path, dataList, keyField = "uid") {
+export const addListToDict = function(path, dataList, keyField = "uid", indexChars = false) {
   path = path.split(".");
   dataList = !Array.isArray(dataList) ? [dataList] : dataList;
   // Ensure that the path exists
   let newState = this.getIn(path) ? this : this.setIn(path, Im.Map());
   // Add the new list of item to the dictionary with key from keyField
   newState = newState.updateIn(path, items => items.mergeDeep(Im.fromJS(listToObj(dataList, keyField))));
+  // Add abbreviated indexes that point to the full uid (for getFullIds)
+  if (indexChars) {
+    for (let data of dataList) {
+      let requestId = data[keyField].substring(0, 8);
+      newState = newState.mergeIn(path, { [requestId]: { [keyField]: data[keyField] } });
+    }
+  }
   return newState;
 };
