@@ -5,6 +5,7 @@ import { fetchRequired } from "./fetchBindings/utils";
 import Fetch from "./fetchManager";
 import Im from "./immutable";
 import Redux from "./redux";
+import * as utils from "./utils";
 
 export * from "./handlerMap";
 export * from "./fetchBindings/utils";
@@ -17,5 +18,6 @@ export default {
   fetchRequired,
   Fetch,
   Im,
-  Redux
+  Redux,
+  utils
 };

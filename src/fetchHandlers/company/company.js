@@ -27,7 +27,7 @@ export const getCompany = ({ companyId }) => {
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     // clear the existing company data first
-    let newState = newState.addToDict(`companies.byId`, data);
+    let newState = state.addToDict(`companies.byId`, data, "uid", companyId);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };

@@ -48,7 +48,7 @@ export const getRef = ({ trackerId, refId }) => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addToDict(`refs.byId`, data);
+    let newState = state.addToDict(`refs.byId`, data, "uid", refId);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
