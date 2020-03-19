@@ -40,7 +40,7 @@ export const postTreeComment = ({ trackerId, refId, commitId, treeId }) => {
     let newState = state;
     if (!data.errors) {
       newState = newState.addListToDict("comments.byId", data);
-      newState = newState.setInPath(`commitEdges.byId.${commitId}.trees.${treeId}.comments.${data.uid}`, data.uid);
+      newState = newState.addListToSets([`commitEdges.byId.${commitId}.trees.${treeId}.comments`], [data.uid]);
     }
     let { formObjPath, formVisPath } = action.stateParams;
     newState = newState.setInPath(formObjPath, data);
