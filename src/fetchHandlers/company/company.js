@@ -7,10 +7,12 @@ export const getCompanies = () => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addListToDict(`companies.byId`, data);
+    let newState = state;
     // Store abbreviated references (for getFullId utility to find fullId from 8-char uuid)
     for (let companyData of data) {
-      newState = newState.addToDict(`companies.byId`, { uid: companyData.uid }, "uid", companyData.uid.substring(0, 8));
+      newState = newState.addToDict(`companies.byId`, companyData, "uid", companyData.uid.substring(0, 8));
+      // Set the projects separately (to avoid appending to the list)
+      newState = newState.setInPath(`companies.byId.${companyData.uid}.projects`, companyData.projects);
     }
     return newState;
   };
@@ -28,6 +30,8 @@ export const getCompany = ({ companyId }) => {
     const data = action.payload;
     // clear the existing company data first
     let newState = state.addToDict(`companies.byId`, data, "uid", companyId);
+    // Set the projects separately (to avoid appending to the list)
+    newState = newState.setInPath(`companies.byId.${data.uid}.projects`, data.projects);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
