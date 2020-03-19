@@ -22,7 +22,7 @@ pipeline {
     stage('Test') {
       steps {
         withEnv(["JEST_JUNIT_OUTPUT=./jest-test-results.xml"]) {
-          sh 'npm test -- --ci --coverage --testResultsProcessor="jest-junit"'
+          sh 'npm test -- --ci --coverage --reporters=jest-junit'
         }
         }
         post {
