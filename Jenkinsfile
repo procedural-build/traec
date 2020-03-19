@@ -33,7 +33,10 @@ pipeline {
     }
     stage('Build & Publish NPM and Docs') {
       when {
-        branch 'master'
+        anyOf {
+          branch 'master'
+          branch 'stage'
+        }
       }
       steps {
         sh 'documentation build src/** -f html -o docs'
