@@ -252,10 +252,10 @@ export default class Fetch {
    */
   rawFetch(options = {}) {
     let { fetchParams } = this.params;
-    let updatedHeaders = updateHeaders(fetchParams.headers || {})
-    let body = fetchParams.body
-    if (options.updateBody){
-      body = updateBody(fetchParams.body)
+    let updatedHeaders = updateHeaders(fetchParams.headers || {});
+    let body = fetchParams.body;
+    if (options.updateBody) {
+      body = updateBody(fetchParams.body);
     }
     return fetch(this.url, {
       headers: updatedHeaders,
