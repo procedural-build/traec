@@ -134,7 +134,7 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allo
   };
 };
 
-export const putDocumentObjectCommit = ({ trackerId, commitId, documentId, allow_commit_change }) => {
+export const putDocumentObjectCommit = ({ trackerId, commitId, documentId, allow_commit_change, treeId }) => {
   let { fetchParams, stateParams } = putDocumentObject({
     trackerId,
     refId: null,
@@ -152,7 +152,7 @@ export const putDocumentObjectCommit = ({ trackerId, commitId, documentId, allow
   return { fetchParams, stateParams };
 };
 
-export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
+export const deleteDocument = ({ trackerId, refId, commitId, docId, treeId }) => {
   const fetchParams = {
     method: "DELETE",
     url: `/api/tracker/${trackerId}/ref/${refId}/document/${docId}/`,
@@ -162,7 +162,7 @@ export const deleteDocument = ({ trackerId, refId, commitId, docId }) => {
 
   return {
     fetchParams,
-    stateParams: { stateSetFunc: (state, action) => deleteDocumentFromState(state, action, commitId, docId) }
+    stateParams: { stateSetFunc: state => deleteDocumentFromState(state, treeId, commitId, docId) }
   };
 };
 
@@ -176,13 +176,27 @@ export const deleteTreeDocument = ({ trackerId, treeId, commitId, docId }) => {
 
   return {
     fetchParams,
-    stateParams: { stateSetFunc: (state, action) => deleteDocumentFromState(state, action, commitId, docId) }
+    stateParams: { stateSetFunc: state => deleteDocumentFromState(state, treeId, commitId, docId) }
   };
 };
 
-const deleteDocumentFromState = (state, action, commitId, docId) => {
+const deleteDocumentFromState = (state, treeId, commitId, docId) => {
   let parentId = state.getInPath(`commitEdges.byId.${commitId}.documents.${docId}.parent`);
-  let newState = state.removeInPath(`commitEdges.byId.${commitId}.documents.${docId}`);
+  let newState = state;
+  let descriptions = newState.getInPath(`commitEdges.byId.${commitId}.documents.${docId}.descriptions`);
+
+  // Remove all descriptions of the document:
+  if (descriptions) {
+    for (let descriptionId of descriptions.toJS()) {
+      newState = newState.removeInPath(`descriptions.byId.${descriptionId}`);
+      newState = newState.removeInPath(`commitEdges.byId.${commitId}.tree.${treeId}.descriptions.${descriptionId}`);
+    }
+  }
+  newState = newState.removeInPath(`commitEdges.byId.${commitId}.documents.${docId}`);
+  newState = newState.removeInPath(`user.documents.byId.${docId}`);
+  newState = newState.removeInPath(`commitEdges.byId.${commitId}.trees.${treeId}.documents.${docId}`);
+
+  newState = newState.removeInPath(`documents.byId.${docId}`);
   if (parentId) {
     newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
       i ? i.delete(docId) : null
