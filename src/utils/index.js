@@ -5,3 +5,4 @@
 
 export { camelCaseToSentence } from "./text";
 export * from "./jsobject";
+export * from "./uuidUtils";

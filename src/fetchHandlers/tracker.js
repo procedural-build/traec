@@ -12,10 +12,10 @@ const addTrackerToState = (state, data) => {
     data.alt_root_masters = branchRefMap;
   }
   // Add the tracker and ref to dict
-  let newState = state.addToDict("trackers.byId", data);
+  let newState = state.addToDict("trackers.byId", data, "uid", data.uid.substring(0, 8));
   // Add the root master
   if (refData) {
-    newState = newState.addToDict("refs.byId", refData);
+    newState = newState.addToDict("refs.byId", refData, "uid", refData.uid.substring(0, 8));
   }
   // Add in the alt root masters
   if (altRootMasters) {

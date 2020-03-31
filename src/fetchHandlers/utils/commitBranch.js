@@ -23,8 +23,13 @@ export const storeCommitBranch = (state, item) => {
     newState = edgeDictToState(newState, commitId, item.target_edges);
   }
   // Add the ref and commit into the store
-  newState = item.target.ref ? newState.addToDict(`refs.byId`, item.target.ref) : newState;
-  newState = item.target.commit ? newState.addToDict(`commits.byId`, item.target.commit) : newState;
+  newState = item.target.ref
+    ? newState.addToDict(`refs.byId`, item.target.ref, "uid", item.target.ref.uid.substring(0, 8))
+    : newState;
+  newState =
+    item.target.commit && item.target.commit.uid
+      ? newState.addToDict(`commits.byId`, item.target.commit, "uid", item.target.commit.uid.substring(0, 8))
+      : newState;
   // Add the new item to the state
   newState = newState.setInPath(`${getCommitBranchRootPath(item)}.${item.uid}`, reduceCommitBranch(item));
   //newState = newState.addToDict(`commitBranches.${rootPath}`, [item]);
