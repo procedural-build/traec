@@ -13,6 +13,7 @@ export const getCompanies = () => {
       newState = newState.addToDict(`companies.byId`, companyData, "uid", companyData.uid.substring(0, 8));
       // Set the projects separately (to avoid appending to the list)
       newState = newState.setInPath(`companies.byId.${companyData.uid}.projects`, companyData.projects);
+      newState = newState.setInPath(`companies.byId.${companyData.uid}.meta_json`, companyData.meta_json);
     }
     return newState;
   };
@@ -30,6 +31,7 @@ export const getCompany = ({ companyId }) => {
     const data = action.payload;
     // clear the existing company data first
     let newState = state.addToDict(`companies.byId`, data, "uid", companyId);
+    newState = newState.setInPath(`companies.byId.${companyId}.meta_json`, data.meta_json);
     // Set the projects separately (to avoid appending to the list)
     newState = newState.setInPath(`companies.byId.${data.uid}.projects`, data.projects);
     return newState;
@@ -81,6 +83,16 @@ export const putCompany = ({ companyId }) => {
   Object.assign(stateParams, {
     formVisPath: `companies.editById.${companyId}.SHOW_FORM`,
     formObjPath: `companies.editById.${companyId}.newItem`
+  });
+  return { fetchParams, stateParams };
+};
+
+export const patchCompany = ({ companyId }) => {
+  let { fetchParams, stateParams } = putCompany({ companyId });
+  Object.assign(fetchParams, {
+    method: "PATCH",
+    apiId: "api_company_partial_update",
+    requiredParams: ["companyId"]
   });
   return { fetchParams, stateParams };
 };
