@@ -13,6 +13,7 @@ export const getCompanies = () => {
       newState = newState.addToDict(`companies.byId`, companyData, "uid", companyData.uid.substring(0, 8));
       // Set the projects separately (to avoid appending to the list)
       newState = newState.setInPath(`companies.byId.${companyData.uid}.projects`, companyData.projects);
+      newState = newState.setInPath(`companies.byId.${companyData.uid}.childids`, companyData.childids);
     }
     return newState;
   };
@@ -32,6 +33,7 @@ export const getCompany = ({ companyId }) => {
     let newState = state.addToDict(`companies.byId`, data, "uid", companyId);
     // Set the projects separately (to avoid appending to the list)
     newState = newState.setInPath(`companies.byId.${data.uid}.projects`, data.projects);
+    newState = newState.setInPath(`companies.byId.${data.uid}.childids`, data.childids);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
