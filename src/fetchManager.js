@@ -199,8 +199,8 @@ export default class Fetch {
    * **Note**:
    * * this calls "preDispatchHook" which provides an opportunity to trigger an action just prior to the actual fetch-action being dispatched.  This is useful for displaying an alert or popup confirmation and/or triggering a popup that may wait for a success or failure.
    */
-  dispatch() {
-    if (this.hasFetched()) {
+  dispatch(poll = false) {
+    if (this.hasFetched() && !poll) {
       return null;
     }
     let action = fetchToState(this.params);
