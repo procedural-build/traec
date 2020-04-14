@@ -16,13 +16,13 @@ pipeline {
   stages {
     stage('NPM Install') {
       steps {
-        sh 'npm install && npm install -g documentation'
+        sh 'npm ci && npm install -g documentation'
       }
     }
     stage('Test') {
       steps {
-        withEnv(["JEST_JUNIT_OUTPUT=./jest-test-results.xml"]) {
-          sh 'npm test -- --ci --coverage --testResultsProcessor="jest-junit"'
+        withEnv(["JEST_JUNIT_OUTPUT_NAME=jest-test-results.xml"]) {
+          sh 'npm test -- --ci --coverage --reporters=jest-junit'
         }
         }
         post {
