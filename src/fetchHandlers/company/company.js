@@ -14,6 +14,7 @@ export const getCompanies = () => {
       // Set the projects separately (to avoid appending to the list)
       newState = newState.setInPath(`companies.byId.${companyData.uid}.projects`, companyData.projects);
       newState = newState.setInPath(`companies.byId.${companyData.uid}.meta_json`, companyData.meta_json);
+      newState = newState.setInPath(`companies.byId.${companyData.uid}.childids`, companyData.childids);
     }
     return newState;
   };
@@ -34,6 +35,7 @@ export const getCompany = ({ companyId }) => {
     newState = newState.setInPath(`companies.byId.${companyId}.meta_json`, data.meta_json);
     // Set the projects separately (to avoid appending to the list)
     newState = newState.setInPath(`companies.byId.${data.uid}.projects`, data.projects);
+    newState = newState.setInPath(`companies.byId.${data.uid}.childids`, data.childids);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
