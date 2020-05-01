@@ -9,7 +9,13 @@ export const getProjects = () => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addListToDict(`projects.byId`, data);
+    let newState = state;
+    // Store abbreviated references (for getFullId utility to find fullId from 8-char uuid)
+    for (let projectData of data) {
+      newState = newState.addToDict(`projects.byId`, projectData, "uid", projectData.uid.substring(0, 8));
+    }
+
+    newState = newState.addListToDict(`projects.byId`, data);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
@@ -82,6 +88,7 @@ export const getProject = ({ projectId }) => {
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     let newState = state.addToDict("projects.byId", data, "uid", projectId);
+    newState = newState.addToDict(`projects.byId`, data, "uid", projectId.substring(0, 8));
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
