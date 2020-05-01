@@ -79,8 +79,14 @@ export const getCompanyReportingPeriods = ({
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-export const getCompanyExcelReport = ({ companyId, fromDate = null, toDate = null, ignore_cache = false }) => {
-  let query_params = get_query_string({ fromDate, toDate, ignore_cache });
+export const getCompanyExcelReport = ({
+  companyId,
+  fromDate = null,
+  toDate = null,
+  ignore_cache = false,
+  summary_cumulation_period = null
+}) => {
+  let query_params = get_query_string({ fromDate, toDate, ignore_cache, summary_cumulation_period });
   const fetchParams = {
     method: "GET",
     url: `/api/company/${companyId}/report/excel/${query_params}`,
