@@ -88,6 +88,7 @@ export const getProject = ({ projectId }) => {
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     let newState = state.addToDict("projects.byId", data, "uid", projectId);
+    newState = newState.addToDict(`projects.byId`, data, "uid", projectId.substring(0, 8));
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
