@@ -28,7 +28,8 @@ export const getTracker = ({ trackerId }) => {
   const fetchParams = {
     method: "GET",
     url: `/api/tracker/${trackerId}/`,
-    apiId: "api_tracker_read"
+    apiId: "api_tracker_read",
+    requiredParams: ["trackerId"]
   };
   const stateSetFunc = (state, action) => {
     return addTrackerToState(state, action.payload);
