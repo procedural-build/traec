@@ -12,7 +12,8 @@ const get_query_string = ({
   const summaryCumulationPeriod = summary_cumulation_period ? "&summary_cumulation_period=total" : "";
   const include_project_results_ = include_project_results ? `&include_project_results=true` : "";
   const format_ = format ? `&output_format=${format}` : "";
-  let query_params = `?${fromDate_}&${toDate_}${ignoreCache}${summaryCumulationPeriod}${include_project_results_}${format_}`;
+  const ignoreSummary = ignore_cache ? `&ignore_summary=true` : "";
+  let query_params = `?${fromDate_}&${toDate_}${ignoreCache}${summaryCumulationPeriod}${include_project_results_}${format_}${ignoreSummary}`;
   return query_params;
 };
 
@@ -23,7 +24,8 @@ export const getCompanyReportingPeriods = ({
   ignore_cache = null,
   include_project_results = null,
   summary_cumulation_period = null,
-  format = null
+  format = null,
+  ignore_summary = null
 }) => {
   let query_params = get_query_string({
     fromDate,
@@ -31,14 +33,21 @@ export const getCompanyReportingPeriods = ({
     ignore_cache,
     include_project_results,
     format,
-    summary_cumulation_period
+    summary_cumulation_period,
+    ignore_summary
   });
   const fetchParams = {
     method: "GET",
     url: `/api/company/${companyId}/report/${query_params}`,
     apiId: "api_company_report_list",
     requiredParams: ["companyId"],
-    queryParms: { fromDate: null, toDate: null, ignore_cache: false, include_project_results: false }
+    queryParms: {
+      fromDate: null,
+      toDate: null,
+      ignore_cache: false,
+      include_project_results: false,
+      ignore_summary: false
+    }
   };
   let stateSetFunc = (state, action) => {
     let data = action.payload;
