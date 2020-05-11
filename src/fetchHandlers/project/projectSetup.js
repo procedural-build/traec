@@ -1,6 +1,7 @@
 import { postProject } from "./project";
 import { postTracker } from "../tracker";
 import { postRootRef } from "../ref";
+import { postProjectAuthGroup } from "./projectAuthGroup";
 
 /*
 HANDLER FOR POSTING A PROJECT AND SETTING IT UP WITH A TRACKER AND 
@@ -37,6 +38,60 @@ export const postProjectAndSetup = () => {
                   return { fetchParams, stateParams };
                 }
               ]
+        });
+        return { fetchParams, stateParams };
+      },
+      (data, post, orgpost) => {
+        let { fetchParams, stateParams } = postProjectAuthGroup({ projectId: data.uid });
+        let body = {
+          name: "Approver",
+          policy_json: {
+            actions: [
+              "READ_TRACKER_REF",
+              "UPDATE_TRACKER_REF",
+              "READ_PROJECT_MEMBER",
+              "READ_PROJECT_REPORT",
+              "CREATE_TRACKER_REF_SCORE_VALUE",
+              "READ_TRACKER_REF_SCORE_VALUE",
+              "UPDATE_TRACKER_REF_SCORE_VALUE"
+            ]
+          }
+        };
+        Object.assign(fetchParams, {
+          body
+        });
+        return { fetchParams, stateParams };
+      },
+      (data, post, orgpost) => {
+        let { fetchParams, stateParams } = postProjectAuthGroup({ projectId: data.uid });
+        let body = {
+          name: "Reporter",
+          policy_json: {
+            actions: [
+              "READ_TRACKER_REF",
+              "READ_PROJECT_MEMBER",
+              "READ_PROJECT_REPORT",
+              "CREATE_TRACKER_REF_SCORE_VALUE",
+              "READ_TRACKER_REF_SCORE_VALUE",
+              "UPDATE_TRACKER_REF_SCORE_VALUE"
+            ]
+          }
+        };
+        Object.assign(fetchParams, {
+          body
+        });
+        return { fetchParams, stateParams };
+      },
+      (data, post, orgpost) => {
+        let { fetchParams, stateParams } = postProjectAuthGroup({ projectId: data.uid });
+        let body = {
+          name: "Viewer",
+          policy_json: {
+            actions: ["READ_TRACKER_REF", "READ_PROJECT_MEMBER", "READ_PROJECT_REPORT", "READ_TRACKER_REF_SCORE_VALUE"]
+          }
+        };
+        Object.assign(fetchParams, {
+          body
         });
         return { fetchParams, stateParams };
       }
