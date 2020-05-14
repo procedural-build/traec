@@ -82,6 +82,25 @@ export const getDocumentObjects = ({ trackerId, commitId, docId, thisCommitOnly 
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
+export const getDocumentObject = ({ trackerId, commitId, docId, docObjectId, signedURL = false }) => {
+  let queryParams = signedURL ? "?url=true" : "";
+  const fetchParams = {
+    method: "GET",
+    url: `/api/tracker/${trackerId}/commit/${commitId}/document/${docId}/object/${docObjectId}/${queryParams}`,
+    apiId: "api_tracker_commit_document_object_retrieve",
+    requiredParams: ["trackerId", "commitId", "docId", "docObjectId"],
+    queryParams: { signedURL: false }
+  };
+  const stateSetFunc = (state, action) => {
+    // Successful put returns a DocumentStatusSerializer object
+    let data = action.payload;
+    let newState = state;
+    newState = newState.addToDict("docObjects.byId", data);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
 const getDocQueryParams = ({ allow_commit_change }) => {
   return allow_commit_change ? "?allow_commit_change=true" : "";
 };
