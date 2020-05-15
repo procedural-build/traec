@@ -66,6 +66,7 @@ export default class Fetch {
     this.defaultCacheTimeout = 3600;
 
     // Initialize some fetch Parameters
+    this._params = params;
     this.update(params);
   }
 
@@ -143,6 +144,7 @@ export default class Fetch {
    * @return {object} the parameters object {fetchParams, stateParams}.
    */
   update(params = {}, queryParams = {}) {
+    params = { ...this._params, ...params };
     params = this.preUpdateHook({ ...params, ...queryParams });
     let p = this.fetchHandler(params);
     this._fetchParams = p.fetchParams;

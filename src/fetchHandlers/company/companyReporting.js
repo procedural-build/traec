@@ -4,16 +4,17 @@ const get_query_string = ({
   ignore_cache = false,
   summary_cumulation_period = null,
   include_project_results = false,
-  format = null
+  format = null,
+  ignore_summary
 }) => {
   const fromDate_ = fromDate ? `fromDate=${fromDate}` : "";
-  const toDate_ = toDate ? `toDate=${toDate}` : "";
+  const toDate_ = toDate ? `&toDate=${toDate}` : "";
   const ignoreCache = ignore_cache ? `&ignore_cache=true` : "";
   const summaryCumulationPeriod = summary_cumulation_period ? "&summary_cumulation_period=total" : "";
   const include_project_results_ = include_project_results ? `&include_project_results=true` : "";
   const format_ = format ? `&output_format=${format}` : "";
-  const ignoreSummary = ignore_cache ? `&ignore_summary=true` : "";
-  let query_params = `?${fromDate_}&${toDate_}${ignoreCache}${summaryCumulationPeriod}${include_project_results_}${format_}${ignoreSummary}`;
+  const ignoreSummary = ignore_summary ? `&ignore_summary=true` : "";
+  let query_params = `?${fromDate_}${toDate_}${ignoreCache}${summaryCumulationPeriod}${include_project_results_}${format_}${ignoreSummary}`;
   return query_params;
 };
 
@@ -41,9 +42,9 @@ export const getCompanyReportingPeriods = ({
     url: `/api/company/${companyId}/report/${query_params}`,
     apiId: "api_company_report_list",
     requiredParams: ["companyId"],
-    queryParms: {
+    queryParams: {
       fromDate: null,
-      toDate: null,
+      toDate,
       ignore_cache: false,
       include_project_results: false,
       ignore_summary: false
