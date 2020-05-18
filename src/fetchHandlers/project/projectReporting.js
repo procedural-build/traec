@@ -172,7 +172,7 @@ export const getProjectExcelReport = ({
     headers: { "content-type": "application/xlsx" },
     apiId: "api_project_reporting_periods_excel_list",
     requiredParams: ["projectId"],
-    queryParms: { fromDate: null, toDate: null, ignore_cache: false }
+    queryParams: { fromDate: null, toDate: null, ignore_cache: false }
   };
   const stateSetFunc = (state, action) => {
     return state;
@@ -197,7 +197,7 @@ export const getProjectReportCommits = ({
     url: `/api/project/${projectId}/reporting_periods/${reportPeriodId}/commits/${query_params}`,
     apiId: "api_project_reporting_periods_commits_list",
     requiredParams: ["projectId", "reportPeriodId"],
-    queryParms: { category: null, indicator: null }
+    queryParams: { category: null, indicator: null }
   };
   let stateSetFunc = (state, action) => {
     let data = action.payload;
@@ -235,20 +235,22 @@ export const getProjectReportInputValues = ({
   projectId,
   reportPeriodId,
   baseMetricId = null,
+  indicatorId = null,
   commitId = null,
-  cumluation_period = null
+  cumulation_period = null
 }) => {
   let query_params = "";
   query_params = baseMetricId ? `baseMetricId=${baseMetricId}` : "";
+  query_params += indicatorId ? `indicatorId=${indicatorId}` : "";
   query_params += commitId ? `&commitId=${commitId}` : "";
-  query_params += cumluation_period ? `&cumulation_period=${cumluation_period}` : "";
+  query_params += cumulation_period ? `&cumulation_period=${cumulation_period}` : "";
   query_params = query_params ? "?" + query_params : "";
   const fetchParams = {
     method: "GET",
     url: `/api/project/${projectId}/reporting_periods/${reportPeriodId}/inputs/${query_params}`,
     apiId: "api_project_reporting_periods_inputs_list",
     requiredParams: ["projectId", "reportPeriodId"],
-    queryParms: { baseMetricId: null, commitId: null, cumluation_period: null }
+    queryParams: { baseMetricId: null, commitId: null, cumulation_period: null }
   };
   let stateSetFunc = (state, action) => {
     let data = action.payload;
@@ -258,7 +260,7 @@ export const getProjectReportInputValues = ({
     }
     // Store the data in a path based on cumulation_period
     let path = `projectReportingPeriods.byId.${projectId}.${reportPeriodId}.input_values`;
-    path = path + (cumluation_period ? `.${cumluation_period}` : ".current");
+    path = path + (cumulation_period ? `.${cumulation_period}` : ".current");
     // Add to state
     newState = newState.addListToDict(path, data);
     return newState;
