@@ -37,10 +37,10 @@ export const getCommitMetricTargets = ({ trackerId, commitId }) => {
   };
 };
 
-export const postCommitMetricTarget = ({ trackerId, commitId }) => {
+export const postCommitMetricTarget = ({ trackerId, commitId, treeId = null }) => {
   const fetchParams = {
     method: "POST",
-    url: `/api/tracker/${trackerId}/commit/${commitId}/target/`,
+    url: `/api/tracker/${trackerId}/commit/${commitId}/target/${treeId ? `?treeId=${treeId}` : ""}`,
     apiId: "api_tracker_commit_target_create",
     requiredParams: ["trackerId", "commitId"]
   };
