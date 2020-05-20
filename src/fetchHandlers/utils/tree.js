@@ -6,7 +6,7 @@ export const getTreeStructure = (state, commitId, treeId) => {
   if (subTrees) {
     return [treeId, subTrees.map(subTreeId => getTreeStructure(state, commitId, subTreeId)).toJS()];
   } else {
-    return treeId;
+    return [treeId];
   }
 };
 
