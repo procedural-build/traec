@@ -159,9 +159,7 @@ export const addToDict = function(path, data, keyField = "uid", requestId = null
 /**
  * https://github.com/immutable-js/immutable-js/issues/1452
  */
-const isMergeable = (a) => (
-  a && typeof a === 'object' && typeof a.mergeWith === 'function' && !Im.List.isList(a)
-);
+const isMergeable = a => a && typeof a === "object" && typeof a.mergeWith === "function" && !Im.List.isList(a);
 
 /**
  * https://github.com/immutable-js/immutable-js/issues/1452
@@ -171,7 +169,7 @@ export const mergeDeepOverwriteLists = function(b) {
   if (b === null) return b;
 
   if (isMergeable(this) && !Im.List.isList(this)) {
-      return this.mergeWith(mergeDeepOverwriteLists, b);
+    return this.mergeWith(mergeDeepOverwriteLists, b);
   }
 
   return b;
@@ -196,11 +194,7 @@ export const addListToDict = function(path, dataList, keyField = "uid", indexCha
   // Ensure that the path exists
   let newState = this.getIn(path) ? this : this.setIn(path, Im.Map());
   // Add the new list of item to the dictionary with key from keyField
-  newState = newState.updateIn(path, items => (
-    items.mergeDeepOverwriteLists(
-      Im.fromJS(listToObj(dataList, keyField))
-    )
-  ));
+  newState = newState.updateIn(path, items => items.mergeDeepOverwriteLists(Im.fromJS(listToObj(dataList, keyField))));
   // Add abbreviated indexes that point to the full uid (for getFullIds)
   if (indexChars) {
     for (let data of dataList) {
