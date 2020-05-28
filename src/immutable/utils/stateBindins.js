@@ -204,3 +204,20 @@ export const addListToDict = function(path, dataList, keyField = "uid", indexCha
   }
   return newState;
 };
+
+export const addListToDictDeep = function(path, dataList, keyField = "uid", indexChars = false) {
+  path = path.split(".");
+  dataList = !Array.isArray(dataList) ? [dataList] : dataList;
+  // Ensure that the path exists
+  let newState = this.getIn(path) ? this : this.setIn(path, Im.Map());
+  // Add the new list of item to the dictionary with key from keyField
+  newState = newState.updateIn(path, items => items.mergeDeep(Im.fromJS(listToObj(dataList, keyField))));
+  // Add abbreviated indexes that point to the full uid (for getFullIds)
+  if (indexChars) {
+    for (let data of dataList) {
+      let requestId = data[keyField].substring(0, 8);
+      newState = newState.mergeIn(path, { [requestId]: { [keyField]: data[keyField] } });
+    }
+  }
+  return newState;
+};
