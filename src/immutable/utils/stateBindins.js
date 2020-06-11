@@ -159,9 +159,7 @@ export const addToDict = function(path, data, keyField = "uid", requestId = null
 /**
  * https://github.com/immutable-js/immutable-js/issues/1452
  */
-const isMergeable = (a) => (
-  a && typeof a === 'object' && typeof a.mergeWith === 'function' && !Im.List.isList(a)
-);
+const isMergeable = a => a && typeof a === "object" && typeof a.mergeWith === "function" && !Im.List.isList(a);
 
 /**
  * https://github.com/immutable-js/immutable-js/issues/1452

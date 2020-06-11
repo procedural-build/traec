@@ -63,11 +63,7 @@ export const projectPermissionCheck = function(projectId, requiresAdmin, require
   // Handle an admin-type user first
   let isAdmin = permissions.get("is_admin");
   if (requiresAdmin) {
-    if (isAdmin) {
-      return true;
-    } else {
-      return false;
-    }
+    return !!isAdmin;
   } else {
     // If admin is not required but the user
     // is an admin then they can do anything
@@ -79,7 +75,7 @@ export const projectPermissionCheck = function(projectId, requiresAdmin, require
   let allowedActions = permissions.get("actions");
   let requiredActionSet = Im.Set(requiredActions);
   let intersectActions = requiredActionSet.intersect(allowedActions);
-  if (intersectActions.size == requiredActionSet.size) {
+  if (intersectActions.size === requiredActionSet.size) {
     return true;
   } else {
     return false;

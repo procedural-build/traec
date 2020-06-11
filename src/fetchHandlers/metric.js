@@ -192,6 +192,7 @@ export const patchTreeScore = ({ trackerId, refId, commitId, treeId, metricScore
       newState = newState.addToDict("baseMetrics.byId", baseMetric);
       // Add it to the edges of its parent tree also
       newState = newState.addListToSet(`commitEdges.byId.${commitId}.trees.${treeId}.metricScores`, [data.uid]);
+      newState = newState.setInPath(`trees.editById.${treeId}.SHOW_EDIT_SCORE_FORM`, false);
     }
     return newState;
   };
