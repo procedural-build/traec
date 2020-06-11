@@ -166,12 +166,12 @@ const isMergeable = (a) => (
 /**
  * https://github.com/immutable-js/immutable-js/issues/1452
  */
-export const mergeDeepOverwriteLists = function(b) {
+export const mergeDeepOverwriteLists = (a, b) => {
   // If b is null, it would overwrite a, even if a is mergeable
   if (b === null) return b;
 
-  if (isMergeable(this) && !Im.List.isList(this)) {
-      return this.mergeWith(mergeDeepOverwriteLists, b);
+  if (isMergeable(a) && !Im.List.isList(a)) {
+      return a.mergeWith(mergeDeepOverwriteLists, b);
   }
 
   return b;
@@ -197,7 +197,8 @@ export const addListToDict = function(path, dataList, keyField = "uid", indexCha
   let newState = this.getIn(path) ? this : this.setIn(path, Im.Map());
   // Add the new list of item to the dictionary with key from keyField
   newState = newState.updateIn(path, items => (
-    items.mergeDeepOverwriteLists(
+    mergeDeepOverwriteLists(
+      items,
       Im.fromJS(listToObj(dataList, keyField))
     )
   ));
