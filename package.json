@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "dependencies": {
+    "dompurify": "^2.0.11",
     "immutable": "^4.0.0-rc.12",
     "jwt-decode": "^2.2.0",
     "node": "^10.17.0",

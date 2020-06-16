@@ -169,7 +169,7 @@ export const mergeDeepOverwriteLists = (a, b) => {
   if (b === null) return b;
 
   if (isMergeable(a) && !Im.List.isList(a)) {
-      return a.mergeWith(mergeDeepOverwriteLists, b);
+    return a.mergeWith(mergeDeepOverwriteLists, b);
   }
 
   return b;
@@ -194,12 +194,7 @@ export const addListToDict = function(path, dataList, keyField = "uid", indexCha
   // Ensure that the path exists
   let newState = this.getIn(path) ? this : this.setIn(path, Im.Map());
   // Add the new list of item to the dictionary with key from keyField
-  newState = newState.updateIn(path, items => (
-    mergeDeepOverwriteLists(
-      items,
-      Im.fromJS(listToObj(dataList, keyField))
-    )
-  ));
+  newState = newState.updateIn(path, items => mergeDeepOverwriteLists(items, Im.fromJS(listToObj(dataList, keyField))));
   // Add abbreviated indexes that point to the full uid (for getFullIds)
   if (indexChars) {
     for (let data of dataList) {
