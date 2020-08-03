@@ -18,7 +18,7 @@ export const putTenancyConversionFactors = ({ conversionFactorId }) => {
     method: "PUT",
     url: `/api/tenant/admin/conversion/${conversionFactorId}/`,
     apiId: "api_tenant_admin_conversion_update",
-    requiredParams: ["baseMetricId"],
+    requiredParams: ["conversionFactorId"],
     queryParams: {}
   };
   const stateSetFunc = (state, action) => {
@@ -36,14 +36,13 @@ export const putTenancyConversionFactors = ({ conversionFactorId }) => {
 };
 
 export const patchTenancyConversionFactors = ({ conversionFactorId }) => {
-  let { fetchParams, stateParams } = putTenancyBaseMetric({ conversionFactorId });
+  let { fetchParams, stateParams } = putTenancyConversionFactors({ conversionFactorId });
   Object.assign(fetchParams, {
     method: "PATCH",
     apiId: "api_tenant_admin_conversion_partial_update"
   });
   return { fetchParams, stateParams };
 };
-
 
 export const getTenancyConversionFactorGroups = ({}) => {
   const fetchParams = {
