@@ -101,17 +101,21 @@ export const getDocumentObject = ({ trackerId, commitId, docId, docObjectId, sig
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
-const getDocQueryParams = ({ allow_commit_change }) => {
-  return allow_commit_change ? "?allow_commit_change=true" : "";
+const getDocQueryParams = ({ allow_commit_change, treeId }) => {
+  let query_params = []
+  if (allow_commit_change) { query_params.push("allow_commit_change=true") }
+  if (treeId) { query_params.push(`treeId=${treeId}`) }
+  let query_string = query_params.join("&")
+  return query_string ? "?" + query_string : ""
 };
 
-export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allow_commit_change }) => {
+export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allow_commit_change, treeId }) => {
   const fetchParams = {
     method: "PUT",
-    url: `/api/tracker/${trackerId}/ref/${refId}/document/${documentId}/${getDocQueryParams({ allow_commit_change })}`,
+    url: `/api/tracker/${trackerId}/ref/${refId}/document/${documentId}/${getDocQueryParams({ allow_commit_change, treeId })}`,
     apiId: "api_tracker_ref_document_update",
     requiredParams: ["trackerId", "refId", "commitId", "documentId"],
-    queryParams: { allow_commit_change: false },
+    queryParams: { allow_commit_change: false, treeId: null },
     headers: { "content-type": null },
     rawBody: true
   };
@@ -159,11 +163,13 @@ export const putDocumentObjectCommit = ({ trackerId, commitId, documentId, allow
     refId: null,
     commitId,
     documentId,
-    allow_commit_change
+    allow_commit_change,
+    treeId
   });
   Object.assign(fetchParams, {
     url: `/api/tracker/${trackerId}/commit/${commitId}/document/${documentId}/${getDocQueryParams({
-      allow_commit_change
+      allow_commit_change,
+      treeId
     })}`,
     apiId: "api_tracker_commit_document_update",
     requiredParams: ["trackerId", "commitId", "documentId"]
