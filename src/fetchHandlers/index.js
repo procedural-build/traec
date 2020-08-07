@@ -84,6 +84,7 @@ export * from "./project/projectIndicators";
 export * from "./tenant";
 
 //UTILS
+export * from "./nodes";
 export * from "./target";
 export * from "./tree";
 export * from "./head";
