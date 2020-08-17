@@ -127,14 +127,14 @@ export default function(state = initialState, action) {
       );
 
     case types.LOGOUT_SUCCESS:
-      console.log('LOGOUT SUCCESSFUL')
-      localStorage.setItem("token", "undefined")
-      return Im.fromJS({})
-      
+      console.log("LOGOUT SUCCESSFUL");
+      localStorage.setItem("token", "undefined");
+      return Im.fromJS({});
+
     case types.LOGOUT_FAILURE:
-      console.log('LOGOUT FAILURE')
-      alert("Error logging out")
-      return state
+      console.log("LOGOUT FAILURE");
+      alert("Error logging out");
+      return state;
 
     case types.REGISTER_SUCCESS:
       return state.mergeIn(
