@@ -58,6 +58,10 @@ export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBo
 export const updateHeaders = function(headers) {
   const token = localStorage.getItem("token");
 
+  if (headers.hasOwnProperty("noHeaders") && headers.noHeaders === true) {
+    return {};
+  }
+
   if (!headers.hasOwnProperty("content-type")) {
     Object.assign(headers, { "content-type": "application/json" });
   } else if (headers["content-type"] == null) {
