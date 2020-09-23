@@ -109,7 +109,7 @@ export const getTrackerNodes = ({ trackerId, commitId, refId }) => {
   };
 };
 
-export const postTrackerNode = ({ trackerId, commitId, refId }) => {
+export const postTrackerNode = ({ trackerId, commitId, refId, path = null }) => {
   let { ptr, ptrId } = getPtr(commitId, refId);
   const fetchParams = {
     method: "POST",
@@ -155,7 +155,11 @@ export const postTrackerNode = ({ trackerId, commitId, refId }) => {
   };
   return {
     fetchParams,
-    stateParams: { stateSetFunc, formVisPath: `metricTargets.SHOW_FORM`, formObjPath: `metricTargets.newItem` }
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `commitNodes.${path}.SHOW_FORM`,
+      formObjPath: `commitNodes.${path}.newItem`
+    }
   };
 };
 
@@ -176,7 +180,14 @@ export const putCommitNode = ({ trackerId, commitId, refId, pathId }) => {
 
     return newState;
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `commitNodes.${pathId}.SHOW_FORM`,
+      formObjPath: `commitNodes.${pathId}.newItem`
+    }
+  };
 };
 
 export const patchCommitNode = ({ trackerId, commitId, refId, pathId }) => {

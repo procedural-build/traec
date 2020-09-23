@@ -62,6 +62,7 @@ export const makeHandlerMap = function(fetchHandlers = null) {
       continue;
     }
   }
+  console.log("Constructed handler map", handlerMap);
   return handlerMap;
 };
 

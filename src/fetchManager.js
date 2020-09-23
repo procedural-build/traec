@@ -42,6 +42,7 @@ import store from "./redux/store";
  *     }
  * }
  */
+
 export default class Fetch {
   constructor(apiId, method, params, overrides = {}) {
     /* HOOKS 

@@ -13,6 +13,28 @@ export const getTenancyBaseMetrics = ({}) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
+export const postTenancyBaseMetric = () => {
+  const fetchParams = {
+    method: "POST",
+    url: `/api/tenant/admin/basemetric/`,
+    apiId: "api_tenant_admin_basemetric_create",
+    requiredParams: [],
+    queryParams: {}
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    return state.addListToDict(`baseMetrics.byId`, data);
+  };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `baseMetrics.editById.SHOW_FORM`,
+      formObjPath: `baseMetrics.editById.editItem`
+    }
+  };
+};
+
 export const putTenancyBaseMetric = ({ baseMetricId }) => {
   const fetchParams = {
     method: "PUT",
