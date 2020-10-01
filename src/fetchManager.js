@@ -1,8 +1,9 @@
 import { fetchToState, toggleForm } from "./redux/actionCreators";
 import { handlerMap } from "./handlerMap";
 import { hasFetched } from "./redux/fetchCache";
-import { updateHeaders, updateBody } from "./redux/fetch";
+import { updateBody, updateHeaders } from "./redux/fetch";
 import store from "./redux/store";
+import { APIError } from "./errors";
 
 /**
  * This is a wrapper around the fetchHandlers which manages the setting, getting
@@ -61,7 +62,11 @@ export default class Fetch {
     this._method = method;
 
     // Get the fetchHandler from the map created on app initialization
-    this.fetchHandler = handlerMap[apiId][method].fetchHandler;
+    try {
+      this.fetchHandler = handlerMap[apiId][method].fetchHandler;
+    } catch (err) {
+      throw new APIError(`Trying to call: API ${apiId} with ${method}. That does not exist.`);
+    }
 
     // Set a default cacheTimeout
     this.defaultCacheTimeout = 3600;
