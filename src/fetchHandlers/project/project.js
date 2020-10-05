@@ -11,11 +11,16 @@ export const getProjects = () => {
     const data = action.payload;
     let newState = state;
     // Store abbreviated references (for getFullId utility to find fullId from 8-char uuid)
-    for (let projectData of data) {
-      newState = newState.addToDict(`projects.byId`, projectData, "uid", projectData.uid.substring(0, 8));
-    }
 
-    newState = newState.addListToDict(`projects.byId`, data);
+    if (!data.errors) {
+      for (let projectData of data) {
+        newState = newState.addToDict(`projects.byId`, projectData, "uid", projectData.uid.substring(0, 8));
+      }
+
+      newState = newState.addListToDict(`projects.byId`, data);
+    } else {
+      newState = newState.setInPath(`errors.projects.list`, data.errors.message);
+    }
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
