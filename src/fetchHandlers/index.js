@@ -79,6 +79,7 @@ export * from "./project/projectInputs";
 export * from "./project/projectSupplierRequest";
 export * from "./project/projectEmails";
 export * from "./project/projectIndicators";
+export * from "./project/projectStatus";
 
 //TENANT
 export * from "./tenant";

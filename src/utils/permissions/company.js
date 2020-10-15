@@ -87,41 +87,31 @@ export const companyPermissionCheck = function(companyId, requiresAdmin, require
   }
 };
 
-export const companyPermissionRender = function(
-  companyId,
-  requiresAdmin,
-  requiredActions,
-  renderContent,
-  showWarning = false
-) {
-  let hasPermission = companyPermissionCheck(companyId, requiresAdmin, requiredActions, false);
-  if (hasPermission === null) {
-    if (showWarning) {
-      return (
-        <p>
-          No user permissions found for this Company. Please contact the project admin to ensure you have permissions to
-          view this Company
-        </p>
-      );
-    } else {
-      return null;
-    }
+export function CompanyWarning() {
+  return (
+    <div className="alert alert-warning">
+      <strong>PermissionDenied</strong> You do not have permission to view this content. Please contact the project
+      admin to ensure that you are assigned an appropriate role.
+    </div>
+  );
+}
+
+export function CompanyObjectWarning() {
+  return (
+    <p>
+      No user permissions found for this Company. Please contact the project admin to ensure you have permissions to
+      view this Company
+    </p>
+  );
+}
+
+export function CompanyPermission({ children, companyId, requiresAdmin, requiredActions = [], showWarning = false }) {
+  if (!companyPermissionCheck(companyId, requiresAdmin, requiredActions, false)) {
+    return showWarning ? <CompanyWarning /> : null;
   }
-  if (hasPermission) {
-    return renderContent;
-  } else {
-    if (showWarning) {
-      return (
-        <div className="alert alert-warning">
-          <strong>PermissionDenied</strong> You do not have permission to view this content. Please contact the project
-          admin to ensure that you are assigned an appropriate role.
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
-};
+  return children;
+}
+
 /**
  * company.js line 116
  * @memberof utils.permissions.company

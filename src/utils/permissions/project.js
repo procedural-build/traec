@@ -82,45 +82,30 @@ export const projectPermissionCheck = function(projectId, requiresAdmin, require
   }
 };
 
-export const permissionWarning = (
-  <div className="alert alert-warning">
-    <strong>PermissionDenied</strong> You do not have permission to view this content. Please contact the project admin
-    to ensure that you are assigned an appropriate role.
-  </div>
-);
+export function PermissionWarning(props) {
+  return (
+    <div className="alert alert-warning">
+      <strong>PermissionDenied</strong> You do not have permission to view this content. Please contact the project
+      admin to ensure that you are assigned an appropriate role.
+    </div>
+  );
+}
 
-const permisionOjectWarning = (
-  <p>
-    No user permissions found for this Project. Please contact the project admin to ensure you have permissions to view
-    this Project
-  </p>
-);
+export function PermissionObjectWarning() {
+  return (
+    <p>
+      No user permissions found for this Project. Please contact the project admin to ensure you have permissions to
+      view this Project
+    </p>
+  );
+}
 
-export const projectPermissionRender = function(
-  projectId,
-  requiresAdmin,
-  requiredActions,
-  renderContent,
-  showWarning = false
-) {
-  let hasPermission = projectPermissionCheck(projectId, requiresAdmin, requiredActions, false);
-  if (hasPermission === null) {
-    if (showWarning) {
-      return permissionWarning;
-    } else {
-      return null;
-    }
+export function ProjectPermission({ children, projectId, requiresAdmin, requiredActions = [], showWarning = false }) {
+  if (!projectPermissionCheck(projectId, requiresAdmin, requiredActions, false)) {
+    return showWarning ? <PermissionWarning /> : null;
   }
-  if (hasPermission) {
-    return renderContent;
-  } else {
-    if (showWarning) {
-      return permissionWarning;
-    } else {
-      return null;
-    }
-  }
-};
+  return children;
+}
 
 /**
  * project.js line 114

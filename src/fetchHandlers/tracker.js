@@ -16,6 +16,9 @@ const addTrackerToState = (state, data) => {
   // Add the root master
   if (refData) {
     newState = newState.addToDict("refs.byId", refData, "uid", refData.uid.substring(0, 8));
+    // Store the latest commit in the commits
+    let commit = refData.latest_commit;
+    newState = newState.addToDict("commits.byId", commit, "uid", commit.uid.substring(0, 8));
   }
   // Add in the alt root masters
   if (altRootMasters) {
