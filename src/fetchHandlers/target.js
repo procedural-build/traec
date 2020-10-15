@@ -4,7 +4,7 @@ METRIC TARGETS
 
 const metricTargetToState = (newState, item, commitId) => {
   let baseMetric = item.metric;
-  newState = newState.addListToDict(`baseMetrics.byId`, [{ uid: baseMetric }]);
+  newState = newState.addToDict(`baseMetrics.byId`, baseMetric);
   newState = newState.addListToDict(`commitEdges.byId.${commitId}.metricTargets`, [item]);
   return newState;
 };

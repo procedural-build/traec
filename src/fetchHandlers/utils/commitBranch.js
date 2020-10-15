@@ -1,5 +1,6 @@
 import Im from "../../immutable";
 import { edgeDictToState } from "./commitEdge";
+import { storeCommitNodes } from "./nodes";
 
 export const reduceCommitBranch = item => {
   /*Returns a reduced version of the commitBranch without mutating the original object */
@@ -17,11 +18,20 @@ export const storeCommitBranch = (state, item) => {
     return state;
   }
   let newState = state;
+
   // If there are edges included then store them away
   if (item.target_edges) {
     let commitId = item.target.commit ? item.target.commit.uid : item.target.ref.latest_commit.uid;
     newState = edgeDictToState(newState, commitId, item.target_edges);
   }
+
+  // If there rae nodes included then store them away
+  if (item.target_nodes) {
+    let commitId = item.target.commit ? item.target.commit.uid : item.target.ref.latest_commit.uid;
+    commitId = commitId || item.target.ref.latest_commit.uid;
+    newState = storeCommitNodes(newState, commitId, item.target_nodes);
+  }
+
   // Add the ref and commit into the store
   newState = item.target.ref
     ? newState.addToDict(`refs.byId`, item.target.ref, "uid", item.target.ref.uid.substring(0, 8))
