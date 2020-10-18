@@ -45,34 +45,41 @@ const addOrRemove = (state, action) => {
 };
 
 export default function(state = initialState, action) {
+  let { payload, stateParams } = action;
+  let formVisPath = stateParams ? stateParams.formVisPath : null;
+
   switch (action.type) {
     case "ENTITY_SET_ITEM_LIST_TOGGLE":
-      return setItemInListAndVis(state, action.payload, action.stateParams);
+      return setItemInListAndVis(state, payload, stateParams);
     case "ENTITY_SET_ITEM_DICT_TOGGLE":
-      return setItemInDictAndVis(state, action.payload, action.stateParams);
+      return setItemInDictAndVis(state, payload, stateParams);
     case "ENTITY_LIST_TO_OBJ":
-      const itemList = Array.isArray(action.payload) ? action.payload : [action.payload];
-      return setListInIndexedObj(state, itemList, action.stateParams);
+      const itemList = Array.isArray(payload) ? payload : [payload];
+      return setListInIndexedObj(state, itemList, stateParams);
     case "ENTITY_ADD_TO_DICT":
-      const { itemPath: path, keyField = "uid" } = action.stateParams;
-      return state.addToDict(path, action.payload, keyField);
+      const { itemPath: path, keyField = "uid" } = stateParams;
+      return state.addToDict(path, payload, keyField);
     case "ENTITY_ADD_OR_REMOVE_FROM_DICT":
       return addOrRemove(state, action);
     case "ENTITY_SET_IN":
-      const item = action.payload;
-      const { itemPath } = action.stateParams;
+      const item = payload;
+      const { itemPath } = stateParams;
       return state.setInPath(itemPath, Im.fromJS(item));
     case "ENTITY_REMOVE_IN":
-      return state.removeInPath(action.stateParams.itemPath);
-    case "ENTITY_TOGGLE_BOOL":
-      let { formVisPath } = action.stateParams;
+      return state.removeInPath(stateParams.itemPath);
+    case "ENTITY_TOGGLE_FORM":
       if (!formVisPath) {
         return state;
       }
       return state.setInPath(formVisPath, !state.getInPath(formVisPath));
+    case "ENTITY_SHOW_FORM":
+      if (!formVisPath) {
+        return state;
+      }
+      return state.setInPath(formVisPath, true);
     case "ENTITY_SET_FUNC":
-      let funcName = action.stateParams.funcName || "stateSetFunc";
-      return action.stateParams[funcName](state, action);
+      let funcName = stateParams.funcName || "stateSetFunc";
+      return stateParams[funcName](state, action);
     default:
       return state;
   }

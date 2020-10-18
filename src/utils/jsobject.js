@@ -106,3 +106,55 @@ export const listToObj = (objList, keyField) => {
     return acc;
   }, {});
 };
+
+const isObject = obj => {
+  return typeof obj === "object" && obj !== null;
+};
+
+const hasNestedKeys = obj => {
+  if (!isObject(obj)) {
+    return false;
+  }
+  for (let key of Object.keys(obj)) {
+    if (key.includes("__")) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const makeNested = (data, depth = 0, only_keys = []) => {
+  /* Extract nested data from an object that is expressed with dunders */
+  if (!hasNestedKeys(data)) {
+    return data;
+  }
+  let _data = {}; // Placeholder for nested data
+  // Nest the first level from where we are
+  for (let [key, value] of Object.entries(data)) {
+    let parts = key.split("__");
+    let _key = parts[0];
+    if (only_keys.length && !only_keys.includes(_key)) {
+      continue;
+    }
+    // If this is not nested then set the value and continue
+    if (parts.length < 2) {
+      _data[key] = value;
+      continue;
+    }
+    // Set the nested key for now
+    let __key = parts.slice(1).join("__");
+    if (!_data[_key]) {
+      _data[_key] = {};
+    }
+    _data[_key][__key] = value;
+  }
+  // Recurse down to nest the nested fields
+  for (let [key, value] of Object.entries(_data)) {
+    _data[key] = makeNested(value);
+  }
+  // Log what we have done
+  if (!depth) {
+    console.log("Nested data", data, _data);
+  }
+  return _data;
+};

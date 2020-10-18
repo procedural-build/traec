@@ -27,7 +27,18 @@ export const fetchToState = (params, body) => {
  */
 export const toggleForm = stateParams => {
   return {
-    type: "ENTITY_TOGGLE_BOOL",
+    type: "ENTITY_TOGGLE_FORM",
+    stateParams
+  };
+};
+
+/**
+ *  Common action is to toggle a Boolean value (for showing forms)
+ * @memberof redux.actioncreators
+ */
+export const setShowForm = stateParams => {
+  return {
+    type: "ENTITY_SHOW_FORM",
     stateParams
   };
 };

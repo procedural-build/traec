@@ -50,7 +50,21 @@ export const putProjectAuthGroup = ({ projectId, authGroupId }) => {
 export const patchProjectAuthGroup = ({ projectId, authGroupId }) => {
   let { fetchParams, stateParams } = putProjectAuthGroup({ projectId, authGroupId });
   // Same as PUI, we are only changing the method
-  Object.assign(fetchParams, { method: "PATCH" });
+  Object.assign(fetchParams, {
+    method: "PATCH",
+    apiId: "api_project_authgroup_partial_update"
+  });
+  return { fetchParams, stateParams };
+};
+
+export const deleteProjectAuthGroup = ({ projectId, authGroupId }) => {
+  let { fetchParams, stateParams } = putProjectAuthGroup({ projectId, authGroupId });
+  // Same as PUI, we are only changing the method
+  Object.assign(fetchParams, {
+    method: "DELETE",
+    apiId: "api_project_authgroup_delete"
+  });
+  Object.assign(stateParams, { stateSetFunc: (state, action) => state });
   return { fetchParams, stateParams };
 };
 

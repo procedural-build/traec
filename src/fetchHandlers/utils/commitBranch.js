@@ -6,6 +6,9 @@ export const reduceCommitBranch = item => {
   /*Returns a reduced version of the commitBranch without mutating the original object */
   // Get an immutable copy of the object
   let imItem = Im.fromJS(item);
+  if (!item || !item.target) {
+    return imItem;
+  }
   // Replace the Ref with its id
   imItem = imItem.setInPath("target.ref", item.target.ref ? item.target.ref.uid : null);
   // Add the target commit into the store
@@ -13,11 +16,28 @@ export const reduceCommitBranch = item => {
   return imItem;
 };
 
+export const storeTarget = (state, target, _type = "ref") => {
+  if (!target) {
+    return state;
+  }
+  // Store the ref or commit
+  let _target = target[_type];
+  if (_target && _target.uid) {
+    return state.addToDict(`${_type}s.byId`, _target, "uid", _target.uid.substring(0, 8));
+  }
+  return state;
+};
+
 export const storeCommitBranch = (state, item) => {
   if (!item) {
     return state;
   }
   let newState = state;
+
+  // Do nothing if the branch is null or no target
+  if (!item || !item.target) {
+    return state;
+  }
 
   // If there are edges included then store them away
   if (item.target_edges) {
@@ -33,15 +53,12 @@ export const storeCommitBranch = (state, item) => {
   }
 
   // Add the ref and commit into the store
-  newState = item.target.ref
-    ? newState.addToDict(`refs.byId`, item.target.ref, "uid", item.target.ref.uid.substring(0, 8))
-    : newState;
-  newState =
-    item.target.commit && item.target.commit.uid
-      ? newState.addToDict(`commits.byId`, item.target.commit, "uid", item.target.commit.uid.substring(0, 8))
-      : newState;
+  newState = storeTarget(newState, item.target, "ref");
+  newState = storeTarget(newState, item.target, "commit");
+
   // Add the new item to the state
   newState = newState.setInPath(`${getCommitBranchRootPath(item)}.${item.uid}`, reduceCommitBranch(item));
+
   //newState = newState.addToDict(`commitBranches.${rootPath}`, [item]);
   return newState;
 };

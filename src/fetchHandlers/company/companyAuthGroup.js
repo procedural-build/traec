@@ -61,7 +61,21 @@ export const putCompanyAuthGroup = ({ companyId, authGroupId }) => {
 export const patchCompanyAuthGroup = ({ companyId, authGroupId }) => {
   let { fetchParams, stateParams } = putCompanyAuthGroup({ companyId, authGroupId });
   // Same as PUI, we are only changing the method
-  Object.assign(fetchParams, { method: "PATCH" });
+  Object.assign(fetchParams, {
+    method: "PATCH",
+    apiId: "api_company_authgroup_partial_update"
+  });
+  return { fetchParams, stateParams };
+};
+
+export const deleteCompanyAuthGroup = ({ companyId, authGroupId }) => {
+  let { fetchParams, stateParams } = putCompanyAuthGroup({ companyId, authGroupId });
+  // Same as PUI, we are only changing the method
+  Object.assign(fetchParams, {
+    method: "DELETE",
+    apiId: "api_company_authgroup_delete"
+  });
+  Object.assign(stateParams, { stateSetFunc: (state, action) => state });
   return { fetchParams, stateParams };
 };
 

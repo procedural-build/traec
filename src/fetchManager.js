@@ -1,4 +1,4 @@
-import { fetchToState, toggleForm } from "./redux/actionCreators";
+import { fetchToState, toggleForm, setShowForm } from "./redux/actionCreators";
 import { handlerMap } from "./handlerMap";
 import { hasFetched } from "./redux/fetchCache";
 import { updateBody, updateHeaders } from "./redux/fetch";
@@ -187,6 +187,14 @@ export default class Fetch {
    */
   toggleForm() {
     store.dispatch(toggleForm(this.params.stateParams));
+  }
+
+  /**
+   * If the stateParams has a "formVisPath" field then that will be set to
+   * show the form visibility parameter in Redux.
+   */
+  showForm() {
+    store.dispatch(setShowForm(this.params.stateParams));
   }
 
   /**
