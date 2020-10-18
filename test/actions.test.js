@@ -19,7 +19,7 @@ describe("Action Toggle Form", () => {
   it("Call Toggleform", () => {
     const state = true;
     const expectedAction = {
-      type: "ENTITY_TOGGLE_BOOL",
+      type: "ENTITY_TOGGLE_FORM",
       stateParams: state
     };
     expect(actions.toggleForm(state)).toEqual(expectedAction);

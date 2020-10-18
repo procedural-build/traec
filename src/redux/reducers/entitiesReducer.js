@@ -67,6 +67,11 @@ export default function(state = initialState, action) {
       return state.setInPath(itemPath, Im.fromJS(item));
     case "ENTITY_REMOVE_IN":
       return state.removeInPath(stateParams.itemPath);
+    case "ENTITY_TOGGLE_BOOL":
+      if (!formVisPath) {
+        return state;
+      }
+      return state.setInPath(formVisPath, !state.getInPath(formVisPath));
     case "ENTITY_TOGGLE_FORM":
       if (!formVisPath) {
         return state;
