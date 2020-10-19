@@ -123,7 +123,7 @@ const hasNestedKeys = obj => {
   return false;
 };
 
-const makeNested = (data, depth = 0, only_keys = []) => {
+export const makeNested = (data, depth = 0, only_keys = []) => {
   /* Extract nested data from an object that is expressed with dunders */
   if (!hasNestedKeys(data)) {
     return data;
