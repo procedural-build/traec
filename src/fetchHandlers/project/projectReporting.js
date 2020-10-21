@@ -3,7 +3,7 @@ const get_query_string = ({
   fromDate = null,
   toDate = null,
   ignore_cache = false,
-  exclude_summary = false,
+  include_summary = false,
   summary_cumulation_period = null,
   include_commit_results = false,
   format = null
@@ -12,7 +12,7 @@ const get_query_string = ({
   const fromDate_ = fromDate ? `&fromDate=${fromDate}` : "";
   const toDate_ = toDate ? `&toDate=${toDate}` : "";
   const ignoreCache = ignore_cache ? `&ignore_cache=true` : "";
-  const excludeSummary = exclude_summary ? `&exclude_summary=true` : "";
+  const excludeSummary = include_summary ? `&include_summary=true` : "";
   const summaryCumulationPeriod = summary_cumulation_period ? "&summary_cumulation_period=total" : "";
   const include_commit_results_ = include_commit_results ? `&include_commit_results=true` : "";
   const format_ = format ? `&output_format=${format}` : "";
@@ -26,7 +26,7 @@ export const getProjectReportingPeriods = ({
   fromDate = null,
   toDate = null,
   ignore_cache = null,
-  exclude_summary = null,
+  include_summary = null,
   summary_cumulation_period = null,
   include_commit_results = null,
   format = null
@@ -36,7 +36,7 @@ export const getProjectReportingPeriods = ({
     fromDate,
     toDate,
     ignore_cache,
-    exclude_summary,
+    include_summary,
     summary_cumulation_period,
     include_commit_results,
     format
