@@ -98,3 +98,4 @@ export * from "./convFactors";
 export * from "./indicators";
 export * from "./comment";
 export * from "./store";
+export * from "./mailReceiver";

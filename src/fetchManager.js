@@ -65,7 +65,7 @@ export default class Fetch {
     try {
       this.fetchHandler = handlerMap[apiId][method].fetchHandler;
     } catch (err) {
-      throw new APIError(`Trying to call: API ${apiId} with ${method}. That does not exist.`);
+      throw new APIError(`Trying to call: API ${apiId} with ${method}. That does not exist. Existing methods: ${Object.keys(_handlerMap__WEBPACK_IMPORTED_MODULE_1__["handlerMap"][apiId])}`);
     }
 
     // Set a default cacheTimeout
