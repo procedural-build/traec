@@ -24,7 +24,10 @@ export const postProjectAndSetup = () => {
         // Give the tracker a generic name sustainability_tool
         let body = { name: "sustainability_tool" };
         if (orgpost.from_template) {
-          Object.assign(body, { from_template: orgpost.from_template });
+          Object.assign(body, {
+            from_template: orgpost.from_template,
+            include_template_subcategories: orgpost.include_subcategories || false
+          });
         }
         Object.assign(fetchParams, {
           body,
