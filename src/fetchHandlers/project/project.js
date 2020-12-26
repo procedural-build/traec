@@ -15,6 +15,15 @@ export const getProjects = () => {
     if (!data.errors) {
       for (let projectData of data) {
         newState = newState.addToDict(`projects.byId`, projectData, "uid", projectData.uid.substring(0, 8));
+        // Add the parent company
+        if (projectData.company && !newState.getInPath(`companies.byId.${projectData.company.uid}`)) {
+          newState = newState.addToDict(
+            `companies.byId`,
+            { ...projectData.company, projects: [{ uid: projectData.uid, name: projectData.name }] },
+            "uid",
+            projectData.company.uid.substring(0, 8)
+          );
+        }
       }
 
       newState = newState.addListToDict(`projects.byId`, data);

@@ -1,3 +1,14 @@
+import store from "traec/redux/store";
+
+const storeCompany = (newState, companyData) => {
+  newState = newState.addToDict(`companies.byId`, companyData, "uid", companyData.uid.substring(0, 8));
+  // Set the projects separately (to avoid appending to the list)
+  newState = newState.setInPath(`companies.byId.${companyData.uid}.projects`, companyData.projects);
+  newState = newState.setInPath(`companies.byId.${companyData.uid}.childids`, companyData.childids);
+  newState = newState.setInPath(`companies.byId.${companyData.uid}.meta_json`, companyData.meta_json);
+  return newState;
+};
+
 export const getCompanies = () => {
   const fetchParams = {
     method: "GET",
@@ -10,11 +21,10 @@ export const getCompanies = () => {
     let newState = state;
     // Store abbreviated references (for getFullId utility to find fullId from 8-char uuid)
     for (let companyData of data) {
-      newState = newState.addToDict(`companies.byId`, companyData, "uid", companyData.uid.substring(0, 8));
-      // Set the projects separately (to avoid appending to the list)
-      newState = newState.setInPath(`companies.byId.${companyData.uid}.projects`, companyData.projects);
-      newState = newState.setInPath(`companies.byId.${companyData.uid}.childids`, companyData.childids);
-      newState = newState.setInPath(`companies.byId.${companyData.uid}.meta_json`, companyData.meta_json);
+      if (!companyData.uid) {
+        continue;
+      }
+      newState = storeCompany(newState, companyData);
     }
     return newState;
   };
@@ -30,14 +40,10 @@ export const getCompany = ({ companyId }) => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    // clear the existing company data first
-    let newState = state.addToDict(`companies.byId`, data, "uid", data.uid);
-    newState = newState.addToDict(`companies.byId`, data, "uid", data.uid.substring(0, 8));
-    newState = newState.setInPath(`companies.byId.${data.uid}.meta_json`, data.meta_json);
-    newState = newState.setInPath(`companies.byId.${data.uid}.childids`, data.childids);
-    // Set the projects separately (to avoid appending to the list)
-    newState = newState.setInPath(`companies.byId.${data.uid}.projects`, data.projects);
-    return newState;
+    if (!data.uid) {
+      return state;
+    }
+    return storeCompany(state, data);
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
