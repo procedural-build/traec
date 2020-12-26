@@ -1,5 +1,3 @@
-import store from "traec/redux/store";
-
 const storeCompany = (newState, companyData) => {
   newState = newState.addToDict(`companies.byId`, companyData, "uid", companyData.uid.substring(0, 8));
   // Set the projects separately (to avoid appending to the list)
