@@ -111,7 +111,7 @@ export const storeCommitNodes = (state, commitId, nodeData) => {
   // Set a list of the node Ids by type in this commit
   newState = newState.setInPath(`commitNodes.${commitId}.byType`, nodeIds);
   // Add the list of node types to entities
-  newState = newState.mergeDeep(Im.fromJS(nodeMap));
+  newState = newState.update(items => newState.mergeDeepOverwriteLists(items, Im.fromJS(nodeMap)));
   // Return the new state
   return newState;
 };
@@ -125,7 +125,7 @@ export const updateCommitNodes = (state, commitId, nodeData) => {
   // Set a list of the node Ids by type in this commit
   newState = newState.mergeDeepInPath(`commitNodes.${commitId}.byType`, nodeIds);
   // Add the nodes to the global set
-  newState = newState.mergeDeep(Im.fromJS(nodeMap));
+  newState = newState.update(items => newState.mergeDeepOverwriteLists(items, Im.fromJS(nodeMap)));
   // Return the new state
   return newState;
 };

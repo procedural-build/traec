@@ -62,6 +62,7 @@ export * from "./company/companyAuthGroup";
 export * from "./company/companyInvite";
 export * from "./company/companyMembers";
 export * from "./company/companyReporting";
+export * from "./company/companyReportInputs";
 export * from "./company/companyEmails";
 export * from "./company/dispatch";
 export * from "./company/companyTargets";
