@@ -144,6 +144,11 @@ export const failureHandler = function(error, failureType, fetchParams, statePar
     stateParams,
     fetchParams
   });
+
+  // See if there are any postSuccess hooks to do
+  if (fetchParams.postFailureHook) {
+    fetchParams.postFailureHook(error);
+  }
 };
 
 /**
