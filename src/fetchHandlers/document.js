@@ -101,6 +101,20 @@ export const getDocumentObject = ({ trackerId, commitId, docId, docObjectId, sig
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
+export const deleteDocumentObject = ({ trackerId, commitId, docId, docObjectId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/tracker/${trackerId}/commit/${commitId}/document/${docId}/object/${docObjectId}/`,
+    apiId: "api_tracker_commit_document_object_delete",
+    requiredParams: ["trackerId", "commitId", "docId", "docObjectId"],
+    queryParams: {}
+  };
+  const stateSetFunc = (state, action) => {
+    return state.deleteIn([`docObjects`, `byId`, `${docObjectId}`]);
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
 const getDocQueryParams = ({ allow_commit_change, treeId }) => {
   let query_params = [];
   if (allow_commit_change) {
