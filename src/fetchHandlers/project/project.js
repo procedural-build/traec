@@ -12,12 +12,10 @@ export const getProjects = () => {
     let newState = state;
     // Store abbreviated references (for getFullId utility to find fullId from 8-char uuid)
 
-    console.log("PROJECTS", data);
     if (!data.errors) {
       for (let projectData of data) {
         newState = newState.addToDict(`projects.byId`, projectData, "uid", projectData.uid.substring(0, 8));
         // Add the parent company
-        console.log("DATA", typeof projectData.company);
         if (
           projectData.company &&
           typeof projectData.company !== "string" &&
