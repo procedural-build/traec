@@ -14,7 +14,7 @@ https://medium.com/front-end-hacking/using-immutable-js-with-redux-ba89025e45e2
 */
 
 const initialState = Im.fromJS({
-  test: false
+  test: false,
 });
 /**
  * rootAccess.js line 22
@@ -28,7 +28,7 @@ const rootNamespaceReducer = (state = initialState, action) => {
       console.log("CALLING ROOT REDUCER!!");
       return Object.assign({}, state, {
         test: true,
-        auth: { test: true }
+        auth: { test: true },
       });
   }
 };
@@ -37,7 +37,7 @@ const domainReducers = combineReducers({
   entities,
   auth,
   projects,
-  project
+  project,
 });
 
 const combineReducersWithRoot = (state = {}, action) => {

@@ -26,7 +26,7 @@ export const postProjectAndSetup = () => {
         if (orgpost.from_template) {
           Object.assign(body, {
             from_template: orgpost.from_template,
-            include_template_subcategories: orgpost.include_subcategories || false
+            include_template_subcategories: orgpost.include_subcategories || false,
           });
         }
         Object.assign(fetchParams, {
@@ -39,8 +39,8 @@ export const postProjectAndSetup = () => {
                   let { fetchParams, stateParams } = postRootRef({ trackerId: data.uid });
                   Object.assign(fetchParams, { body: { root_tree_name: "conversion_factors" } });
                   return { fetchParams, stateParams };
-                }
-              ]
+                },
+              ],
         });
         return { fetchParams, stateParams };
       },
@@ -56,12 +56,12 @@ export const postProjectAndSetup = () => {
               "READ_PROJECT_REPORT",
               "CREATE_TRACKER_REF_SCORE_VALUE",
               "READ_TRACKER_REF_SCORE_VALUE",
-              "UPDATE_TRACKER_REF_SCORE_VALUE"
-            ]
-          }
+              "UPDATE_TRACKER_REF_SCORE_VALUE",
+            ],
+          },
         };
         Object.assign(fetchParams, {
-          body
+          body,
         });
         return { fetchParams, stateParams };
       },
@@ -76,12 +76,12 @@ export const postProjectAndSetup = () => {
               "READ_PROJECT_REPORT",
               "CREATE_TRACKER_REF_SCORE_VALUE",
               "READ_TRACKER_REF_SCORE_VALUE",
-              "UPDATE_TRACKER_REF_SCORE_VALUE"
-            ]
-          }
+              "UPDATE_TRACKER_REF_SCORE_VALUE",
+            ],
+          },
         };
         Object.assign(fetchParams, {
-          body
+          body,
         });
         return { fetchParams, stateParams };
       },
@@ -90,15 +90,15 @@ export const postProjectAndSetup = () => {
         let body = {
           name: "Viewer",
           policy_json: {
-            actions: ["READ_TRACKER_REF", "READ_PROJECT_MEMBER", "READ_PROJECT_REPORT", "READ_TRACKER_REF_SCORE_VALUE"]
-          }
+            actions: ["READ_TRACKER_REF", "READ_PROJECT_MEMBER", "READ_PROJECT_REPORT", "READ_TRACKER_REF_SCORE_VALUE"],
+          },
         };
         Object.assign(fetchParams, {
-          body
+          body,
         });
         return { fetchParams, stateParams };
-      }
-    ]
+      },
+    ],
   });
   return { fetchParams, stateParams };
 };

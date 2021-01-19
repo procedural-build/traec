@@ -2,7 +2,7 @@ import Im from "../../immutable";
 import { edgeDictToState } from "./commitEdge";
 import { storeCommitNodes } from "./nodes";
 
-export const reduceCommitBranch = item => {
+export const reduceCommitBranch = (item) => {
   /*Returns a reduced version of the commitBranch without mutating the original object */
   // Get an immutable copy of the object
   let imItem = Im.fromJS(item);
@@ -71,7 +71,7 @@ export const storeCommitBranches = (state, data) => {
   return newState;
 };
 
-export const getCommitBranchRootPath = item => {
+export const getCommitBranchRootPath = (item) => {
   // If this item belongs to a commit then store it
   let isRoot = item.commit ? false : true;
   let commitId = item.commit

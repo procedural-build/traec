@@ -4,7 +4,7 @@ export const getMetricCalculations = ({}) => {
     url: `/api/tenant/admin/indicator/`,
     apiId: "api_tenant_admin_indicator_list",
     requiredParams: [],
-    queryParams: {}
+    queryParams: {},
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -18,7 +18,7 @@ export const postTenantIndicator = () => {
     method: "POST",
     url: `/api/tenant/admin/indicator/`,
     apiId: "api_tenant_admin_indicator_create",
-    requiredParams: []
+    requiredParams: [],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -39,7 +39,7 @@ export const putTenantIndicator = ({ indicatorId }) => {
     method: "PUT",
     url: `/api/tenant/admin/indicator/${indicatorId}/`,
     apiId: "api_tenant_admin_indicator_update",
-    requiredParams: ["indicatorId"]
+    requiredParams: ["indicatorId"],
   });
 
   return { fetchParams, stateParams };

@@ -12,7 +12,7 @@ export const getCompanies = () => {
     method: "GET",
     url: `/api/company/`,
     apiId: "api_company_list",
-    requiredParams: []
+    requiredParams: [],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -34,7 +34,7 @@ export const getCompany = ({ companyId }) => {
     method: "GET",
     url: `/api/company/${companyId}/`,
     apiId: "api_company_read",
-    requiredParams: ["companyId"]
+    requiredParams: ["companyId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -51,7 +51,7 @@ export const postCompany = () => {
     method: "POST",
     url: `/api/company/`,
     apiId: "api_company_create",
-    requiredParams: []
+    requiredParams: [],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -74,8 +74,8 @@ export const postCompany = () => {
     stateParams: {
       stateSetFunc,
       formVisPath: `companies.SHOW_FORM`,
-      formObjPath: `companies.newItem`
-    }
+      formObjPath: `companies.newItem`,
+    },
   };
 };
 
@@ -85,11 +85,11 @@ export const putCompany = ({ companyId }) => {
     method: "PUT",
     url: `/api/company/${companyId}/`,
     apiId: "api_company_update",
-    requiredParams: ["companyId"]
+    requiredParams: ["companyId"],
   });
   Object.assign(stateParams, {
     formVisPath: `companies.editById.${companyId}.SHOW_FORM`,
-    formObjPath: `companies.editById.${companyId}.newItem`
+    formObjPath: `companies.editById.${companyId}.newItem`,
   });
   return { fetchParams, stateParams };
 };
@@ -99,7 +99,7 @@ export const patchCompany = ({ companyId }) => {
   Object.assign(fetchParams, {
     method: "PATCH",
     apiId: "api_company_partial_update",
-    requiredParams: ["companyId"]
+    requiredParams: ["companyId"],
   });
   return { fetchParams, stateParams };
 };
@@ -112,9 +112,9 @@ export const deleteCompany = ({ companyId }) => {
     requiredParams: ["companyId"],
     // Deleting a Company can affect so many things that its
     // best to reload the page and all data again
-    postSuccessHook: data => {
+    postSuccessHook: (data) => {
       location.reload();
-    }
+    },
   };
   const stateSetFunc = (state, action) => {
     let newState = state;

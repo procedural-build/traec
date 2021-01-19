@@ -102,5 +102,5 @@ const edgeSetFunctions = {
       [trackercomment.uid]
     );
     return newState;
-  }
+  },
 };
