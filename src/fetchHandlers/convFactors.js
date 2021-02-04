@@ -94,6 +94,21 @@ export const putConversionFactor = ({ trackerId, commitId, convFactorId }) => {
 
 export const patchConversionFactor = ({ trackerId, commitId, convFactorId }) => {
   let { fetchParams, stateParams } = putConversionFactor({ trackerId, commitId, convFactorId });
-  Object.assign(fetchParams, { method: "PATCH" });
+  Object.assign(fetchParams, {
+    method: "PATCH",
+    apiId: "api_tracker_commit_convfactor_partial_update"
+  });
+  return { fetchParams, stateParams };
+};
+
+export const deleteConversionFactor = ({ trackerId, commitId, convFactorId }) => {
+  let { fetchParams, stateParams } = putConversionFactor({ trackerId, commitId, convFactorId });
+  Object.assign(fetchParams, {
+    method: "DELETE",
+    apiId: "api_tracker_commit_convfactor_delete"
+  });
+  Object.assign(stateParams, {
+    stateSetFunc: state => state.addListToDict(`commitEdges.byId.${commitId}.conversionFactors.${convFactorId}`)
+  });
   return { fetchParams, stateParams };
 };

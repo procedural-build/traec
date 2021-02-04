@@ -121,3 +121,46 @@ export const postTenancyConversionFactorGroup = () => {
     }
   };
 };
+
+export const putTenancyConversionFactorGroup = ({ groupId }) => {
+  const fetchParams = {
+    method: "PUT",
+    url: `/api/tenant/admin/conversion_group/${groupId}/`,
+    apiId: "api_tenant_admin_conversion_group_update",
+    requiredParams: ["groupId"],
+    queryParams: {}
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    return state.addToDict(`conversionFactorGroups.byId`, data, "id");
+  };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `conversionFactorsGroups.editById.${groupId}.SHOW_FORM`,
+      formObjPath: `conversionFactorsGroups.editById.${groupId}.editItem`
+    }
+  };
+};
+
+export const patchTenancyConversionFactorGroup = ({ groupId }) => {
+  let { fetchParams, stateParams } = putTenancyConversionFactorGroup({ groupId });
+  Object.assign(fetchParams, {
+    method: "PATCH",
+    apiId: "api_tenant_admin_conversion_group_partial_update"
+  });
+  return { fetchParams, stateParams };
+};
+
+export const deleteTenancyConversionFactorGroup = ({ groupId }) => {
+  let { fetchParams, stateParams } = putTenancyConversionFactorGroup({ groupId });
+  Object.assign(fetchParams, {
+    method: "DELETE",
+    apiId: "api_tenant_admin_conversion_group_delete"
+  });
+  Object.assign(stateParams, {
+    stateSetFunc: state => state.removeInPath(`conversionFactorGroups.byId.${groupId}`)
+  });
+  return { fetchParams, stateParams };
+};
