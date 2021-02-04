@@ -8,11 +8,11 @@ jest.mock("../src/redux/fetchCache");
 describe("Response Types", () => {
   it("should handle default type", () => {
     const APICall = {
-      defaultType: "ENTITY_SET_FUNC"
+      defaultType: "ENTITY_SET_FUNC",
     };
     const expectedBody = {
       failureType: "ENTITY_SET_FUNC",
-      successType: "ENTITY_SET_FUNC"
+      successType: "ENTITY_SET_FUNC",
     };
     expect(middleware.responseTypes(APICall)).toEqual(expectedBody);
   });
@@ -37,7 +37,7 @@ describe("Record Fetch", () => {
     const dispatch = jest.fn();
     const firstCall = {
       type: "FETCH_SET_SENT",
-      fetchParams
+      fetchParams,
     };
     middleware.recordFetch(fetchParams, dispatch);
 
@@ -68,13 +68,13 @@ describe("Failure Handler", () => {
     const firstCall = {
       type: "FETCH_FAIL",
       fetchParams,
-      error
+      error,
     };
     const secondCall = {
       type: failureType,
       payload: { errors: error },
       stateParams,
-      fetchParams
+      fetchParams,
     };
     middleware.failureHandler(error, failureType, fetchParams, stateParams, dispatch);
 
@@ -114,7 +114,7 @@ describe("SuccessHandler", () => {
 
   it("should dispatch next fetchHandlers", () => {
     // mock out nextHandlers and see if it is called
-    fetchToState.mockImplementation(newParams => ({}));
+    fetchToState.mockImplementation((newParams) => ({}));
 
     const data = {};
     const successType = "";
@@ -133,7 +133,7 @@ describe("SuccessHandler", () => {
 
   it("should dispatch next fetchHandlers and call the postSuccessHook", () => {
     // mock out nextHandlers and see if it is called
-    fetchToState.mockImplementation(newParams => ({}));
+    fetchToState.mockImplementation((newParams) => ({}));
 
     const data = {};
     const successType = "";

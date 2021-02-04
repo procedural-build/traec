@@ -11,10 +11,10 @@ export const nodeNameMap = {
   trackerdescription: "descriptions",
   categoryrevset: "revsets",
   categorycommit: "commits",
-  categoryhead: "heads"
+  categoryhead: "heads",
 };
 
-export const setPathChildren = pathMap => {
+export const setPathChildren = (pathMap) => {
   for (let [path, value] of Object.entries(pathMap)) {
     let nodeType = nodeNameMap[value.type] || value.type;
     let parentPath = path.substring(0, path.length - 7);
@@ -30,7 +30,7 @@ export const setPathChildren = pathMap => {
     if (!parent["children"]) {
       parent["children"] = {
         byPath: Im.Set(),
-        byType: {}
+        byType: {},
       };
     }
     // Index all children together according to their path
@@ -58,7 +58,7 @@ const addToNodeIds = (nodeIds, nodeType, data) => {
   nodeIds[nodeType] = nodeIds[nodeType].add(data.uid);
 };
 
-export const mapNodes = data => {
+export const mapNodes = (data) => {
   let pathMap = {};
   let nodeMap = {};
   let nodeIds = {};
@@ -82,7 +82,7 @@ export const mapNodes = data => {
     // Map of path to type/ids
     pathMap[item.path] = {
       type: item.type,
-      uid: data.uid
+      uid: data.uid,
     };
   }
   let pathRoot = null;
@@ -111,7 +111,7 @@ export const storeCommitNodes = (state, commitId, nodeData) => {
   // Set a list of the node Ids by type in this commit
   newState = newState.setInPath(`commitNodes.${commitId}.byType`, nodeIds);
   // Add the list of node types to entities
-  newState = newState.update(items => newState.mergeDeepOverwriteLists(items, Im.fromJS(nodeMap)));
+  newState = newState.update((items) => newState.mergeDeepOverwriteLists(items, Im.fromJS(nodeMap)));
   // Return the new state
   return newState;
 };
@@ -125,7 +125,7 @@ export const updateCommitNodes = (state, commitId, nodeData) => {
   // Set a list of the node Ids by type in this commit
   newState = newState.mergeDeepInPath(`commitNodes.${commitId}.byType`, nodeIds);
   // Add the nodes to the global set
-  newState = newState.update(items => newState.mergeDeepOverwriteLists(items, Im.fromJS(nodeMap)));
+  newState = newState.update((items) => newState.mergeDeepOverwriteLists(items, Im.fromJS(nodeMap)));
   // Return the new state
   return newState;
 };

@@ -16,7 +16,7 @@ const appReducer = combineReducers({
   ui,
   entities,
   auth,
-  fetch
+  fetch,
 });
 
 const rootReducer = (state, action) => {

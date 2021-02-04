@@ -30,7 +30,7 @@ import { hasFetched } from "./fetchCache";
  * @return {function(*): Function}
  */
 export const callAPIMiddleware = ({ dispatch, getState }) => {
-  return next => action => {
+  return (next) => (action) => {
     const { APICallTypes } = action;
 
     if (!APICallTypes) {
@@ -59,8 +59,8 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
 
     return fetchJSON(
       { ...fetchParams, path: fetchParams.url },
-      data => successHandler(data, successType, originalBody, fetchParams, stateParams, dispatch),
-      error => failureHandler(error, failureType, fetchParams, stateParams, dispatch)
+      (data) => successHandler(data, successType, originalBody, fetchParams, stateParams, dispatch),
+      (error) => failureHandler(error, failureType, fetchParams, stateParams, dispatch)
     );
   };
 };
@@ -75,12 +75,12 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
  * @param next
  * @return {*}
  */
-export const checkThrottling = function(getState, fetchParams, action, next) {
+export const checkThrottling = function (getState, fetchParams, action, next) {
   if (hasFetched(getState(), fetchParams, fetchParams.throttleTimeCheck || 1000)) {
     console.log("SKIPPING FETCH DUE TO THROTTLING", action);
     return next({
       type: "FETCH_THROTTLED",
-      fetchParams
+      fetchParams,
     });
   }
 };
@@ -92,10 +92,10 @@ export const checkThrottling = function(getState, fetchParams, action, next) {
  * @param fetchParams
  * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
  */
-export const recordFetch = function(fetchParams, dispatch) {
+export const recordFetch = function (fetchParams, dispatch) {
   dispatch({
     type: "FETCH_SET_SENT",
-    fetchParams
+    fetchParams,
   });
 };
 
@@ -107,7 +107,7 @@ export const recordFetch = function(fetchParams, dispatch) {
  * @param APICallTypes
  * @return {{failureType: *, successType: *}}
  */
-export const responseTypes = function(APICallTypes) {
+export const responseTypes = function (APICallTypes) {
   //console.log("CALLING API IN MIDDLEWARE: ", action, APICallTypes, fetchParams, stateParams)
   let { successType, failureType, defaultType } = APICallTypes;
 
@@ -131,18 +131,18 @@ export const responseTypes = function(APICallTypes) {
  * @param stateParams
  * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
  */
-export const failureHandler = function(error, failureType, fetchParams, stateParams, dispatch) {
+export const failureHandler = function (error, failureType, fetchParams, stateParams, dispatch) {
   dispatch({
     type: "FETCH_FAIL",
     fetchParams,
-    error
+    error,
   });
 
   dispatch({
     type: failureType,
     payload: { errors: error },
     stateParams,
-    fetchParams
+    fetchParams,
   });
 
   // See if there are any postSuccess hooks to do
@@ -164,12 +164,12 @@ export const failureHandler = function(error, failureType, fetchParams, statePar
  * @param stateParams
  * @param {action} dispatch  Method to dispatch actions and trigger state changes to the store
  */
-export const successHandler = function(data, successType, originalBody, fetchParams, stateParams, dispatch) {
+export const successHandler = function (data, successType, originalBody, fetchParams, stateParams, dispatch) {
   Object.assign(data, { errors: null }); // nullify errors if success
   //console.log("Success with API request", data, successType)
   dispatch({
     type: "FETCH_SUCCESS",
-    fetchParams
+    fetchParams,
   });
 
   //
@@ -177,7 +177,7 @@ export const successHandler = function(data, successType, originalBody, fetchPar
     type: successType,
     payload: data,
     stateParams,
-    fetchParams
+    fetchParams,
   });
 
   // Here we can dispatch more fetchHandlers using the data we retrieved

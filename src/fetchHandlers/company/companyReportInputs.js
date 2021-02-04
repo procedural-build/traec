@@ -10,7 +10,7 @@ export const getReportInputs = ({ companyId, startDate, endDate, cacheKey, indic
     method: "GET",
     url: `/api/company/${companyId}/report/input/${query_params}`,
     apiId: "api_company_report_input_list",
-    requiredParams: ["companyId", "startDate", "endDate", "cacheKey", "indicatorId"]
+    requiredParams: ["companyId", "startDate", "endDate", "cacheKey", "indicatorId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
