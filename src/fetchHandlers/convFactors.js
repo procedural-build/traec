@@ -14,21 +14,21 @@ export const getConversionFactors = ({ trackerId, commitId }) => {
     method: "GET",
     url: `/api/tracker/${trackerId}/commit/${commitId}/convfactor/`,
     apiId: "api_tracker_commit_convfactor_list",
-    requiredParams: ["trackerId", "commitId"]
+    requiredParams: ["trackerId", "commitId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     return convFactorsToState(state, commitId, data);
   };
-  const stateCheckFunc = state => {
+  const stateCheckFunc = (state) => {
     return !(state.getInPath(`entities.commitEdges.byId.${commitId}.conversionFactors`) == null);
   };
   return {
     fetchParams,
     stateParams: {
       stateSetFunc,
-      stateCheckFunc
-    }
+      stateCheckFunc,
+    },
   };
 };
 
@@ -39,7 +39,7 @@ export const postConversionFactor = ({ trackerId, commitId, from_commit_id = nul
     url: `/api/tracker/${trackerId}/commit/${commitId}/convfactor/${query_params}`,
     apiId: "api_tracker_commit_convfactor_create",
     requiredParams: ["trackerId", "commitId"],
-    queryParams: { from_commit_id: null }
+    queryParams: { from_commit_id: null },
   };
   const stateSetFunc = (state, action) => {
     if (from_commit_id) {
@@ -60,8 +60,8 @@ export const postConversionFactor = ({ trackerId, commitId, from_commit_id = nul
     stateParams: {
       stateSetFunc,
       formVisPath: `commitEdges.editById.${commitId}.SHOW_CONVFACT_FORM`,
-      formObjPath: `commitEdges.editById.${commitId}.newConversionFactor`
-    }
+      formObjPath: `commitEdges.editById.${commitId}.newConversionFactor`,
+    },
   };
 };
 
@@ -70,7 +70,7 @@ export const putConversionFactor = ({ trackerId, commitId, convFactorId }) => {
     method: "PUT",
     url: `/api/tracker/${trackerId}/commit/${commitId}/convfactor/${convFactorId}/`,
     apiId: "api_tracker_commit_convfactor_update",
-    requiredParams: ["trackerId", "commitId", "convFactorId"]
+    requiredParams: ["trackerId", "commitId", "convFactorId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -87,8 +87,8 @@ export const putConversionFactor = ({ trackerId, commitId, convFactorId }) => {
     stateParams: {
       stateSetFunc,
       formVisPath: `commitEdges.editById.${commitId}.cfs.editById.${convFactorId}.SHOW_CONVFACT_FORM`,
-      formObjPath: `commitEdges.editById.${commitId}.cfs.editById.${convFactorId}.newConversionFactor`
-    }
+      formObjPath: `commitEdges.editById.${commitId}.cfs.editById.${convFactorId}.newConversionFactor`,
+    },
   };
 };
 
@@ -96,7 +96,7 @@ export const patchConversionFactor = ({ trackerId, commitId, convFactorId }) => 
   let { fetchParams, stateParams } = putConversionFactor({ trackerId, commitId, convFactorId });
   Object.assign(fetchParams, {
     method: "PATCH",
-    apiId: "api_tracker_commit_convfactor_partial_update"
+    apiId: "api_tracker_commit_convfactor_partial_update",
   });
   return { fetchParams, stateParams };
 };
@@ -105,10 +105,10 @@ export const deleteConversionFactor = ({ trackerId, commitId, convFactorId }) =>
   let { fetchParams, stateParams } = putConversionFactor({ trackerId, commitId, convFactorId });
   Object.assign(fetchParams, {
     method: "DELETE",
-    apiId: "api_tracker_commit_convfactor_delete"
+    apiId: "api_tracker_commit_convfactor_delete",
   });
   Object.assign(stateParams, {
-    stateSetFunc: state => state.addListToDict(`commitEdges.byId.${commitId}.conversionFactors.${convFactorId}`)
+    stateSetFunc: (state) => state.addListToDict(`commitEdges.byId.${commitId}.conversionFactors.${convFactorId}`),
   });
   return { fetchParams, stateParams };
 };
