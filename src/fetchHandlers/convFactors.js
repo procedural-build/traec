@@ -108,7 +108,7 @@ export const deleteConversionFactor = ({ trackerId, commitId, convFactorId }) =>
     apiId: "api_tracker_commit_convfactor_delete"
   });
   Object.assign(stateParams, {
-    stateSetFunc: state => state.addListToDict(`commitEdges.byId.${commitId}.conversionFactors.${convFactorId}`)
+    stateSetFunc: state => state.removeInPath(`commitEdges.byId.${commitId}.conversionFactors.${convFactorId}`)
   });
   return { fetchParams, stateParams };
 };
