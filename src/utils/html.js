@@ -2,13 +2,17 @@ import React from "react";
 import DOMPurify from "dompurify";
 
 export const HTMLText = props => {
-  const cleanText = DOMPurify.sanitize(props.text);
-  let Tag = props.ComponentTag || "div";
+  let { componentTag, safe, className, text } = props;
+
+  let cleanText = "";
+  if (safe) {
+    cleanText = text;
+  } else {
+    cleanText = DOMPurify.sanitize(text);
+  }
+
+  let Tag = componentTag || "div";
   return (
-    <Tag
-      className={props.extraClassName}
-      style={{ whiteSpace: "pre-wrap" }}
-      dangerouslySetInnerHTML={{ __html: cleanText }}
-    />
+    <Tag className={className} style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: cleanText }} />
   );
 };
