@@ -47,11 +47,12 @@ export const postTrackerNode = ({ trackerId, commitId, refId, path = null }) => 
   };
 };
 
-export const putCommitNode = ({ trackerId, commitId, refId, pathId }) => {
+export const putCommitNode = ({ trackerId, commitId, refId, pathId, allow_commit_change = false }) => {
   let { ptr, ptrId } = getPtr(commitId, refId);
+  let query_params = allow_commit_change ? "?allow_commit_change=true" : "";
   const fetchParams = {
     method: "PUT",
-    url: `/api/tracker/${trackerId}/${ptr}/${ptrId}/node/${pathId}/`,
+    url: `/api/tracker/${trackerId}/${ptr}/${ptrId}/node/${pathId}/${query_params}`,
     apiId: "api_tracker_node_update",
     requiredParams: ["trackerId", "commitId", "pathId"]
   };
@@ -69,8 +70,8 @@ export const putCommitNode = ({ trackerId, commitId, refId, pathId }) => {
   };
 };
 
-export const patchCommitNode = ({ trackerId, commitId, refId, pathId }) => {
-  let params = putCommitNode({ trackerId, commitId, refId, pathId });
+export const patchCommitNode = ({ trackerId, commitId, refId, pathId, allow_commit_change = false }) => {
+  let params = putCommitNode({ trackerId, commitId, refId, pathId, allow_commit_change });
   Object.assign(params.fetchParams, {
     method: "PATCH",
     apiId: "api_tracker_node_partial_update"
