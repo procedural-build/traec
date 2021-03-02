@@ -1,7 +1,8 @@
-export const getTenancyBaseMetrics = ({}) => {
+export const getTenancyBaseMetrics = ({ companyId = null }) => {
+  let query_params = companyId ? `?companyId=${companyId}` : "";
   const fetchParams = {
     method: "GET",
-    url: `/api/tenant/admin/basemetric/`,
+    url: `/api/tenant/admin/basemetric/${query_params}`,
     apiId: "api_tenant_admin_basemetric_list",
     requiredParams: [],
     queryParams: {}
