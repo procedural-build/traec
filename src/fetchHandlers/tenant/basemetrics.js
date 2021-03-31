@@ -5,7 +5,7 @@ export const getTenancyBaseMetrics = ({ companyId = null }) => {
     url: `/api/tenant/admin/basemetric/${query_params}`,
     apiId: "api_tenant_admin_basemetric_list",
     requiredParams: [],
-    queryParams: {}
+    queryParams: {},
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -20,7 +20,7 @@ export const postTenancyBaseMetric = () => {
     url: `/api/tenant/admin/basemetric/`,
     apiId: "api_tenant_admin_basemetric_create",
     requiredParams: [],
-    queryParams: {}
+    queryParams: {},
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -31,8 +31,8 @@ export const postTenancyBaseMetric = () => {
     stateParams: {
       stateSetFunc,
       formVisPath: `baseMetrics.editById.SHOW_FORM`,
-      formObjPath: `baseMetrics.editById.editItem`
-    }
+      formObjPath: `baseMetrics.editById.editItem`,
+    },
   };
 };
 
@@ -42,7 +42,7 @@ export const putTenancyBaseMetric = ({ baseMetricId }) => {
     url: `/api/tenant/admin/basemetric/${baseMetricId}/`,
     apiId: "api_tenant_admin_basemetric_update",
     requiredParams: ["baseMetricId"],
-    queryParams: {}
+    queryParams: {},
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -53,8 +53,8 @@ export const putTenancyBaseMetric = ({ baseMetricId }) => {
     stateParams: {
       stateSetFunc,
       formVisPath: `baseMetrics.editById.${baseMetricId}.SHOW_FORM`,
-      formObjPath: `baseMetrics.editById.${baseMetricId}.editItem`
-    }
+      formObjPath: `baseMetrics.editById.${baseMetricId}.editItem`,
+    },
   };
 };
 
@@ -62,7 +62,7 @@ export const patchTenancyBaseMetric = ({ baseMetricId }) => {
   let { fetchParams, stateParams } = putTenancyBaseMetric({ baseMetricId });
   Object.assign(fetchParams, {
     method: "PATCH",
-    apiId: "api_tenant_admin_basemetric_partial_update"
+    apiId: "api_tenant_admin_basemetric_partial_update",
   });
   return { fetchParams, stateParams };
 };
