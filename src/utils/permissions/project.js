@@ -15,7 +15,7 @@ import { fetchToState } from "../../redux/actionCreators";
  * @memberof utils.permissions.project
  * @param { String } projectId - The id of the project
  */
-export const fetchProjectUserPermissions = function (projectId) {
+export const fetchProjectUserPermissions = function(projectId) {
   let params = fetchHandlers.getProjectUserPermissions({ projectId });
   store.dispatch(fetchToState(params));
 };
@@ -27,7 +27,7 @@ export const fetchProjectUserPermissions = function (projectId) {
  * @param   { String } projectId - The id of the project.
  * @returns { Map } - An immutable map object containing the user permissions fetched from the state.
  */
-export const getProjectPermissions = function (state, projectId) {
+export const getProjectPermissions = function(state, projectId) {
   return state.getInPath(`entities.projectObjects.byId.${projectId}.userPermission`);
 };
 
@@ -42,7 +42,7 @@ export const getProjectPermissions = function (state, projectId) {
  * @param  { boolean } allow_fetch - Allows the method to fetch the user permissions.
  * @return { (boolean | null) } - True if the user has permission to the project, otherwise false. Null if no permissions are found.
  */
-export const projectPermissionCheck = function (projectId, requiresAdmin, requiredActions, allow_fetch = true) {
+export const projectPermissionCheck = function(projectId, requiresAdmin, requiredActions, allow_fetch = true) {
   let state = store.getState();
 
   // Check if we have the permissions object or fetch it
@@ -100,9 +100,16 @@ export function PermissionObjectWarning() {
   );
 }
 
-export function ProjectPermission({ children, projectId, requiresAdmin, requiredActions = [], showWarning = false }) {
+export function ProjectPermission({
+  children,
+  projectId,
+  requiresAdmin,
+  requiredActions = [],
+  showWarning = false,
+  warning
+}) {
   if (!projectPermissionCheck(projectId, requiresAdmin, requiredActions, false)) {
-    return showWarning ? <PermissionWarning /> : null;
+    return showWarning ? warning || <PermissionWarning /> : null;
   }
   return children;
 }
@@ -172,14 +179,14 @@ export function ProjectPermission({ children, projectId, requiresAdmin, required
  * ]
  *
  */
-export const projectPermissionFilter = function (projectId, items) {
+export const projectPermissionFilter = function(projectId, items) {
   let state = store.getState();
   let permissions = getProjectPermissions(state, projectId);
   if (!permissions) {
     return null;
   }
   // Filter the items
-  items = items.filter((i) => {
+  items = items.filter(i => {
     if (i.requiresAdmin != null || i.requiredActions != null) {
       let requiresAdmin = i.requiresAdmin || false;
       let requiredActions = i.requiredActions || [];

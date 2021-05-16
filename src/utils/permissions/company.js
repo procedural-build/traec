@@ -15,7 +15,7 @@ import { fetchToState } from "../../redux/actionCreators";
  * @memberof utils.permissions.company
  * @param  companyId
  */
-export const fetchCompanyUserPermissions = function (companyId) {
+export const fetchCompanyUserPermissions = function(companyId) {
   let params = fetchHandlers.getCompanyUserPermissions({ companyId });
   store.dispatch(fetchToState(params));
 };
@@ -26,7 +26,7 @@ export const fetchCompanyUserPermissions = function (companyId) {
  * @param  state
  * @param  companyId
  */
-export const getCompanyPermissions = function (state, companyId) {
+export const getCompanyPermissions = function(state, companyId) {
   return state.getInPath(`entities.companyObjects.byId.${companyId}.userPermission`);
 };
 
@@ -38,7 +38,7 @@ export const getCompanyPermissions = function (state, companyId) {
  * @param  requiredActions
  * @param  allow_fetch
  */
-export const companyPermissionCheck = function (companyId, requiresAdmin, requiredActions, allow_fetch = true) {
+export const companyPermissionCheck = function(companyId, requiresAdmin, requiredActions, allow_fetch = true) {
   let state = store.getState();
 
   // Check if we have the permission object or fetch it
@@ -105,9 +105,16 @@ export function CompanyObjectWarning() {
   );
 }
 
-export function CompanyPermission({ children, companyId, requiresAdmin, requiredActions = [], showWarning = false }) {
+export function CompanyPermission({
+  children,
+  companyId,
+  requiresAdmin,
+  requiredActions = [],
+  showWarning = false,
+  warning
+}) {
   if (!companyPermissionCheck(companyId, requiresAdmin, requiredActions, false)) {
-    return showWarning ? <CompanyWarning /> : null;
+    return showWarning ? warning || <CompanyWarning /> : null;
   }
   return children;
 }
@@ -118,14 +125,14 @@ export function CompanyPermission({ children, companyId, requiresAdmin, required
  * @param  companyId
  * @param  items
  */
-export const companyPermissionFilter = function (companyId, items) {
+export const companyPermissionFilter = function(companyId, items) {
   let state = store.getState();
   let permissions = getCompanyPermissions(state, companyId);
   if (!permissions) {
     return null;
   }
   // Filter the items
-  items = items.filter((i) => {
+  items = items.filter(i => {
     if (i.requiresAdmin != null || i.requiredActions != null) {
       let requiresAdmin = i.requiresAdmin || false;
       let requiredActions = i.requiredActions || [];
