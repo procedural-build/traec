@@ -7,21 +7,21 @@ export const getTrackerNodes = ({ trackerId, commitId, refId }) => {
     method: "GET",
     url: `/api/tracker/${trackerId}/${ptr}/${ptrId}/node/`,
     apiId: "api_tracker_node_list",
-    requiredParams: ["trackerId", "commitId"]
+    requiredParams: ["trackerId", "commitId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
     return storeCommitNodes(state, commitId, data);
   };
-  const stateCheckFunc = state => {
+  const stateCheckFunc = (state) => {
     return !(state.getInPath(`entities.commitNodes.${commitId}.byPath`) == null);
   };
   return {
     fetchParams,
     stateParams: {
       stateSetFunc,
-      stateCheckFunc
-    }
+      stateCheckFunc,
+    },
   };
 };
 
@@ -31,7 +31,7 @@ export const postTrackerNode = ({ trackerId, commitId, refId, path = null }) => 
     method: "POST",
     url: `/api/tracker/${trackerId}/${ptr}/${ptrId}/node/`,
     apiId: "api_tracker_node_create",
-    requiredParams: ["trackerId", "commitId"]
+    requiredParams: ["trackerId", "commitId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -42,8 +42,8 @@ export const postTrackerNode = ({ trackerId, commitId, refId, path = null }) => 
     stateParams: {
       stateSetFunc,
       formVisPath: `commitNodes.${path}.SHOW_FORM`,
-      formObjPath: `commitNodes.${path}.newItem`
-    }
+      formObjPath: `commitNodes.${path}.newItem`,
+    },
   };
 };
 
@@ -54,7 +54,7 @@ export const putCommitNode = ({ trackerId, commitId, refId, pathId, allow_commit
     method: "PUT",
     url: `/api/tracker/${trackerId}/${ptr}/${ptrId}/node/${pathId}/${query_params}`,
     apiId: "api_tracker_node_update",
-    requiredParams: ["trackerId", "commitId", "pathId"]
+    requiredParams: ["trackerId", "commitId", "pathId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -65,8 +65,8 @@ export const putCommitNode = ({ trackerId, commitId, refId, pathId, allow_commit
     stateParams: {
       stateSetFunc,
       formVisPath: `commitNodes.${pathId}.SHOW_FORM`,
-      formObjPath: `commitNodes.${pathId}.newItem`
-    }
+      formObjPath: `commitNodes.${pathId}.newItem`,
+    },
   };
 };
 
@@ -74,7 +74,7 @@ export const patchCommitNode = ({ trackerId, commitId, refId, pathId, allow_comm
   let params = putCommitNode({ trackerId, commitId, refId, pathId, allow_commit_change });
   Object.assign(params.fetchParams, {
     method: "PATCH",
-    apiId: "api_tracker_node_partial_update"
+    apiId: "api_tracker_node_partial_update",
   });
   return params;
 };
@@ -86,7 +86,7 @@ export const deleteCommitNode = ({ trackerId, commitId, refId, pathId }) => {
     url: `/api/tracker/${trackerId}/${ptr}/${ptrId}/node/${pathId}/`,
     apiId: "api_tracker_node_delete",
     requiredParams: ["trackerId", "commitId", "pathId"],
-    queryParams: {}
+    queryParams: {},
   };
   const stateSetFunc = (state, action) => {
     // Get the node and id

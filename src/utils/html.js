@@ -1,7 +1,7 @@
 import React from "react";
 import DOMPurify from "dompurify";
 
-export const HTMLText = props => {
+export const HTMLText = (props) => {
   let { componentTag, safe, className, text } = props;
 
   let cleanText = "";

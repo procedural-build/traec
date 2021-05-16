@@ -26,3 +26,19 @@ export const deleteCompanyMember = ({ companyId, memberId }) => {
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
+
+
+export const updateCompanyMember = ({ companyId, memberId, pushBelow = false }) => {
+  const fetchParams = {
+    method: "PATCH",
+    url: `/api/company/${companyId}/member/${memberId}/${pushBelow? "?push_below=True": ""}`,
+    apiId: "api_company_member_patch",
+    requiredParams: ["companyId", "memberId"]
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    let newState = state.addListToDict(`companyObjects.byId.${companyId}.members`, data);
+    return newState;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};

@@ -12,15 +12,15 @@ xdescribe("Fetch Reducer", () => {
       user_id: "4af06b93-fd82-4636-a467-f4d9073a85ef",
       username: "admin",
       exp: 1559207709,
-      email: "admin@ods-track.com"
+      email: "admin@ods-track.com",
     };
     jwt_decode.mockImplementation(() => decoded_token);
     const fetchParams = {
       url: "/auth-jwt/verify/",
       method: "POST",
       body: {
-        token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
-      }
+        token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
+      },
     };
 
     const data = {
@@ -31,9 +31,9 @@ xdescribe("Fetch Reducer", () => {
         email: "admin@ods-track.com",
         username: "admin",
         is_superuser: true,
-        is_tenant_superuser: true
+        is_tenant_superuser: true,
       },
-      errors: null
+      errors: null,
     };
 
     const expected = Im.fromJS({ ...data, status: "confirmed", isAuthenticated: true, decoded_token });
@@ -43,7 +43,7 @@ xdescribe("Fetch Reducer", () => {
         type: types.LOGIN_SUCCESS,
         payload: data,
         stateParams: null,
-        fetchParams
+        fetchParams,
       })
     ).toEqual(expected);
   });
