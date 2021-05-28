@@ -51,6 +51,9 @@
  *
  */
 
+// AUTH
+export * from "./auth/registration";
+
 // COMMIT
 export * from "./commit/commitEdges";
 export * from "./commit/commitBranch";
