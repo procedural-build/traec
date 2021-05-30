@@ -1,7 +1,7 @@
 import * as fetchHandlers from "./fetchHandlers";
 import * as fetchBindings from "./fetchBindings";
 import { handlerMap, makeHandlerMap } from "./handlerMap";
-import { fetchRequired } from "./fetchBindings/utils";
+import { fetchRequired, fetchRequiredFor } from "./fetchBindings/utils";
 import Fetch from "./fetchManager";
 import Im from "./immutable";
 import Redux from "./redux";
@@ -16,8 +16,9 @@ export default {
   handlerMap,
   makeHandlerMap,
   fetchRequired,
+  fetchRequiredFor,
   Fetch,
   Im,
   Redux,
-  utils,
+  utils
 };
