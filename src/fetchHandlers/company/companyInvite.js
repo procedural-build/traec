@@ -120,6 +120,39 @@ export const postCompanyRequest = ({ companyId }) => {
   return { fetchParams, stateParams: { stateSetFunc } };
 };
 
+export const putUserCompanyInvite = ({ companyId, inviteId }) => {
+  const fetchParams = {
+    method: "PUT",
+    url: `/api/company/invite/${inviteId}/`,
+    apiId: "api_company_invite_all_update",
+    requiredParams: ["inviteId"],
+    postSuccessHook: () => {
+      location.reload();
+    }
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    return state.addToDict(`companyObjects.byId.${companyId}.invites`, data);
+  };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `companies.byId.${companyId}.edit.SHOW_INVITE_FORM`,
+      formObjPath: `companies.byId.${companyId}.edit.inviteItem`
+    }
+  };
+};
+
+export const patchUserCompanyInvite = ({ companyId, inviteId }) => {
+  let { fetchParams, stateParams } = putUserCompanyInvite({ companyId, inviteId });
+  Object.assign(fetchParams, {
+    method: "PATCH",
+    apiId: "api_company_invite_all_partial_update"
+  });
+  return { fetchParams, stateParams };
+};
+
 export const deleteCompanyRequest = ({ inviteId }) => {
   const fetchParams = {
     method: "DELETE",
