@@ -101,3 +101,38 @@ export const getAllCompanyInvites = () => {
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
+
+export const postCompanyRequest = ({ companyId }) => {
+  const fetchParams = {
+    method: "POST",
+    url: `/api/company/invite/`,
+    apiId: "api_company_invite_all_create",
+    requiredParams: [],
+    body: {
+      company: { uid: companyId },
+      is_request: true
+    }
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    return state.addListToDict(`companyInvites.byId`, data);
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
+
+export const deleteCompanyRequest = ({ inviteId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/company/invite/${inviteId}/`,
+    apiId: "api_company_invite_all_delete",
+    requiredParams: ["inviteId"]
+  };
+  const stateSetFunc = (state, action) => {
+    const data = action.payload;
+    if (!data.errors) {
+      return state.removeInPath(`companyInvites.byId.${inviteId}`);
+    }
+    return state;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
