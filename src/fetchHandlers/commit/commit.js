@@ -67,6 +67,9 @@ export const putCommit = ({ trackerId, refId, commitId }) => {
       newState = newState.addToDict("commits.byId", data);
       newState = newState.addListToSets([`categoryCommits.byId.${refId}`], [data.uid]);
       newState = newState.setInPath(formVisPath, false);
+      if (refId && state.getInPath(`refs.byId.${refId}.latest_commit.uid`) == commitId) {
+        newState = newState.setInPath(`refs.byId.${refId}.latest_commit`, data);
+      }
     }
     return newState;
   };
