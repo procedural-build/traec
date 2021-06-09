@@ -20,5 +20,5 @@ export default {
   Fetch,
   Im,
   Redux,
-  utils
+  utils,
 };

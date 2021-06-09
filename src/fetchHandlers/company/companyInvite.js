@@ -3,7 +3,7 @@ export const getCompanyInvites = ({ companyId }) => {
     method: "GET",
     url: `/api/company/${companyId}/invite/`,
     apiId: "api_company_invite_list",
-    requiredParams: ["companyId"]
+    requiredParams: ["companyId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -18,7 +18,7 @@ export const postCompanyInvite = ({ companyId }) => {
     method: "POST",
     url: `/api/company/${companyId}/invite/`,
     apiId: "api_company_invite_create",
-    requiredParams: ["companyId"]
+    requiredParams: ["companyId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -35,8 +35,8 @@ export const postCompanyInvite = ({ companyId }) => {
     stateParams: {
       stateSetFunc,
       formVisPath: `companies.byId.${companyId}.SHOW_INVITE_FORM`,
-      formObjPath: `companies.byId.${companyId}.newItem`
-    }
+      formObjPath: `companies.byId.${companyId}.newItem`,
+    },
   };
 };
 
@@ -48,7 +48,7 @@ export const putCompanyInvite = ({ companyId, inviteId }) => {
     requiredParams: ["companyId", "inviteId"],
     postSuccessHook: () => {
       location.reload();
-    }
+    },
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -59,8 +59,8 @@ export const putCompanyInvite = ({ companyId, inviteId }) => {
     stateParams: {
       stateSetFunc,
       formVisPath: `companies.byId.${companyId}.edit.SHOW_INVITE_FORM`,
-      formObjPath: `companies.byId.${companyId}.edit.inviteItem`
-    }
+      formObjPath: `companies.byId.${companyId}.edit.inviteItem`,
+    },
   };
 };
 
@@ -75,7 +75,7 @@ export const deleteCompanyInvite = ({ companyId, inviteId }) => {
     method: "DELETE",
     url: `/api/company/${companyId}/invite/${inviteId}/`,
     apiId: "api_company_invite_delete",
-    requiredParams: ["companyId", "inviteId"]
+    requiredParams: ["companyId", "inviteId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -93,7 +93,7 @@ export const getAllCompanyInvites = () => {
     method: "GET",
     url: `/api/company/invite/`,
     apiId: "api_company_invite_all_list",
-    requiredParams: []
+    requiredParams: [],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -110,8 +110,8 @@ export const postCompanyRequest = ({ companyId }) => {
     requiredParams: [],
     body: {
       company: { uid: companyId },
-      is_request: true
-    }
+      is_request: true,
+    },
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -128,7 +128,7 @@ export const putUserCompanyInvite = ({ companyId, inviteId }) => {
     requiredParams: ["inviteId"],
     postSuccessHook: () => {
       location.reload();
-    }
+    },
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -139,8 +139,8 @@ export const putUserCompanyInvite = ({ companyId, inviteId }) => {
     stateParams: {
       stateSetFunc,
       formVisPath: `companies.byId.${companyId}.edit.SHOW_INVITE_FORM`,
-      formObjPath: `companies.byId.${companyId}.edit.inviteItem`
-    }
+      formObjPath: `companies.byId.${companyId}.edit.inviteItem`,
+    },
   };
 };
 
@@ -148,7 +148,7 @@ export const patchUserCompanyInvite = ({ companyId, inviteId }) => {
   let { fetchParams, stateParams } = putUserCompanyInvite({ companyId, inviteId });
   Object.assign(fetchParams, {
     method: "PATCH",
-    apiId: "api_company_invite_all_partial_update"
+    apiId: "api_company_invite_all_partial_update",
   });
   return { fetchParams, stateParams };
 };
@@ -158,7 +158,7 @@ export const deleteCompanyRequest = ({ inviteId }) => {
     method: "DELETE",
     url: `/api/company/invite/${inviteId}/`,
     apiId: "api_company_invite_all_delete",
-    requiredParams: ["inviteId"]
+    requiredParams: ["inviteId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;

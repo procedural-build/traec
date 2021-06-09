@@ -7,11 +7,11 @@ export const getCommits = ({ trackerId, refId }) => {
     method: "GET",
     url: `/api/tracker/${trackerId}/ref/${refId}/commit/`,
     apiId: "api_tracker_ref_commit_list",
-    requiredParams: ["trackerId", "refId"]
+    requiredParams: ["trackerId", "refId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    const uids = data.map(item => item.uid);
+    const uids = data.map((item) => item.uid);
     let newState = state.addListToDict("commits.byId", data, "uid", true);
     newState = newState.addListToSets([`categoryCommits.byId.${refId}`], uids);
     return newState;
@@ -24,7 +24,7 @@ export const postCommit = ({ trackerId, refId, commitId }) => {
     method: "POST",
     url: `/api/tracker/${trackerId}/ref/${refId}/commit/`,
     apiId: "api_tracker_ref_commit_create",
-    requiredParams: ["trackerId", "refId", "commitId"]
+    requiredParams: ["trackerId", "refId", "commitId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -47,8 +47,8 @@ export const postCommit = ({ trackerId, refId, commitId }) => {
     stateParams: {
       stateSetFunc,
       formVisPath: `commits.editById.${commitId}.SHOW_COMMIT_FORM`,
-      formObjPath: `commits.editById.${commitId}.newItem`
-    }
+      formObjPath: `commits.editById.${commitId}.newItem`,
+    },
   };
 };
 
@@ -57,7 +57,7 @@ export const putCommit = ({ trackerId, refId, commitId }) => {
     method: "PUT",
     url: `/api/tracker/${trackerId}/ref/${refId}/commit/${commitId}/`,
     apiId: "api_tracker_ref_commit_update",
-    requiredParams: ["trackerId", "refId", "commitId"]
+    requiredParams: ["trackerId", "refId", "commitId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -78,8 +78,8 @@ export const putCommit = ({ trackerId, refId, commitId }) => {
     stateParams: {
       stateSetFunc,
       formVisPath: `commits.editById.${commitId}.SHOW_COMMIT_FORM`,
-      formObjPath: `commits.editById.${commitId}.newItem`
-    }
+      formObjPath: `commits.editById.${commitId}.newItem`,
+    },
   };
 };
 
@@ -95,7 +95,7 @@ export const getAllCommits = () => {
     url: `/api/tracker/commit/`,
     apiId: "api_tracker_commit_all_list",
     requiredParams: [],
-    queryParams: { requiresAction: true }
+    queryParams: { requiresAction: true },
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;

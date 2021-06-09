@@ -3,7 +3,7 @@ export const postCompanyDispatch = ({ companyId }) => {
   const fetchParams = {
     method: "POST",
     url,
-    apiId: "api_company_dispatch_create"
+    apiId: "api_company_dispatch_create",
   };
   const stateSetFunc = (state, action) => {
     return state;
