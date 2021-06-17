@@ -36,6 +36,7 @@ export const getNodeChildren = (state, sourceNode, commitNodes, typeName) => {
     return Im.List();
   }
   let paths = sourceNode.getInPath(`children.byType.${typeName}`) || Im.Set();
+
   return paths
     .toList()
     .sort()

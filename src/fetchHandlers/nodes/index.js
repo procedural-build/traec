@@ -1,5 +1,4 @@
-import Im from "../../immutable";
-import { nodeNameMap, storeCommitNodes, updateCommitNodes, getPtr } from "../utils";
+import { getPtr, storeCommitNodes, updateCommitNodes } from "../utils";
 
 export const getTrackerNodes = ({ trackerId, commitId, refId }) => {
   let { ptr, ptrId } = getPtr(commitId, refId);
@@ -35,7 +34,9 @@ export const postTrackerNode = ({ trackerId, commitId, refId, path = null }) => 
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    return updateCommitNodes(state, commitId, Array.isArray(data) ? data : [data]);
+    let newState = updateCommitNodes(state, commitId, Array.isArray(data) ? data : [data]);
+    newState = newState.deleteIn(["commitNodes", path, "SHOW_FORM"])
+    return newState
   };
   return {
     fetchParams,
