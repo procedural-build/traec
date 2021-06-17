@@ -7,6 +7,7 @@ export const getProjectMembers = ({ projectId }) => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
+    console.log("stateSetFunc for project members", projectId, data);
     let newState = state.addListToDict(`projectObjects.byId.${projectId}.members`, data);
     return newState;
   };
