@@ -4,7 +4,8 @@ export const entityMap = {
   categoryrevset: "revsets",
   tree: "trees",
   document: "documents",
-  metricscore: "metricScores"
+  metricscore: "metricScores",
+  categorycommit: "commits"
 };
 
 export const getNode = (path, commitNodes) => {
@@ -20,7 +21,7 @@ export const getNodeFromPath = (state, path, commitNodes, typeName = null) => {
   let id = commitNodes.getInPath(`byPath.${path}.uid`);
   let _typeName = typeName || getNodeType(path, commitNodes);
   let entity = state.getInPath(`entities.${_typeName}.byId.${id}`);
-  return entity ? entity.set("_path", path) : entity;
+  return entity ? entity.set("_path", path).set("_type", _typeName) : entity;
 };
 
 export const getParentNodeFromPath = (state, path, commitNodes, typeName = null) => {
