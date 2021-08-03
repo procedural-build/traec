@@ -137,7 +137,14 @@ export const putTracker = ({ trackerId }) => {
     }
     return newState;
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc,
+      formVisPath: `trackers.${trackerId}.SHOW_FORM`,
+      formObjPath: `trackers.${trackerId}.newItem`
+    }
+  };
 };
 
 export const patchTracker = ({ trackerId }) => {
@@ -163,5 +170,10 @@ export const postTrackerDispatch = ({ trackerId }) => {
     }
     return state;
   };
-  return { fetchParams, stateParams: { stateSetFunc } };
+  return {
+    fetchParams,
+    stateParams: {
+      stateSetFunc
+    }
+  };
 };
