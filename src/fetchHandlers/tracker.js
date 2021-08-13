@@ -7,6 +7,7 @@ const addTrackerToState = (state, data) => {
   let branchRefMap = {};
   if (altRootMasters) {
     for (let item of data.alt_root_masters) {
+      if (Object.entries(item).length === 0){continue}
       branchRefMap[item.latest_commit.root_commit] = item.uid;
     }
     data.alt_root_masters = branchRefMap;
@@ -14,8 +15,9 @@ const addTrackerToState = (state, data) => {
   // Add the tracker and ref to dict
   let newState = state.addToDict("trackers.byId", data, "uid", data.uid.substring(0, 8));
   // Add the root master
-  if (refData) {
+  if (refData && Object.entries(refData).length !== 0) {
     newState = newState.addToDict("refs.byId", refData, "uid", refData.uid.substring(0, 8));
+
     // Store the latest commit in the commits
     let commit = refData.latest_commit;
     newState = newState.addToDict("commits.byId", commit, "uid", commit.uid.substring(0, 8));
@@ -165,8 +167,7 @@ export const postTrackerDispatch = ({ trackerId }) => {
     const data = action.payload;
 
     if (data.errors) {
-      let newState = state.setInPath(`errors.tracker.byId.${trackerId}.dispatch`, data.errors);
-      return newState;
+      return state.setInPath(`errors.tracker.byId.${trackerId}.dispatch`, data.errors);
     }
     return state;
   };
