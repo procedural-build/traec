@@ -12,8 +12,6 @@ export const HTMLText = (props) => {
   }
 
   let Tag = componentTag || "div";
-  let _style = style || { whiteSpace: "pre-wrap" }
-  return (
-    <Tag className={className} style={_style} dangerouslySetInnerHTML={{ __html: cleanText }} />
-  );
+  let _style = style || { whiteSpace: "pre-wrap" };
+  return <Tag className={className} style={_style} dangerouslySetInnerHTML={{ __html: cleanText }} />;
 };

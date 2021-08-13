@@ -5,7 +5,7 @@ export const entityMap = {
   tree: "trees",
   document: "documents",
   metricscore: "metricScores",
-  categorycommit: "commits"
+  categorycommit: "commits",
 };
 
 export const getNode = (path, commitNodes) => {
@@ -41,7 +41,7 @@ export const getNodeChildren = (state, sourceNode, commitNodes, typeName) => {
   return paths
     .toList()
     .sort()
-    .map(path => getNodeFromPath(state, path, commitNodes, typeName));
+    .map((path) => getNodeFromPath(state, path, commitNodes, typeName));
 };
 
 export const getPathChildren = (state, path, commitNodes, typeName) => {

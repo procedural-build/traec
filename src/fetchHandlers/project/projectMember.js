@@ -3,7 +3,7 @@ export const getProjectMembers = ({ projectId }) => {
     method: "GET",
     url: `/api/project/${projectId}/member/`,
     apiId: "api_project_member_list",
-    requiredParams: ["projectId"]
+    requiredParams: ["projectId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -19,7 +19,7 @@ export const deleteProjectMember = ({ projectId, memberId }) => {
     method: "DELETE",
     url: `/api/project/${projectId}/member/${memberId}/`,
     apiId: "api_project_member_delete",
-    requiredParams: ["projectId", "memberId"]
+    requiredParams: ["projectId", "memberId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -34,7 +34,7 @@ export const postProjectMember = ({ projectId }) => {
     method: "POST",
     url: `/api/project/${projectId}/member/`,
     apiId: "api_project_member_create",
-    requiredParams: ["projectId"]
+    requiredParams: ["projectId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
