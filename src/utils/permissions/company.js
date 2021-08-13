@@ -44,14 +44,10 @@ export const companyPermissionCheck = function (companyId, requiresAdmin, requir
   // Check if we have the permission object or fetch it
   let permissions = getCompanyPermissions(state, companyId);
 
-  //debugger;
   // Return null if the permissions are not found
   if (!permissions) {
-    //let path = `entities.companyObjects.byId.${companyId}.userPermission`
-    //console.log(permissions, path, state.getInPath(path), state.toJS())
     if (companyId && allow_fetch) {
       fetchCompanyUserPermissions(companyId);
-      permissions = getCompanyPermissions(state, companyId);
     }
     return null;
   }
@@ -64,11 +60,7 @@ export const companyPermissionCheck = function (companyId, requiresAdmin, requir
   // Handle an admin-type user first
   let isAdmin = permissions.get("is_admin");
   if (requiresAdmin) {
-    if (isAdmin) {
-      return true;
-    } else {
-      return false;
-    }
+    return !!isAdmin;
   } else {
     // If admin is not required but the user
     // is an admin then they can do anything
@@ -80,17 +72,13 @@ export const companyPermissionCheck = function (companyId, requiresAdmin, requir
   let allowedActions = permissions.get("actions");
   let requiredActionSet = Im.Set(requiredActions);
   let intersectActions = requiredActionSet.intersect(allowedActions);
-  if (intersectActions.size == requiredActionSet.size) {
-    return true;
-  } else {
-    return false;
-  }
+  return intersectActions.size === requiredActionSet.size;
 };
 
 export function CompanyWarning() {
   return (
     <div className="alert alert-warning">
-      <strong>PermissionDenied</strong> You do not have permission to view this content. Please contact the project
+      <strong>Permission Denied</strong> You do not have permission to view this content. Please contact the project
       admin to ensure that you are assigned an appropriate role.
     </div>
   );
@@ -113,8 +101,12 @@ export function CompanyPermission({
   showWarning = false,
   warning,
 }) {
-  if (!companyPermissionCheck(companyId, requiresAdmin, requiredActions, false)) {
+  let permission = companyPermissionCheck(companyId, requiresAdmin, requiredActions, false)
+  if (permission === false) {
     return showWarning ? warning || <CompanyWarning /> : null;
+  }
+  else if (!permission){
+    return null
   }
   return children;
 }
@@ -128,9 +120,11 @@ export function CompanyPermission({
 export const companyPermissionFilter = function (companyId, items) {
   let state = store.getState();
   let permissions = getCompanyPermissions(state, companyId);
+
   if (!permissions) {
     return null;
   }
+
   // Filter the items
   items = items.filter((i) => {
     if (i.requiresAdmin != null || i.requiredActions != null) {
