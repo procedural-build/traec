@@ -9,7 +9,11 @@ export const putStoreImage = ({}) => {
     rawBody: true
   };
   const stateSetFunc = (state, action) => {
-    return state;
+    let payload = action.payload
+    if (!payload.errors){
+      return state.setInPath(`files.upload`, payload)
+    }
+    return state.setInPath(`files.error`, payload.errors);
   };
   return {
     fetchParams,
