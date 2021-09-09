@@ -7,8 +7,7 @@ export const getDisciplines = ({ projectId }) => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    let newState = state.addListToDict(`projectObjects.byId.${projectId}.disciplines`, data);
-    return newState;
+    return state.addListToDict(`projectObjects.byId.${projectId}.disciplines`, data);
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
@@ -65,6 +64,12 @@ export const putDiscipline = ({ projectId, projectDisciplineId }) => {
       formObjPath: `ui.projectObjects.byId.${projectId}.disciplines.editbyId.${projectDisciplineId}.newItem`
     }
   };
+};
+
+export const patchDiscipline = ({ projectId, projectDisciplineId }) => {
+  let { fetchParams, stateParams } = putDiscipline({ projectId, projectDisciplineId });
+  Object.assign(fetchParams, { method: "PATCH" });
+  return { fetchParams, stateParams };
 };
 
 export const deleteDiscipline = ({ projectId, projectDisciplineId }) => {
