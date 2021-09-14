@@ -103,3 +103,4 @@ export * from "./indicators";
 export * from "./comment";
 export * from "./store";
 export * from "./mailReceiver";
+export * from "./version";
