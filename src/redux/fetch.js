@@ -67,7 +67,7 @@ export const updateHeaders = function(headers) {
   } else if (headers["content-type"] == null) {
     delete headers["content-type"];
   }
-  if (token) {
+  if (token && token != "failed") {
     headers = Object.assign({}, headers, { Authorization: `JWT ${token}` });
   }
 
