@@ -10,7 +10,10 @@ export const getTrackerNodes = ({ trackerId, commitId, refId }) => {
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
-    return storeCommitNodes(state, commitId, data);
+    if (!data.errors){
+      return storeCommitNodes(state, commitId, data);
+    }
+    return state;
   };
   const stateCheckFunc = (state) => {
     return !(state.getInPath(`entities.commitNodes.${commitId}.byPath`) == null);
