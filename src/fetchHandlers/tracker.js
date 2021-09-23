@@ -7,7 +7,9 @@ const addTrackerToState = (state, data) => {
   let branchRefMap = {};
   if (altRootMasters) {
     for (let item of data.alt_root_masters) {
-      if (Object.entries(item).length === 0){continue}
+      if (Object.entries(item).length === 0) {
+        continue;
+      }
       branchRefMap[item.latest_commit.root_commit] = item.uid;
     }
     data.alt_root_masters = branchRefMap;
@@ -155,10 +157,13 @@ export const patchTracker = ({ trackerId }) => {
   return { fetchParams, stateParams };
 };
 
-export const postTrackerDispatch = ({ trackerId }) => {
+export const postTrackerDispatch = ({ trackerId, query_params }) => {
+  let _query_string = new URLSearchParams(query_params).toString();
+  _query_string = _query_string ? `?${_query_string}` : "";
+
   const fetchParams = {
     method: "POST",
-    url: `/api/tracker/${trackerId}/dispatch/`,
+    url: `/api/tracker/${trackerId}/dispatch/${_query_string}`,
     apiId: "api_tracker_dispatch_create",
     headers: { "content-type": undefined },
     rawBody: true

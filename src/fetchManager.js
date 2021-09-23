@@ -49,8 +49,8 @@ export default class Fetch {
     /* HOOKS 
         Override these to do something prior to dispatch
         (ie. validate action.fetchParms.body or display a notification)*/
-    this.preDispatchHook = (action) => action;
-    this.preUpdateHook = (args) => args;
+    this.preDispatchHook = action => action;
+    this.preUpdateHook = args => args;
 
     // Properties of this can be overrided on instantiation
     for (let key of Object.keys(overrides)) {
@@ -83,7 +83,7 @@ export default class Fetch {
   get params() {
     return {
       fetchParams: this._fetchParams,
-      stateParams: this._stateParams,
+      stateParams: this._stateParams
     };
   }
 
@@ -259,8 +259,12 @@ export default class Fetch {
       // Dispatch this action
       this.dispatch();
       // Update the fetched Urls flag with the flagSetter
-      Object.assign(fetchedUrls, { [fetchParams.url]: true });
-      stateSet({ fetchedUrls });
+      stateSet({
+        fetchedUrls: {
+          ...fetchedUrls,
+          [fetchParams.url]: true
+        }
+      });
     }
   }
 
@@ -281,7 +285,7 @@ export default class Fetch {
       headers: updatedHeaders,
       method: this.method,
       body: body,
-      ...options,
+      ...options
     });
   }
 
@@ -294,7 +298,7 @@ export default class Fetch {
       type,
       payload: data,
       stateParams,
-      fetchParams,
+      fetchParams
     });
   }
 }
