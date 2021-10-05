@@ -5,7 +5,7 @@ export const postDocument = ({ trackerId, refId, commitId, treeId }) => {
     method: "POST",
     url: `/api/tracker/${trackerId}/ref/${refId}/tree/${treeId}/document/`,
     apiId: "api_tracker_ref_tree_document_create",
-    requiredParams: ["trackerId", "refId", "commitId", "treeId"],
+    requiredParams: ["trackerId", "refId", "commitId", "treeId"]
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -34,23 +34,25 @@ export const postDocument = ({ trackerId, refId, commitId, treeId }) => {
   };
   //Modify the POST before send to structure it as required for the API
   Object.assign(fetchParams, {
-    preFetchHook: (body) => {
+    preFetchHook: body => {
       return {
-        name: Crypto.createHash("sha1").update(body.title).digest("hex"),
+        name: Crypto.createHash("sha1")
+          .update(body.title)
+          .digest("hex"),
         description: {
           title: body.title,
-          text: body.description,
-        },
+          text: body.description
+        }
       };
-    },
+    }
   });
   return {
     fetchParams,
     stateParams: {
       stateSetFunc,
       formVisPath: `documents.editById.${treeId}.SHOW_DOC_FORM`,
-      formObjPath: `documents.editById.${treeId}.newItem`,
-    },
+      formObjPath: `documents.editById.${treeId}.newItem`
+    }
   };
 };
 
@@ -61,7 +63,7 @@ export const getDocumentObjects = ({ trackerId, commitId, docId, thisCommitOnly 
     url: `/api/tracker/${trackerId}/commit/${commitId}/document/${docId}/object/${queryParams}`,
     apiId: "api_tracker_commit_document_object_list",
     requiredParams: ["trackerId", "commitId", "docId"],
-    queryParams: { thisCommitOnly: null },
+    queryParams: { thisCommitOnly: null }
   };
   const stateSetFunc = (state, action) => {
     // Successful put returns a DocumentStatusSerializer object
@@ -87,7 +89,7 @@ export const getDocumentObject = ({ trackerId, commitId, docId, docObjectId, sig
     url: `/api/tracker/${trackerId}/commit/${commitId}/document/${docId}/object/${docObjectId}/${queryParams}`,
     apiId: "api_tracker_commit_document_object_retrieve",
     requiredParams: ["trackerId", "commitId", "docId", "docObjectId"],
-    queryParams: { signedURL: false },
+    queryParams: { signedURL: false }
   };
   const stateSetFunc = (state, action) => {
     // Successful put returns a DocumentStatusSerializer object
@@ -105,7 +107,7 @@ export const deleteDocumentObject = ({ trackerId, commitId, docId, docObjectId }
     url: `/api/tracker/${trackerId}/commit/${commitId}/document/${docId}/object/${docObjectId}/`,
     apiId: "api_tracker_commit_document_object_delete",
     requiredParams: ["trackerId", "commitId", "docId", "docObjectId"],
-    queryParams: {},
+    queryParams: {}
   };
   const stateSetFunc = (state, action) => {
     return state.deleteIn([`docObjects`, `byId`, `${docObjectId}`]);
@@ -130,13 +132,13 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allo
     method: "PUT",
     url: `/api/tracker/${trackerId}/ref/${refId}/document/${documentId}/${getDocQueryParams({
       allow_commit_change,
-      treeId,
+      treeId
     })}`,
     apiId: "api_tracker_ref_document_update",
     requiredParams: ["trackerId", "refId", "commitId", "documentId"],
     queryParams: { allow_commit_change: false, treeId: null },
     headers: { "content-type": null },
-    rawBody: true,
+    rawBody: true
   };
   const stateSetFunc = (state, action) => {
     // Successful put returns a DocumentStatusSerializer object
@@ -158,7 +160,7 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allo
       if (description) {
         newState = newState.addToDict("descriptions.byId", description);
         newState = newState.addListToSet(`commitEdges.byId.${commitId}.documents.${documentId}.descriptions`, [
-          description.uid,
+          description.uid
         ]);
       }
       // Finally hide the form
@@ -171,8 +173,8 @@ export const putDocumentObject = ({ trackerId, refId, commitId, documentId, allo
     stateParams: {
       stateSetFunc,
       formVisPath: `documents.editById.${documentId}.SHOW_EDIT_DESCRIPTION_FORM`,
-      formObjPath: `documents.editById.${documentId}.editDescription`,
-    },
+      formObjPath: `documents.editById.${documentId}.editDescription`
+    }
   };
 };
 
@@ -183,15 +185,15 @@ export const putDocumentObjectCommit = ({ trackerId, commitId, documentId, allow
     commitId,
     documentId,
     allow_commit_change,
-    treeId,
+    treeId
   });
   Object.assign(fetchParams, {
     url: `/api/tracker/${trackerId}/commit/${commitId}/document/${documentId}/${getDocQueryParams({
       allow_commit_change,
-      treeId,
+      treeId
     })}`,
     apiId: "api_tracker_commit_document_update",
-    requiredParams: ["trackerId", "commitId", "documentId"],
+    requiredParams: ["trackerId", "commitId", "documentId"]
   });
   return { fetchParams, stateParams };
 };
@@ -201,12 +203,12 @@ export const deleteDocument = ({ trackerId, refId, commitId, docId, treeId }) =>
     method: "DELETE",
     url: `/api/tracker/${trackerId}/ref/${refId}/document/${docId}/`,
     apiId: "api_tracker_ref_document_delete",
-    requiredParams: ["trackerId", "refId", "commitId", "docId"],
+    requiredParams: ["trackerId", "refId", "commitId", "docId"]
   };
 
   return {
     fetchParams,
-    stateParams: { stateSetFunc: (state) => deleteDocumentFromState(state, treeId, commitId, docId) },
+    stateParams: { stateSetFunc: state => deleteDocumentFromState(state, treeId, commitId, docId) }
   };
 };
 
@@ -215,12 +217,12 @@ export const deleteTreeDocument = ({ trackerId, treeId, commitId, docId }) => {
     method: "DELETE",
     url: `/api/tracker/${trackerId}/commit/${commitId}/tree/${treeId}/document/${docId}/`,
     apiId: "api_tracker_commit_tree_document_delete",
-    requiredParams: ["trackerId", "treeId", "commitId", "docId"],
+    requiredParams: ["trackerId", "treeId", "commitId", "docId"]
   };
 
   return {
     fetchParams,
-    stateParams: { stateSetFunc: (state) => deleteDocumentFromState(state, treeId, commitId, docId) },
+    stateParams: { stateSetFunc: state => deleteDocumentFromState(state, treeId, commitId, docId) }
   };
 };
 
@@ -242,7 +244,7 @@ const deleteDocumentFromState = (state, treeId, commitId, docId) => {
 
   newState = newState.removeInPath(`documents.byId.${docId}`);
   if (parentId) {
-    newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), (i) =>
+    newState = newState.updateIn(`commitEdges.byId.${commitId}.trees.${parentId}.trees`.split("."), i =>
       i ? i.delete(docId) : null
     );
   }
@@ -256,7 +258,7 @@ export const getDisciplineDocuments = ({ trackerId, userId = null, all_disciplin
     url: `/api/tracker/${trackerId}/documents/${query_params}`,
     apiId: "api_tracker_documents_list",
     requiredParams: ["trackerId"],
-    queryParams: { all_disciplines: false },
+    queryParams: { all_disciplines: false }
   };
   const stateSetFunc = (state, action) => {
     // Successful put returns a DocumentStatusSerializer object
@@ -268,13 +270,17 @@ export const getDisciplineDocuments = ({ trackerId, userId = null, all_disciplin
       }
 
       // Store the nested current_object separately and refer to only uuid in status
-      newState = newState.addToDict(`user.documents.${trackerId}.${userId || "master"}`, {
-        ...item,
-        status: item.status?.uid,
-        description: item.description?.uid,
-        _commit: item.commit_id,
-        _path: item.path,
-      });
+      newState = newState.addToDict(
+        `user.documents.${trackerId}.${userId || "master"}`,
+        {
+          ...item,
+          status: item.status?.uid,
+          description: item.description?.uid,
+          _commit: item.commit_id,
+          _path: item.path
+        },
+        "_path"
+      ); // Note: documents are indexed by path (to avoid confict if the same node is used elsewhere in commit)
 
       // Flatten and store the description
       if (item.description) {
@@ -285,7 +291,7 @@ export const getDisciplineDocuments = ({ trackerId, userId = null, all_disciplin
       if (item.status) {
         newState = newState.addToDict("docStatuses.byId", {
           ...item.status,
-          current_object: item.status.current_object?.uid,
+          current_object: item.status.current_object?.uid
         });
         if (item.status.current_object) {
           newState = newState.addToDict("docObjects.byId", item.status.current_object);
