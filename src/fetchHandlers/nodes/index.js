@@ -51,15 +51,14 @@ export const postTrackerNode = ({ trackerId, commitId, refId, path = null }) => 
   };
 };
 
-export const putCommitNode = ({ trackerId, commitId, refId, pathId, update_status, allow_commit_change = false }) => {
+export const putCommitNode = ({ trackerId, commitId, refId, pathId, queryParams }) => {
   let { ptr, ptrId } = getPtr(commitId, refId);
-  let query_params =
-    allow_commit_change || update_status
-      ? `?allow_commit_change=${allow_commit_change}&update_status=${update_status}`
-      : "";
+  let _queryString = new URLSearchParams(queryParams).toString();
+  _queryString = _queryString ? `?${_queryString}` : "";
+
   const fetchParams = {
     method: "PUT",
-    url: `/api/tracker/${trackerId}/${ptr}/${ptrId}/node/${pathId}/${query_params}`,
+    url: `/api/tracker/${trackerId}/${ptr}/${ptrId}/node/${pathId}/${_queryString}`,
     apiId: "api_tracker_node_update",
     requiredParams: ["trackerId", "commitId", "pathId"]
   };
@@ -96,19 +95,7 @@ export const deleteCommitNode = ({ trackerId, commitId, refId, pathId }) => {
     queryParams: {}
   };
   const stateSetFunc = (state, action) => {
-    // Get the node and id
-    //let nodeType = nodeNameMap[state.getInPath(`commitNodes.${commitId}.byPath.${pathId}.type`)]
-    // Delete this node
-    let newState = state.removeInPath(`commitNodes.${commitId}.byPath.${pathId}`);
-    // Remove the reference to this node from the parent (not working)
-    /*
-    let parentPath = pathId.substring(0, pathId.length - 7)
-    newState = state.removeInPath(`commitNodes.${commitId}.byPath.${parentPath}.children.byPath`, pathId);
-    if (nodeType) {
-      newState = state.removeInPath(`commitNodes.${commitId}.byPath.${parentPath}.children.byType.${nodeType}`, pathId);
-    }
-    */
-    return newState;
+    return state.removeInPath(`commitNodes.${commitId}.byPath.${pathId}`);
   };
   return { fetchParams, stateParams: { stateSetFunc } };
 };
