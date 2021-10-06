@@ -183,3 +183,21 @@ export const postTrackerDispatch = ({ trackerId, query_params }) => {
     }
   };
 };
+
+export const deleteTracker = ({ trackerId }) => {
+  const fetchParams = {
+    method: "DELETE",
+    url: `/api/tracker/${trackerId}/`,
+    apiId: "api_tracker_delete",
+    requiredParams: ["trackerId"],
+    // Deleting a Project can affect so many things that its
+    // best to reload the page and all data again
+    postSuccessHook: (data) => {
+      location.reload();
+    },
+  };
+  const stateSetFunc = (state, action) => {
+    return state;
+  };
+  return { fetchParams, stateParams: { stateSetFunc } };
+};
