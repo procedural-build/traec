@@ -4,3 +4,4 @@ export * from "./subTenants";
 export * from "./indicators";
 export * from "./conversions";
 export * from "./tenantMeta";
+export * from "./category";
