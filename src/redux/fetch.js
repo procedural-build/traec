@@ -46,6 +46,10 @@ export const fetchJSON = ({ url = "/", method = "GET", body, headers = {}, rawBo
     });
 };
 
+const isValid = token => {
+  return token && token != "failed" && token.length > 12;
+};
+
 /**
  * Updates the headers before fetch is sent.
  * The access token is attached to the headers at this stage.
@@ -67,8 +71,10 @@ export const updateHeaders = function(headers) {
   } else if (headers["content-type"] == null) {
     delete headers["content-type"];
   }
-  if (token && token != "failed") {
+  if (isValid(token)) {
     headers = Object.assign({}, headers, { Authorization: `JWT ${token}` });
+  } else {
+    console.log("Not including invalid JWT token in request header:", token);
   }
 
   return headers;
