@@ -6,7 +6,7 @@ import jwt_decode from "jwt-decode";
 const initialState = Im.fromJS({
   isAuthenticated: false,
   token: {},
-  errors: null,
+  errors: null
 });
 
 class TokenRefresher {
@@ -31,23 +31,23 @@ class TokenRefresher {
     store.dispatch({
       APICallTypes: {
         successType: "LOGIN_SUCCESS",
-        failureType: "LOGIN_FAILURE",
+        failureType: "LOGIN_FAILURE"
       },
       fetchParams: {
         url: "/auth-jwt/refresh/",
         method: "POST",
-        body: { refresh: null }, // The refresh token should be in the httpOnly cookie that is sent
-      },
+        body: { refresh: null } // The refresh token should be in the httpOnly cookie that is sent
+      }
     });
   }
 
   setRefresh(exp, refreshToken) {
     let now = new Date();
     let expTime = new Date(exp * 1000);
-    let msRemaining = expTime - now - 10 * 1000;
+    let msRemaining = expTime - now - 30 * 1000;
     console.log("Refreshing access token again in ", msRemaining / 1000, "seconds");
     let id = setInterval(
-      (refreshToken) => {
+      refreshToken => {
         // Only do it once - the next access token will set another interval
         this.doRefresh(refreshToken);
         clearInterval(id);
@@ -68,7 +68,7 @@ class TokenRefresher {
 
 const TOKEN_REFRESHER = new TokenRefresher();
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   //console.log("Reducing auth data")
   switch (action.type) {
     case types.LOGIN_SUCCESS:
@@ -107,7 +107,7 @@ export default function (state = initialState, action) {
           isAuthenticated: true,
           status: "confirmed",
           decoded_token,
-          user,
+          user
         })
       );
 
@@ -122,7 +122,7 @@ export default function (state = initialState, action) {
           isAuthenticated: false,
           token: null,
           errors: action.payload ? action.payload.errors : null,
-          status: "failed",
+          status: "failed"
         })
       );
 
@@ -141,7 +141,7 @@ export default function (state = initialState, action) {
         ["registration"],
         Im.fromJS({
           redirect: "register_success_confirm",
-          user: action.payload,
+          user: action.payload
         })
       );
     case types.REGISTER_FAILURE:
@@ -150,7 +150,7 @@ export default function (state = initialState, action) {
       return state.mergeIn(
         ["registration", "activate"],
         Im.fromJS({
-          status: "confirmed",
+          status: "confirmed"
         })
       );
     case types.ACTIVATE_FAILURE:
@@ -158,21 +158,21 @@ export default function (state = initialState, action) {
         ["registration", "activate"],
         Im.fromJS({
           status: "failed",
-          errors: action.payload.errors,
+          errors: action.payload.errors
         })
       );
     case types.RESET_SUCCESS:
       return state.mergeIn(
         ["registration", "password_reset"],
         Im.fromJS({
-          status: "confirmed",
+          status: "confirmed"
         })
       );
     case types.RESET_PENDING:
       return state.mergeIn(
         ["registration", "password_reset"],
         Im.fromJS({
-          status: "pending",
+          status: "pending"
         })
       );
     case types.RESET_FAILURE:
@@ -180,14 +180,14 @@ export default function (state = initialState, action) {
         ["registration", "password_reset"],
         Im.fromJS({
           status: "failed",
-          errors: action.payload.errors,
+          errors: action.payload.errors
         })
       );
     case types.CHANGE_SUCCESS:
       return state.mergeIn(
         ["registration", "password_change"],
         Im.fromJS({
-          status: "success",
+          status: "success"
         })
       );
     case types.CHANGE_FAILURE:
@@ -195,7 +195,7 @@ export default function (state = initialState, action) {
         ["registration", "password_change"],
         Im.fromJS({
           status: "failed",
-          errors: action.payload.errors,
+          errors: action.payload.errors
         })
       );
     default:
