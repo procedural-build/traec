@@ -56,14 +56,17 @@ export const postDocument = ({ trackerId, refId, commitId, treeId }) => {
   };
 };
 
-export const getDocumentObjects = ({ trackerId, commitId, docId, thisCommitOnly = null }) => {
-  let queryParams = thisCommitOnly ? `?thisCommitOnly=true` : "";
+export const getDocumentObjects = ({ trackerId, commitId, docId, thisCommitOnly = null, path = null }) => {
+  let queryParams = { thisCommitOnly, path };
+  let queryString = new URLSearchParams(queryParams).toString();
+  queryString = queryString ? `?${queryString}` : "";
+
   const fetchParams = {
     method: "GET",
-    url: `/api/tracker/${trackerId}/commit/${commitId}/document/${docId}/object/${queryParams}`,
+    url: `/api/tracker/${trackerId}/commit/${commitId}/document/${docId}/object/${queryString}`,
     apiId: "api_tracker_commit_document_object_list",
     requiredParams: ["trackerId", "commitId", "docId"],
-    queryParams: { thisCommitOnly: null }
+    queryParams: { thisCommitOnly: null, path: null }
   };
   const stateSetFunc = (state, action) => {
     // Successful put returns a DocumentStatusSerializer object
@@ -76,7 +79,8 @@ export const getDocumentObjects = ({ trackerId, commitId, docId, thisCommitOnly 
       objectIds.push(item.uid);
     }
     // Set the list of objects
-    newState = newState.addListToSet(`commitEdges.byId.${commitId}.documents.${docId}.objects`, objectIds);
+    let pathStr = path ? `.${path}` : null;
+    newState = newState.addListToSet(`commitEdges.byId.${commitId}.documents.${docId}${pathStr}.objects`, objectIds);
     return newState;
   };
   return { fetchParams, stateParams: { stateSetFunc } };
