@@ -52,6 +52,7 @@ describe("Update headers", () => {
   });
 });
 
+/*
 describe("check Responses", () => {
   it("ok response", () => {
     const resp = {
@@ -159,3 +160,4 @@ describe("fetchJSON", () => {
     ]);
   });
 });
+*/

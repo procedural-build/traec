@@ -24,7 +24,7 @@ const getHandlerMapProperties = () => {
         let actionMap = {
           create: "post",
           update: "put",
-          partial_update: "patch"
+          partial_update: "patch",
         };
         handlerProps[prefix] = (handlerProps[prefix] || []).concat([actionMap[action] || action]);
       }
@@ -38,7 +38,7 @@ describe("handlerMap", () => {
     let handlerProperties = getHandlerMapProperties();
     for (let key in handlerProperties) {
       for (let restCall of handlerProperties[key]) {
-        console.log(key, restCall);
+        //console.log(key, restCall);
         expect(handlerMap[key]).toHaveProperty(restCall);
       }
     }

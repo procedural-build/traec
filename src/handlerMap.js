@@ -24,7 +24,7 @@ import * as defaultFetchHandlers from "./fetchHandlers";
  * @method
  * @memberof utils
  */
-export const makeHandlerMap = function(fetchHandlers = null) {
+export const makeHandlerMap = function (fetchHandlers = null) {
   console.log("MAKING fetchHandler MAP");
   let handlerMap = {};
   if (fetchHandlers == null) {
@@ -52,7 +52,7 @@ export const makeHandlerMap = function(fetchHandlers = null) {
         actionMap[action] = {
           fetchHandler: fetchHandler,
           requiredParams: fetchParams.requiredParams || [],
-          queryParams: fetchParams.queryParams || []
+          queryParams: fetchParams.queryParams || [],
         };
         // Assign the updated action map to the handlerMap
         Object.assign(handlerMap, { [prefix]: actionMap });
@@ -62,7 +62,7 @@ export const makeHandlerMap = function(fetchHandlers = null) {
       continue;
     }
   }
-  console.log("Constructed handler map", handlerMap);
+  //console.log("Constructed handler map", handlerMap);
   return handlerMap;
 };
 

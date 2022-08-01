@@ -161,7 +161,7 @@ describe("check Throttling", () => {
   it("if fetched, it should call next", () => {});
 
   it("if not fetched, it should not do anything", () => {
-    spyOn(console, "log");
+    jest.spyOn(console, "log");
     hasFetched.mockImplementation((getstate, fetchParams, time) => false);
     middleware.checkThrottling(getState, fetchParams, action);
 
