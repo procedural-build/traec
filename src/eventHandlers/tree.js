@@ -1,25 +1,22 @@
 import Traec from "traec";
-import Crypto from "crypto";
 
 export function addCategoryRef({ trackerId, refId, commitId, treeId }) {
   let fetch = new Traec.Fetch("tracker_ref_tree_branch", "post", {
     trackerId,
     refId,
     commitId,
-    treeId
+    treeId,
   });
   fetch.updateFetchParams({
-    preFetchHook: body => {
+    preFetchHook: (body) => {
       return {
-        name: Crypto.createHash("sha1")
-          .update(body.title)
-          .digest("hex"),
+        name: crypto.createHash("sha1").update(body.title).digest("hex"),
         description: {
           title: body.title,
-          text: body.description
-        }
+          text: body.description,
+        },
       };
-    }
+    },
   });
   return fetch;
 }
@@ -29,7 +26,7 @@ export function addDocument({ trackerId, refId, commitId, treeId }) {
     trackerId,
     refId,
     commitId,
-    treeId
+    treeId,
   });
   return fetch;
 }
@@ -39,7 +36,7 @@ export function editTree({ refId, trackerId, treeId, commitId }) {
     trackerId,
     refId,
     commitId,
-    treeId
+    treeId,
   });
   return fetch;
 }
@@ -50,6 +47,6 @@ export function deleteTree(e) {
     text: `This will delete this tree including any data contained within.  Are you sure you would like to proceed?`,
     onConfirm: () => {
       new Traec.Fetch("tracker_ref_tree", "delete", { ...this.getUrlParams() }).dispatch();
-    }
+    },
   });
 }

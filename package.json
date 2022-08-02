@@ -1,10 +1,9 @@
 {
   "name": "traec",
-  "version": "1.1.208",
+  "version": "1.1.210",
   "description": "",
   "main": "dist/index.js",
   "dependencies": {
-    "crypto": "^1.0.1",
     "dompurify": "^2.3.10",
     "immutable": "^4.1.0",
     "jwt-decode": "^3.1.2",
@@ -55,7 +54,6 @@
     "patchversion": "npm --no-git-tag-version version patch",
     "build": "npx babel src --out-dir ./dist && cp -v ./package.json ./dist/package.json",
     "pub": "npm run matchversion && npm run patchversion && npm run build && npm publish ./dist",
-    "prepare": "husky install",
     "run-pretty-quick": "pretty-quick --staged --print-width 120"
   },
   "repository": {

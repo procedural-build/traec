@@ -1,4 +1,3 @@
-import Crypto from "crypto";
 import { postTree } from "./tree";
 import { addValueToState } from "./utils";
 
@@ -17,7 +16,7 @@ export const postTreeScore = ({ trackerId, refId, commitId, treeId }) => {
     method: "POST",
     url: `/api/tracker/${trackerId}/ref/${refId}/tree/${treeId}/score/`,
     apiId: "api_tracker_ref_tree_score_create",
-    requiredParams: ["trackerId", "refId", "commitId", "treeId"]
+    requiredParams: ["trackerId", "refId", "commitId", "treeId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -49,11 +48,9 @@ export const postTreeAndMetric = ({ trackerId, refId, commitId, treeId }) => {
   Object.assign(fetchParams, { apiId: "api_tracker_ref_tree_tree_and_metric_create" });
   // Modify the post to give a random name for the tree
   Object.assign(fetchParams, {
-    preFetchHook: body => {
+    preFetchHook: (body) => {
       return {
-        name: Crypto.createHash("sha1")
-          .update(body.name)
-          .digest("hex")
+        name: crypto.createHash("sha1").update(body.name).digest("hex"),
       };
     },
     // Attach a nextHandler to the tree - so that the metricscore is created on successful creation of the tree
@@ -62,12 +59,12 @@ export const postTreeAndMetric = ({ trackerId, refId, commitId, treeId }) => {
         let { fetchParams, stateParams } = postTreeScore({ trackerId, refId, commitId, treeId: data.uid });
         Object.assign(fetchParams, {
           body: {
-            metric: { ...orgpost }
-          }
+            metric: { ...orgpost },
+          },
         });
         return { fetchParams, stateParams };
-      }
-    ]
+      },
+    ],
   });
   return { fetchParams, stateParams };
 };
@@ -75,7 +72,7 @@ export const postTreeAndMetric = ({ trackerId, refId, commitId, treeId }) => {
 export const postTrackerMetric = ({ trackerId, refId, commitId, treeId }) => {
   const fetchParams = {
     method: "POST",
-    url: `/api/tracker/${trackerId}/impact/`
+    url: `/api/tracker/${trackerId}/impact/`,
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -94,7 +91,7 @@ export const getMetricInputs = ({ trackerId, commitId }) => {
     method: "GET",
     url: `/api/tracker/${trackerId}/commit/${commitId}/value/`,
     apiId: "api_tracker_commit_value_list",
-    requiredParams: ["trackerId", "commitId"]
+    requiredParams: ["trackerId", "commitId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -116,7 +113,7 @@ export const postMetricScoreValue = ({ trackerId, commitId, scoreId }) => {
     method: "POST",
     url: `/api/tracker/${trackerId}/commit/${commitId}/score/${scoreId}/value/`,
     apiId: "api_tracker_commit_score_value_create",
-    requiredParams: ["trackerId", "commitId", "scoreId"]
+    requiredParams: ["trackerId", "commitId", "scoreId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -137,7 +134,7 @@ export const putMetricScoreValue = ({ trackerId, commitId, scoreId, inputValueId
     method: "PUT",
     url: `/api/tracker/${trackerId}/commit/${commitId}/score/${scoreId}/value/${inputValueId}/`,
     apiId: "api_tracker_commit_score_value_update",
-    requiredParams: ["trackerId", "commitId", "scoreId", "inputValueId"]
+    requiredParams: ["trackerId", "commitId", "scoreId", "inputValueId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -158,7 +155,7 @@ export const postCommitScoreValues = ({ trackerId, commitId }) => {
     method: "POST",
     url: `/api/tracker/${trackerId}/commit/${commitId}/value/`,
     apiId: "api_tracker_commit_value_create",
-    requiredParams: ["trackerId", "commitId"]
+    requiredParams: ["trackerId", "commitId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -178,7 +175,7 @@ export const patchTreeScore = ({ trackerId, refId, commitId, treeId, metricScore
     method: "PATCH",
     url: `/api/tracker/${trackerId}/ref/${refId}/tree/${treeId}/score/${metricScoreId}/`,
     apiId: "api_tracker_ref_tree_score_partial_update",
-    requiredParams: ["trackerId", "refId", "commitId", "treeId", "metricScoreId"]
+    requiredParams: ["trackerId", "refId", "commitId", "treeId", "metricScoreId"],
   };
   const stateSetFunc = (state, action) => {
     const data = action.payload;
@@ -201,7 +198,7 @@ export const patchTreeScore = ({ trackerId, refId, commitId, treeId, metricScore
     stateParams: {
       stateSetFunc,
       formVisPath: `trees.editById.${treeId}.SHOW_EDIT_SCORE_FORM`,
-      formObjPath: `trees.editById.${treeId}.editMetric`
-    }
+      formObjPath: `trees.editById.${treeId}.editMetric`,
+    },
   };
 };
