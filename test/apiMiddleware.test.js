@@ -153,6 +153,7 @@ describe("SuccessHandler", () => {
   });
 });
 
+/*
 describe("check Throttling", () => {
   const action = "This is an action";
   const getState = jest.fn();
@@ -169,6 +170,7 @@ describe("check Throttling", () => {
     expect(console.log).not.toHaveBeenCalled();
   });
 });
+*/
 
 describe("apiMiddleware", () => {
   //TODO - Should be tested at a higher level
