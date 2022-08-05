@@ -53,7 +53,13 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
       fetchParams.body = fetchParams.preFetchHook(fetchParams.body, fetchParams);
     }
 
-    checkThrottling(getState, fetchParams, action, next);
+    if (hasFetched(getState(), fetchParams, fetchParams.throttleTimeCheck || 1000)) {
+      console.log("SKIPPING FETCH DUE TO THROTTLING", action);
+      return dispatch({
+        type: "FETCH_THROTTLED",
+        fetchParams,
+      });
+    }
 
     recordFetch(fetchParams, dispatch);
 
@@ -63,26 +69,6 @@ export const callAPIMiddleware = ({ dispatch, getState }) => {
       (error) => failureHandler(error, failureType, fetchParams, stateParams, dispatch)
     );
   };
-};
-
-/**
- * Check for Throttling that this URL has not been requested recently milliseconds between calls
- * @method
- * @memberof redux.middleware
- * @param getState Returns the current state tree of your application. It is equal to the last value returned by the store's reducer.
- * @param fetchParams
- * @param action Payloads of information that send data from your application to your store.
- * @param next
- * @return {*}
- */
-export const checkThrottling = function (getState, fetchParams, action, next) {
-  if (hasFetched(getState(), fetchParams, fetchParams.throttleTimeCheck || 1000)) {
-    console.log("SKIPPING FETCH DUE TO THROTTLING", action);
-    return next({
-      type: "FETCH_THROTTLED",
-      fetchParams,
-    });
-  }
 };
 
 /**
