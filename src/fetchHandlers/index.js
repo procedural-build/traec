@@ -51,6 +51,8 @@
  *
  */
 
+export * from "./generic"
+
 // AUTH
 export * from "./auth/registration";
 
