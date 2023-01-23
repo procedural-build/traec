@@ -4,8 +4,14 @@ METRIC TARGETS
 
 const metricTargetToState = (newState, item, commitId) => {
   let baseMetric = item.metric;
-  newState = newState.addToDict(`baseMetrics.byId`, baseMetric);
-  newState = newState.addListToDict(`commitEdges.byId.${commitId}.metricTargets`, [item]);
+  if (baseMetric?.uid) {
+    newState = newState.addToDict(`baseMetrics.byId`, baseMetric);
+  }
+  try {
+    newState = newState.addListToDict(`commitEdges.byId.${commitId}.metricTargets`, [item]);
+  } catch(err) {
+    console.warn("Error setting metric target to redux state", item)
+  }
   return newState;
 };
 
