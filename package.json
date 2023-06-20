@@ -7,8 +7,6 @@
     "dompurify": "^2.2.9",
     "immutable": "^4.0.0-rc.12",
     "jwt-decode": "^2.2.0",
-    "node": "^10.24.1",
-    "nodejs": "^0.0.0",
     "prettier": "^1.19.1",
     "react": "^16.14.0",
     "redux": "^4.1.0",

@@ -11,7 +11,10 @@ export const putStoreImage = ({}) => {
   const stateSetFunc = (state, action) => {
     let payload = action.payload
     if (!payload.errors){
-      return state.setInPath(`files.upload`, payload)
+      let { hash } = payload
+      return state
+        .setInPath(`files.lastUpload`, payload)
+        .setInPath(`files.byHash.${hash}`, payload)
     }
     return state.setInPath(`files.error`, payload.errors);
   };
