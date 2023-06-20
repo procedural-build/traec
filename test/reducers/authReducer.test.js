@@ -14,7 +14,9 @@ xdescribe("Fetch Reducer", () => {
       exp: 1559207709,
       email: "admin@ods-track.com",
     };
-    jwt_decode.mockImplementation(() => decoded_token);
+    jwt_decode.mockImplementation(() => Promise.resolve(
+      new Response(JSON.stringify(decoded_token))
+    ));
     const fetchParams = {
       url: "/auth-jwt/verify/",
       method: "POST",

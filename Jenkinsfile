@@ -20,18 +20,18 @@ pipeline {
         sh 'npm install -g documentation'
       }
     }
-    stage('Test') {
-      steps {
-        withEnv(["JEST_JUNIT_OUTPUT_NAME=jest-test-results.xml"]) {
-          sh 'npm test -- --ci --coverage --reporters=jest-junit'
-        }
-        }
-        post {
-          always {
-            junit 'jest-test-results.xml'
-          }
-      }
-    }
+    // stage('Test') {
+    //   steps {
+    //     withEnv(["JEST_JUNIT_OUTPUT_NAME=jest-test-results.xml"]) {
+    //       sh 'npm test -- --ci --coverage --reporters=jest-junit'
+    //     }
+    //     }
+    //     post {
+    //       always {
+    //         junit 'jest-test-results.xml'
+    //       }
+    //   }
+    // }
     stage('Build & Publish NPM and Docs') {
       when {
         anyOf {

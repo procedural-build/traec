@@ -114,7 +114,9 @@ describe("SuccessHandler", () => {
 
   it("should dispatch next fetchHandlers", () => {
     // mock out nextHandlers and see if it is called
-    fetchToState.mockImplementation((newParams) => ({}));
+    fetchToState.mockImplementation((() => Promise.resolve(
+      new Response(JSON.stringify({}))
+    )));
 
     const data = {};
     const successType = "";
@@ -133,7 +135,9 @@ describe("SuccessHandler", () => {
 
   it("should dispatch next fetchHandlers and call the postSuccessHook", () => {
     // mock out nextHandlers and see if it is called
-    fetchToState.mockImplementation((newParams) => ({}));
+    fetchToState.mockImplementation((() => Promise.resolve(
+      new Response(JSON.stringify({}))
+    )))
 
     const data = {};
     const successType = "";

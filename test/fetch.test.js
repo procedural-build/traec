@@ -115,7 +115,9 @@ describe("fetchJSON", () => {
       body: {},
       bodyUsed: false
     };
-    fetch.mockResponse(JSON.stringify(resp));
+    fetch.mockResponse(() => Promise.resolve(
+      new Response(JSON.stringify(resp))
+    ))
     fetchJSON({ url: "/api/test" }, success, failure);
 
     expect(fetch.mock.calls.length).toEqual(1);
