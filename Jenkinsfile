@@ -16,6 +16,7 @@ pipeline {
   stages {
     stage('NPM Install') {
       steps {
+        sh 'echo $NPM_TOKEN && echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
         sh 'npm ci'
         sh 'npm install -g documentation'
       }
@@ -50,7 +51,9 @@ pipeline {
         }
 
         sh 'documentation build src/** -f html -o docs'
-        sh 'echo $NPM_TOKEN && echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc && npm run matchversion && npm run patchversion && npm run pub'
+        sh 'npm run matchversion'
+        sh 'npm run patchversion'
+        sh 'npm run pub'
 
         echo "Uploading documentation files to ${S3_DOCS_PATH}"
         withAWS(region: 'eu-west-2', credentials: 'docker_euwest2') {
