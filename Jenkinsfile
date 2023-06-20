@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'node:10.14-slim'
+      image 'node:20.3.0-slim'
       args '-u 0:0'
     }
 
@@ -16,7 +16,8 @@ pipeline {
   stages {
     stage('NPM Install') {
       steps {
-        sh 'npm ci && npm install -g documentation'
+        sh 'npm ci'
+        sh 'npm install -g documentation'
       }
     }
     stage('Test') {
