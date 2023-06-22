@@ -16,8 +16,6 @@ pipeline {
   stages {
     stage('NPM Install') {
       steps {
-        sh 'npm run matchversion'
-        sh 'npm run patchversion'
         sh 'npm ci'
         sh 'npm install -g documentation documentation-devseed-theme clean-documentation-theme'
       }
