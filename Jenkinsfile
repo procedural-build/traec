@@ -17,7 +17,7 @@ pipeline {
     stage('NPM Install') {
       steps {
         sh 'npm ci'
-        sh 'npm install -g documentation'
+        sh 'npm install -g documentation documentation-devseed-theme clean-documentation-theme'
       }
     }
     // stage('Test') {
