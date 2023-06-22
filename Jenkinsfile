@@ -16,6 +16,8 @@ pipeline {
   stages {
     stage('NPM Install') {
       steps {
+        sh 'npm run matchversion'
+        sh 'npm run patchversion'
         sh 'npm ci'
         sh 'npm install -g documentation documentation-devseed-theme clean-documentation-theme'
       }
@@ -51,8 +53,6 @@ pipeline {
 
         sh 'documentation build src/** -f html -o docs'
         sh 'echo $NPM_TOKEN && echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
-        sh 'npm run matchversion'
-        sh 'npm run patchversion'
         sh 'npm run pub'
 
         echo "Uploading documentation files to ${S3_DOCS_PATH}"
