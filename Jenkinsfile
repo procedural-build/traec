@@ -16,7 +16,6 @@ pipeline {
   stages {
     stage('NPM Install') {
       steps {
-        sh 'echo $NPM_TOKEN && echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
         sh 'npm ci'
         sh 'npm install -g documentation'
       }
@@ -51,6 +50,7 @@ pipeline {
         }
 
         sh 'documentation build src/** -f html -o docs'
+        sh 'echo $NPM_TOKEN && echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
         sh 'npm run matchversion'
         sh 'npm run patchversion'
         sh 'npm run pub'
