@@ -1,3 +1,4 @@
+import { local } from "d3-selection";
 import Im from "../../immutable";
 import store from "../store";
 import * as types from "./types";
@@ -8,6 +9,10 @@ const initialState = Im.fromJS({
   token: {},
   errors: null
 });
+
+const isDev = () => {
+  return document.location.host.includes("localhost")
+}
 
 class TokenRefresher {
   /*NOTE: that the refresh token is NOT stored in localStorage for security
@@ -36,7 +41,7 @@ class TokenRefresher {
       fetchParams: {
         url: "/auth-jwt/refresh/",
         method: "POST",
-        body: { refresh: null } // The refresh token should be in the httpOnly cookie that is sent
+        body: { refresh: isDev() ? localStorage.getItem("token_refresh", "") : null } // The refresh token should be in the httpOnly cookie that is sent
       }
     });
   }
@@ -73,25 +78,36 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case types.LOGIN_SUCCESS:
       // Try to get the access token from either "token" or "access" keys
-      let { access, token, user } = action.payload;
+      let { access, token, user, refresh } = action.payload;
       token = access || token;
+
+      // If we are on localhost then store the refresh token in localStorage
+      if (isDev() && refresh) {
+        console.log("Local dev environment setting refresh token in localStorage", refresh)
+        localStorage.setItem("token_refresh", refresh);
+      }
+
       // If we have a new token then store that in localStorage
       if (token) {
         localStorage.setItem("token", token);
       } else {
         token = localStorage.getItem("token");
       }
+
       // Decode the access token for display in Redux
       let decoded_token = token ? jwt_decode(token) : null;
+
       // Set a timer to request a new token
       if (decoded_token.exp) {
         TOKEN_REFRESHER.clearAll();
         TOKEN_REFRESHER.setRefresh(decoded_token.exp);
       }
+
       // Add this data to your Redux
       for (let key of ["access", "refresh", "token"]) {
         delete action.payload[key];
       }
+
       // Get a mock user object (if the user data is not provided in the response)
       if (!user) {
         user = { ...decoded_token };
@@ -99,6 +115,7 @@ export default function(state = initialState, action) {
           delete user[key];
         }
       }
+
       // The data that will be set
       return state.merge(
         Im.fromJS({
