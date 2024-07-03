@@ -90,6 +90,7 @@ export default function(state = initialState, action) {
       // If we have a new token then store that in localStorage
       if (token) {
         localStorage.setItem("token", token);
+        window.dispatchEvent(new CustomEvent("token_updated", {detail: token}))
       } else {
         token = localStorage.getItem("token");
       }
