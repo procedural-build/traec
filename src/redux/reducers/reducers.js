@@ -134,6 +134,7 @@ export default function(state = initialState, action) {
 
     case types.LOGIN_FAILURE:
       localStorage.setItem("token", "failed");
+      window.dispatchEvent(new CustomEvent("token_updated", { detail: token }));
       return state.merge(
         Im.fromJS(action.payload),
         Im.fromJS({
@@ -147,6 +148,7 @@ export default function(state = initialState, action) {
     case types.LOGOUT_SUCCESS:
       console.log("LOGOUT SUCCESSFUL");
       localStorage.setItem("token", "undefined");
+      window.dispatchEvent(new CustomEvent("token_updated", { detail: token }));
       return Im.fromJS({});
 
     case types.LOGOUT_FAILURE:
